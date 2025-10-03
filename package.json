@@ -128,6 +128,7 @@
         "@rollup/plugin-typescript": "^10.0.1",
         "@types/aws-lambda": "^8.10.152",
         "@types/jest": "^29.0.0",
+        "@types/node": "^24.6.2",
         "commitlint": "^20.1.0",
         "drizzle-kit": "^0.30.4",
         "drizzle-orm": "^0.39.3",
