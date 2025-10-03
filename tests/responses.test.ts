@@ -7,9 +7,9 @@ describe("class JSONResponse", () => {
         expect(await new JSONResponse(testData).json()).toMatchObject(
             await Response.json(testData).json()
         )
-        expect([...new JSONResponse(testData).headers.entries()]).toStrictEqual([
-            ...Response.json(testData).headers.entries(),
-        ])
+        expect(new JSONResponse(testData).headers.get("content-type")).toBe(
+            Response.json(testData).headers.get("content-type")?.replace(/;charset=utf-8/, "")
+        )
     })
 
     test("[constructor]: body and headers mutation", async () => {

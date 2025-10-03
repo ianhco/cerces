@@ -1,33 +1,10 @@
-import { z } from "zod"
-import { ArgsOf } from "./types"
-
-export function jsonCoerce<Out = unknown>(value: string): Out | string
-export function jsonCoerce<Out = unknown>(value: string[]): Out[] | string[]
-export function jsonCoerce<Out = unknown>(
-    value: string | string[]
-): Out | Out[] | string | string[] {
-    try {
-        if (value instanceof Array) {
-            return value.map((item: string) => JSON.parse(item))
-        }
-        return JSON.parse(value)
-    } catch (e) {
-        return value
-    }
-}
-
-export function isJsonCoercible(schema: z.ZodType): boolean {
-    return (
-        schema instanceof z.ZodNumber ||
-        schema instanceof z.ZodBoolean ||
-        (schema instanceof z.ZodArray && isJsonCoercible(schema._def.type)) ||
-        (schema instanceof z.ZodOptional && isJsonCoercible(schema._def.innerType)) ||
-        (schema instanceof z.ZodDefault && isJsonCoercible(schema._def.innerType)) ||
-        (schema instanceof z.ZodNativeEnum &&
-            !!Object.values(schema._def.values).find((v) => String(v) !== v))
-    )
-}
-
+/**
+ * Creates a promise that can be resolved later.
+ *
+ * @returns A tuple containing a resolve function and a later function.
+ * The resolve function can be called to resolve the promise,
+ * and the later function can be used to register a callback chaining off the promise.
+ */
 export function createResolveLater<T = Response>(): [
     (res: T) => void,
     (fn: (v: T) => void) => void,
@@ -41,13 +18,43 @@ export function createResolveLater<T = Response>(): [
     return [resolve, later]
 }
 
-export function baseExceptionHandler<E>(_: ArgsOf<{}, E>, e: any) {
-    console.error(e)
-    return new Response("Internal Server Error", { status: 500 })
-}
-
+/**
+ * Creates a partial object by merging the base object with the final object.
+ * @param base The base object to merge with.
+ * @returns The partial merger function.
+ */
 export function createObjectPartial<T1 extends Record<any, any>>(base: T1) {
     return <T2 extends Record<any, any>>(final: T2): T1 & T2 => ({ ...base, ...final })
 }
 
-export class Of<E> {}
+/**
+ * Fixes the slashes in a path string.
+ * Cases handled:
+ * - Ensures the path starts with a single leading slash.
+ * - Removes any trailing slashes (unless the path is just `"/"`).
+ * - Collapses multiple leading slashes into a single slash.
+ *
+ * @param path The path to fix slashes for.
+ * @returns The fixed path with consistent slashes.
+ */
+export function fixPathSlashes(path: string): string {
+    if (path.length == 0 || path == "/") return "/"
+    if (path[0] !== "/") path = "/" + path
+    if (path.startsWith("//")) path = path.slice(1)
+    if (path[path.length - 1] === "/") path = path.slice(0, -1)
+    return path
+}
+
+/**
+ * Converts URL search parameters to a record of query parameters.
+ * @param searchParams The URL search parameters to convert.
+ * @returns A record of query parameters.
+ */
+export function searchParamsToQueries(searchParams: URLSearchParams): Record<string, string[]> {
+    const queries: Record<string, string[]> = {}
+    for (const [key, value] of searchParams.entries()) {
+        queries[key] ||= []
+        queries[key].push(value)
+    }
+    return queries
+}

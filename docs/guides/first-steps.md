@@ -1,55 +1,55 @@
 <div style="text-align: center; font-size: 60px; margin: 32px 0 64px 0">
     <img src="/icon.svg" style="height: 60px; display: inline; margin-bottom: -8px; margin-right: 16px" />
-    <b>Workery</b>
+    <b>Cerces</b>
 </div>
 
 ## Create App
 
-Create a new Workery app using NPM, Yarn, or PNPM.
+Create a new Cerces app using Bun, PNPM, or NPM.
 
 ::: code-group
-```sh [npm]
-npm create workery
-```
-```sh [yarn]
-yarn create workery
+```sh [bun]
+bun create cerces@latest
 ```
 ```sh [pnpm]
-pnpm create workery
+pnpm create cerces@latest
+```
+```sh [npm]
+npm create cerces@latest
 ```
 :::
 
 ::: info About Templates
-Some templates requires extra setup after creation, each template has a set of script commands, detailed docs for each template is located at [Templates](/templates/). Available templates:
+After executing the `create` command, you will be prompted to select from a list of available templates. These templates are provided ready-to-use. For comprehensive details on each template, including usage examples and customization options, refer to the [Templates](/templates/) documentation.
+
+Available templates:
 ```md
-* hello-world
-* d1-drizzle
-* do-sql-drizzle
+* bun
+* cf-workers
+* aws-lambda
+* docker
 ```
 :::
 
-Now, you app is set up, `cd` into the new folder.
-
-## Run Server
-
-Run local development server:
-
-::: code-group
-```sh [npm]
-npm run dev
-```
-```sh [yarn]
-yarn run dev
-```
-```sh [pnpm]
-pnpm run dev
-```
-:::
-
+Now, your app is set up, `cd` into the new folder.
 
 ## Check Output
 
-Open your browser at http://127.0.0.1:8787.
+If your template supports a development server, run the local development server and open your browser at `http://localhost:{port}` (port may differ by templates).
+
+::: code-group
+```sh [bun]
+bun dev
+```
+```sh [pnpm]
+pnpm dev
+```
+```sh [npm]
+npm run dev
+```
+:::
+
+Otherwise, check the output on your deployment platform.
 
 You will see the JSON response as:
 
@@ -62,10 +62,12 @@ You will see the JSON response as:
 Let's add a new route:
 
 ```ts
-import { Path, Query } from "workery/parameters"
-import z from "zod"
+import { App, Path, Query } from "cerces" // [!code focus:2]
+import { z } from "zod"
 
-app.get("/items/{itemId}", {
+const app = new App({})
+
+app.get("/items/{itemId}", { // [!code focus:9]
     parameters: {
         itemId: Path(z.number().int().min(0)),
         q: Query(z.string().optional()),
@@ -74,53 +76,41 @@ app.get("/items/{itemId}", {
         return { itemId, q }
     },
 })
+
+export default app
+```
+
+Now check the output at `/items/42?q=somequery`:
+
+```json
+{"itemId":42,"q":"somequery"}
 ```
 
 ## Interactive Docs
 
-Now go to http://127.0.0.1:8787/docs.
-
-You will see the interactive API documentation (provided by [Swagger UI](https://github.com/swagger-api/swagger-ui)), **try it out**:
+Interactive API documentation is available at `/docs`. Provided by [Swagger UI](https://github.com/swagger-api/swagger-ui), generated from your route definitions, it allows you to **explore and test your API endpoints**.
 
 ![Swagger UI Docs](/swaggerdocs.jpg)
 
 ## Alternative Docs
 
-And now, go to http://127.0.0.1:8787/redoc.
-
-You will see the static API documentation (provided by [ReDoc](https://github.com/Rebilly/ReDoc)):
+Alternative static API documentation is available at `/redoc`. Provided by [ReDoc](https://github.com/Redocly/redoc), it offers a more traditional documentation layout.
 
 ![ReDoc Docs](/redocdocs.jpg)
-
-## Deploy App
-
-Deploy your app to Cloudflare Workers:
-
-::: code-group
-```sh [npm]
-npm run deploy
-```
-```sh [yarn]
-yarn run deploy
-```
-```sh [pnpm]
-pnpm run deploy
-```
-:::
 
 
 ## OpenAPI Spec
 
-Workery generates a "schema" with all your API using the **OpenAPI** standard for defining APIs.
+Cerces generates a "schema" for all your API using the **OpenAPI** standard for defining APIs.
 
 A "schema" is a definition or description of something. Not the code that implements it, but just an abstract description. This schema definition includes your API paths, the possible parameters they take, etc.
 
-The term "schema" might also refer to the shape of some data, like a JSON content. In that case, it would mean the JSON attributes, and data types they have, etc.
+The term "schema" might also refer to the shape of some data, like a JSON content. In that case, it would mean the JSON attributes, and data types they contain, etc.
 
-If you are curious about how the raw OpenAPI schema looks like, Workery automatically generates a JSON (schema) with the descriptions of all your API.
+If you are curious about how the raw OpenAPI schema looks, Cerces automatically generates a JSON (schema) with the descriptions of all your APIs.
 
-You can see directly at: http://127.0.0.1:8787/openapi.json.
+You can see it directly at: `/openapi.json`.
 
 ## License
 
-This project is licensed under the terms of the [MIT license](https://github.com/iann838/workery/?tab=MIT-1-ov-file#readme).
+This project is licensed under the terms of the [MIT license](https://github.com/ianhco/cerces/?tab=MIT-1-ov-file#readme).

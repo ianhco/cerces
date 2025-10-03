@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 . "$(dirname "$0")/common.sh"
 
-npx --no-install commitlint --config commitlint.config.cjs --edit $1
+bunx commitlint --config commitlint.config.cjs --edit $1

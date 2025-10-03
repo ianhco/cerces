@@ -1,19 +1,23 @@
 import { z } from "zod"
 import type { ResponseConfig, RouteConfig, ZodRequestBody } from "@asteasolutions/zod-to-openapi"
-import { SecurityRequirementObject } from "openapi3-ts/oas31"
-import { JSONResponse } from "./responses"
+import type { SecurityRequirementObject } from "openapi3-ts/oas31"
 import type {
     BodyParameter,
+    GenericRouteParameters,
+    DependsParameter,
     HTTPMethod,
     HTTPMethodLower,
     ResponseClass,
     RouteHandler,
     RouteParameters,
-    UnboundRoute,
+    NeverMap,
+    ImplicitParameters,
 } from "./types"
-import { Responds } from "./parameters"
-import { Middleware } from "./middleware"
+import { Middleware } from "./core"
+import { JSONResponse } from "./responses"
+import { fixPathSlashes } from "./helpers"
 
+/** Headers excluded from OpenAPI schema by default. */
 const DEFAULT_SCHEMA_EXCLUDED_HEADERS = new Set([
     "accept-encoding",
     "accept-language",
@@ -47,14 +51,7 @@ const DEFAULT_SCHEMA_EXCLUDED_HEADERS = new Set([
     "cf-worker",
 ])
 
-export function fixPathSlashes(path: string) {
-    if (path.length == 0 || path == "/") return "/"
-    if (path[0] !== "/") path = "/" + path
-    if (path.startsWith("//")) path = path.slice(1)
-    if (path[path.length - 1] === "/") path = path.slice(0, -1)
-    return path
-}
-
+/** Generate a default summary string for a route based on its method and path. */
 export function generateRouteSummary(method: HTTPMethod, path: string): string {
     const methodToAction = {
         GET: "Read",
@@ -75,7 +72,21 @@ export function generateRouteSummary(method: HTTPMethod, path: string): string {
     ].join(" ")
 }
 
-export class Route<R, Ps extends RouteParameters, E = unknown> {
+/**
+ * Represents a route declaration in the routing system.
+ *
+ * This class encapsulates all the configuration and metadata for a single HTTP route,
+ * including its method, path, handler, parameters, responses, and OpenAPI schema information.
+ *
+ * @template R The response type returned by the route handler.
+ * @template Ps The route parameters type specific to this route.
+ * @template Ps0 The route parameters type inherited from parent routers or apps.
+ */
+export class Route<
+    R,
+    Ps extends GenericRouteParameters<Ps> = {},
+    Ps0 extends GenericRouteParameters<Ps0> = {},
+> {
     method: HTTPMethod
     path: string
     name?: string
@@ -88,9 +99,9 @@ export class Route<R, Ps extends RouteParameters, E = unknown> {
     statusCode: number
     includeInSchema: boolean
     responseClass: ResponseClass
-    middleware: Middleware<E>[]
+    middleware: Middleware[]
     parameters: Ps
-    handle: RouteHandler<R, Ps, E>
+    handle: RouteHandler<R, Ps & Ps0>
 
     constructor(init: {
         method: HTTPMethod
@@ -105,9 +116,9 @@ export class Route<R, Ps extends RouteParameters, E = unknown> {
         includeInSchema?: boolean
         statusCode?: number
         responseClass?: ResponseClass
-        middleware?: Middleware<E>[]
-        parameters: Ps
-        handle: RouteHandler<R, Ps, E>
+        middleware?: Middleware[]
+        parameters?: Ps & NeverMap<ImplicitParameters<Ps & Ps0>> & NeverMap<Ps0>
+        handle: RouteHandler<R, Ps & Ps0>
     }) {
         this.method = init.method
         this.path = fixPathSlashes(init.path)
@@ -122,22 +133,24 @@ export class Route<R, Ps extends RouteParameters, E = unknown> {
         this.statusCode = init.statusCode ?? 200
         this.responseClass = init.responseClass ?? JSONResponse
         this.middleware = init.middleware ?? []
-        this.parameters = init.parameters
+        this.parameters = init.parameters ?? ({} as Ps)
         this.handle = init.handle
     }
 
     openapi(): RouteConfig {
-        const flatParameters: RouteParameters = {}
-        const flattenParameters = (parameters: RouteParameters) => {
+        const rawParameters: RouteParameters = {}
+        const extractRawParameters = (parameters: RouteParameters) => {
             for (const [name, parameter] of Object.entries(parameters)) {
-                if (parameter.location == "$depends") {
-                    flattenParameters(parameter.dependency!.parameters)
+                if (parameter.location == "@depends") {
+                    extractRawParameters(
+                        (parameter as DependsParameter<any, any>).dependency.parameters
+                    )
                 } else {
-                    flatParameters[name] = parameter
+                    rawParameters[name] = parameter
                 }
             }
         }
-        flattenParameters(this.parameters)
+        extractRawParameters(this.parameters)
 
         let bodyParameter: BodyParameter<z.ZodType> | undefined = undefined
         const paramSchemas: Record<string, Record<string, z.ZodType>> = {
@@ -146,7 +159,7 @@ export class Route<R, Ps extends RouteParameters, E = unknown> {
             header: {},
             cookie: {},
         }
-        for (const [name, parameter] of Object.entries(flatParameters)) {
+        for (const [name, parameter] of Object.entries(rawParameters)) {
             if (parameter.options.includeInSchema === undefined) {
                 if (
                     parameter.location == "header" &&
@@ -186,9 +199,7 @@ export class Route<R, Ps extends RouteParameters, E = unknown> {
                 }
             } else {
                 body = {
-                    description:
-                        bodyParameter.options.description ??
-                        bodyParameter.schema?._def.openapi?.metadata?.description,
+                    description: bodyParameter.options.description,
                     content: {
                         [bodyParameter.options?.mediaType]: {
                             schema: bodyParameter.schema as z.ZodType<unknown>,
@@ -217,11 +228,17 @@ export class Route<R, Ps extends RouteParameters, E = unknown> {
     }
 }
 
-export class RouteNode<E = unknown> {
-    private inner: Record<string, RouteNode<E>>
+/**
+ * Represents a node in the routing tree structure.
+ *
+ * Each node corresponds to a segment of the URL path and can contain child nodes,
+ * associated routes for different HTTP methods, middleware, and parameter names for dynamic segments.
+ */
+export class RouteNode {
+    private inner: Record<string, RouteNode>
     name: string
-    routes: Record<string, Route<any, any, E>>
-    middleware: Middleware<E>[]
+    routes: Record<string, Route<any, any, any>>
+    middleware: Middleware[]
     paramNames: string[]
 
     constructor(name: string) {
@@ -232,35 +249,31 @@ export class RouteNode<E = unknown> {
         this.middleware = []
     }
 
-    touch(node: string): RouteNode<E> {
+    touch(node: string): RouteNode {
         this.inner[node] ||= new RouteNode(node)
         return this.inner[node]!
     }
 
-    match(node: string): RouteNode<E> | undefined {
+    match(node: string): RouteNode | undefined {
         return this.inner[node] ?? this.inner["{}"]
     }
 }
 
-export function searchParamsToQueries(searchParams: URLSearchParams): Record<string, string[]> {
-    const queries: Record<string, string[]> = {}
-    for (const [key, value] of searchParams.entries()) {
-        queries[key] ||= []
-        queries[key].push(value)
-    }
-    return queries
-}
-
-export class RouteMatcher<E = unknown> {
-    routes: Route<any, any, E>[]
-    tree: RouteNode<E>
+/**
+ * Manages a collection of routes and provides functionality to match incoming HTTP requests to routes.
+ *
+ * This class builds a tree structure for efficient route matching and supports middleware inheritance.
+ */
+export class RouteMatcher {
+    routes: Route<any, any, any>[]
+    tree: RouteNode
 
     constructor() {
         this.routes = []
         this.tree = new RouteNode("")
     }
 
-    *[Symbol.iterator](): IterableIterator<Route<any, any, E>> {
+    *[Symbol.iterator](): IterableIterator<Route<any, any, any>> {
         for (const route of this.routes) {
             yield route
         }
@@ -270,10 +283,10 @@ export class RouteMatcher<E = unknown> {
         return this.routes.length
     }
 
-    get(path: string): RouteNode<E> {
+    get(path: string): RouteNode {
         const nodes = fixPathSlashes(path).split("/").slice(1)
         let tree = this.tree
-        const paramNames = []
+        const paramNames: string[] = []
         for (let [index, node] of nodes.entries()) {
             if (node[0] == "{" && node[node.length - 1] == "}") {
                 paramNames.push(node.slice(1, -1))
@@ -288,15 +301,15 @@ export class RouteMatcher<E = unknown> {
         return tree
     }
 
-    set(path: string | null, values: { middleware?: Middleware<E>[] }): RouteNode<E> {
-        let node: RouteNode<E>
+    set(path: string | null, values: { middleware?: Middleware[] }): RouteNode {
+        let node: RouteNode
         if (path === null) node = this.tree
         else node = this.get(path)
         if (values.middleware) node.middleware = values.middleware
         return node
     }
 
-    push(...routes: Route<any, any, E>[]): number {
+    push(...routes: Route<any, any, any>[]): number {
         this.routes.push(...routes)
         for (const route of routes) {
             const node = this.get(route.path)
@@ -308,15 +321,16 @@ export class RouteMatcher<E = unknown> {
     match(
         method: string,
         path: string
-    ): [Route<any, any, E> | undefined | null, Record<string, string>, Middleware<E>[]] {
+    ): [Route<any, any, any> | undefined | null, Record<string, string>, Middleware[]] {
         const nodes = fixPathSlashes(path).split("/").slice(1)
         const paramValues: string[] = []
-        const middleware: Middleware<E>[] = [...this.tree.middleware]
+        const middleware: Middleware[] = [...this.tree.middleware]
         let tree = this.tree
         for (const [index, node] of nodes.entries()) {
             let nextMatcher = tree.match(node)
             if (!nextMatcher) return [undefined, {}, middleware]
             tree = nextMatcher
+            // push middleware attached to this node
             middleware.push(...tree.middleware)
             if (tree.name == "{}") paramValues.push(node)
             if (index == nodes.length - 1) {
@@ -328,125 +342,11 @@ export class RouteMatcher<E = unknown> {
                 for (let i = 0; i < tree.paramNames.length; i++) {
                     params[tree.paramNames[i]] = paramValues[i]
                 }
+                // push middleware attached to this route
                 middleware.push(...tree.routes[method].middleware)
                 return [tree.routes[method], params, middleware]
             }
         }
         return [undefined, {}, middleware]
-    }
-}
-
-export class Router<E = unknown> {
-    tags: string[]
-    deprecated: boolean
-    includeInSchema: boolean
-    responses: Record<number, ResponseConfig>
-    security?: SecurityRequirementObject[]
-    defaultResponseClass: ResponseClass
-    middleware: Middleware<E>[]
-    routeMatcher: RouteMatcher<E>
-
-    constructor(init: {
-        tags?: string[]
-        deprecated?: boolean
-        includeInSchema?: boolean
-        responses?: Record<number, ResponseConfig>
-        security?: SecurityRequirementObject[]
-        defaultResponseClass?: ResponseClass
-        middleware?: Middleware<E>[]
-    }) {
-        this.tags = init.tags ?? []
-        this.deprecated = init.deprecated ?? false
-        this.includeInSchema = init.includeInSchema ?? true
-        this.defaultResponseClass = init.defaultResponseClass ?? JSONResponse
-        this.middleware = init.middleware ?? []
-        this.responses = init.responses ?? {
-            422: Responds(
-                z.object({
-                    detail: z.array(
-                        z.object({
-                            location: z.string(),
-                            name: z.string(),
-                            issues: z.array(z.any()),
-                        })
-                    ),
-                }),
-                { description: "Validation Error", mediaType: "application/json" }
-            ),
-        }
-        this.security = init.security
-        this.routeMatcher = new RouteMatcher<E>()
-    }
-
-    get<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("GET", path, unboundRoute)
-    }
-    post<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("POST", path, unboundRoute)
-    }
-    put<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("PUT", path, unboundRoute)
-    }
-    delete<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("DELETE", path, unboundRoute)
-    }
-    patch<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("PATCH", path, unboundRoute)
-    }
-    head<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("HEAD", path, unboundRoute)
-    }
-    trace<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("TRACE", path, unboundRoute)
-    }
-    options<R, Ps extends RouteParameters>(
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        return this.route("OPTIONS", path, unboundRoute)
-    }
-
-    route<R, Ps extends RouteParameters>(
-        method: HTTPMethod,
-        path: string,
-        unboundRoute: UnboundRoute<R, Ps, E>
-    ): Route<R, Ps, E> {
-        const route = new Route({
-            method: method,
-            path: path,
-            deprecated: this.deprecated,
-            includeInSchema: this.includeInSchema,
-            responseClass: this.defaultResponseClass,
-            security: this.security,
-            ...unboundRoute,
-            tags: [...this.tags, ...(unboundRoute.tags ?? [])],
-            responses: {
-                ...this.responses,
-                ...unboundRoute.responses,
-            },
-        })
-        this.routeMatcher.push(route)
-        return route
     }
 }

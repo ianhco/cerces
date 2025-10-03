@@ -1,11 +1,11 @@
 export default {
-    title: 'Workery',
+    title: 'Cerces',
     description: 'Modern web framework for Cloudflare Workers.',
     head: [['link', { rel: 'icon', href: '/icon.svg' }]],
     cleanUrls: true,
     themeConfig: {
         logo: "/icon.svg",
-        siteTitle: "Workery",
+        siteTitle: "Cerces",
         nav: [
             {
                 text: "Guides",
@@ -13,27 +13,22 @@ export default {
                 activeMatch: "/guides/*"
             },
             {
-                text: "Templates",
-                link: "/templates/index.md",
-                activeMatch: "/templates/*"
-            },
-            {
                 text: "Reference",
                 link: "/reference/index.md",
                 activeMatch: "/reference/*"
             },
             {
-                text: "Migrate -> 1.2",
-                link: "/migrations/1_1-1_2.md",
+                text: "Migrate -> 2.0",
+                link: "/migrations/1_2-2_0.md",
                 activeMatch: "/migrations/*"
             },
             {
                 text: "Releases",
-                link: "https://github.com/iann838/workery/releases"
+                link: "https://github.com/ianhco/cerces/releases"
             },
             {
                 text: "Star ⭐",
-                link: "https://github.com/iann838/workery",
+                link: "https://github.com/ianhco/cerces",
                 activeMatch: "."
             },
         ],
@@ -43,14 +38,14 @@ export default {
         socialLinks: [
             {
                 icon: "github",
-                link: "https://github.com/iann838/workery"
+                link: "https://github.com/ianhco/cerces"
             },
         ],
         sidebar: {
             "/guides/": {
                 items: [
                     {
-                        text: 'User Guides',
+                        text: 'Getting Started',
                         collapsed: false,
                         items: [
                             {
@@ -58,73 +53,76 @@ export default {
                                 link: '/guides/first-steps.md'
                             },
                             {
-                                text: "Basic Parameters",
-                                link: '/guides/basic-params.md'
+                                text: "Route Parameters",
+                                link: '/guides/route-params.md'
                             },
                             {
                                 text: "Request Body",
                                 link: '/guides/request-body.md'
                             },
+                        ]
+                    },
+                    {
+                        text: 'Advanced Usage',
+                        collapsed: false,
+                        items: [
                             {
-                                text: "Fetch Arguments",
-                                link: '/guides/fetch-args.md'
-                            },
-                            {
-                                text: "Middleware",
-                                link: '/guides/middleware.md'
+                                text: "Responses",
+                                link: '/guides/responses.md'
                             },
                             {
                                 text: "Dependencies",
                                 link: '/guides/dependencies.md'
                             },
                             {
-                                text: "Responses",
-                                link: '/guides/responses.md'
+                                text: "Middleware",
+                                link: '/guides/middleware.md'
                             },
                             {
                                 text: "Handling Errors",
                                 link: '/guides/handling-errors.md'
                             },
                             {
+                                text: "Runtime Args",
+                                link: '/guides/runtime-args.md'
+                            },
+                            {
                                 text: "Bigger Applications",
                                 link: '/guides/bigger-apps.md'
                             },
+                        ]
+                    },
+                    {
+                        text: "Built-in Middleware",
+                        collapsed: false,
+                        items: [
+                            { text: "CORS", link: "/guides/middleware/cors.md" },
+                            { text: "Trusted Host", link: "/guides/middleware/trusted-host.md" },
+                            { text: "Compress", link: "/guides/middleware/compress.md" },
+                        ]
+                    },
+                    {
+                        text: "Runtime Adapters",
+                        collapsed: false,
+                        items: [
+                            { text: "AWS Lambda", link: "/guides/adapters/aws-lambda.md" },
+                        ]
+                    },
+                    {
+                        text: "Other Miscellaneous",
+                        collapsed: false,
+                        items: [
                             {
-                                text: "App Router Options",
-                                link: '/guides/app-router-options.md'
+                                text: "App Options",
+                                link: '/guides/app-options.md'
                             },
                             {
-                                text: "CORS Support",
-                                link: '/guides/cors.md'
-                            },
-                            {
-                                text: "Authentication",
-                                link: '/guides/authentication.md'
-                            },
-                            {
-                                text: "Compression",
-                                link: '/guides/compression.md'
-                            },
-                            {
-                                text: "Code Duplication",
-                                link: '/guides/code-duplication.md'
+                                text: "Auth Schemas",
+                                link: '/guides/auth-schemas.md'
                             },
                         ]
                     },
                 ],
-            },
-            "/templates/": {
-                items: [
-                    {
-                        text: "Templates",
-                        collapsed: false,
-                        items: [
-                            { text: "hello-world", link: "/templates/hello-world.md" },
-                            { text: "d1-drizzle", link: "/templates/d1-drizzle.md" },
-                            { text: "do-sql-drizzle", link: "/templates/do-sql-drizzle.md" },
-                        ]
-                    }
-                ]
             },
             "/reference/": {
                 items: [
@@ -133,12 +131,26 @@ export default {
                         collapsed: false,
                         items: [
                             { text: "index", link: "/reference/index.md" },
-                            { text: "applications", link: "/reference/applications/index.md" },
-                            { text: "dependencies", link: "/reference/dependencies/index.md" },
+                            {
+                                text: "adapters",
+                                collapsed: true,
+                                items: [
+                                    { text: "aws-lambda", link: "/reference/adapters/aws-lambda/index.md" },
+                                ]
+                            },
+                            { text: "core", link: "/reference/core/index.md" },
+                            { text: "docs", link: "/reference/docs/index.md" },
                             { text: "helpers", link: "/reference/helpers/index.md" },
-                            { text: "middleware", link: "/reference/middleware/index.md" },
+                            {
+                                text: "middleware",
+                                collapsed: true,
+                                items: [
+                                    { text: "compress", link: "/reference/middleware/compress/index.md" },
+                                    { text: "cors", link: "/reference/middleware/cors/index.md" },
+                                    { text: "trusted-host", link: "/reference/middleware/trusted-host/index.md" },
+                                ]
+                            },
                             { text: "parameters", link: "/reference/parameters/index.md" },
-                            { text: "renderers", link: "/reference/renderers/index.md" },
                             { text: "responses", link: "/reference/responses/index.md" },
                             { text: "routing", link: "/reference/routing/index.md" },
                             { text: "types", link: "/reference/types/index.md" },
@@ -151,8 +163,14 @@ export default {
                     {
                         text: "Migrations",
                         items: [
-                            { text: "1.1 -> 1.2", link: "/migrations/1_1-1_2.md" },
-                            { text: "1.0 -> 1.1", link: "/migrations/1_0-1_1.md" },
+                            { text: "Workery -> Cerces", link: "/migrations/1_2-2_0.md" },
+                        ]
+                    },
+                    {
+                        text: "Workery (pre-Cerces)",
+                        items: [
+                            { text: "Workery 1.1 -> 1.2", link: "/migrations/1_1-1_2.md" },
+                            { text: "Workery 1.0 -> 1.1", link: "/migrations/1_0-1_1.md" },
                         ]
                     }
                 ]

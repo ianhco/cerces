@@ -1,75 +1,153 @@
 # Request Body
 
-When you need to send data from a client (let's say, a browser) to your API, you send it as a **request body**. This data is typically included in `POST`, `PUT`, `PATCH`, or `DELETE` requests.
+When sending data from a client to your API, it is commonly included in the **request body**. This is typically used with `POST`, `PUT`, `PATCH`, or `DELETE` requests.
 
 ## Declaration
 
-To declare a **request body**, use the `Body` parameter constructor together with zod schemas:
+To declare a **request body**, use the `Body` parameter constructor with Zod schemas:
 
-```ts{3-7,9}
+```ts
+import { Body } from "cerces" // [!code focus]
+import { z } from "zod"
+
 app.post("/items", {
     parameters: {
-        item: Body(z.object({
+        item: Body(z.object({ // [!code focus:5]
 			name: z.string(),
 			price: z.number().min(0),
 			description: z.string(),
 		})),
     },
-    handle: ({ item }) => {
+    handle: ({ item }) => { // [!code focus]
         return item
     },
 })
 ```
 
-With that body parameter declaration, **Workery** will:
+With this body parameter declaration, **Cerces** will:
 
-- Read the body of the request as JSON.
-- Validate the data.
-    - If the data is invalid, it will return a nice and clear error, indicating exactly where and what was the incorrect data.
-- Give you the received data in the argument `item`.
-    - As you declared it with the schema, the argument is fully typed.
-- Those schemas will be part of the generated OpenAPI schema, and used by the automatic documentation UIs.
+- Read the request body as JSON
+- Validate the data against your schema
+- Return formatted validation errors if the data is invalid
+- Provide the validated data as a fully typed argument
+- Include the schema in the generated OpenAPI documentation
 
-## Raw Body
+## Non-JSON Body
 
-Sometimes, you might want the request body without any processing. Workery supports this by accepting special classes on the `Body` parameter constructor:
+Sometimes you may want to access the request body without JSON parsing or validation. Cerces supports this by accepting special constructor types in the `Body` parameter:
 
-- 
-    ```ts
-    json: Body(String)
-    ```
-    Receives a text body, passes the return value of `await req.text()`.
-
-- 
-    ```ts
-    blob: Body(Blob)
-    ```
-    Receives a **binary file** body, passes the return value of `await req.blob()`.
-
-- 
-    ```ts
-    stream: Body(ReadableStream)
-    ```
-    Receives a **binary file** body, passes the value of `req.body` without reading it.
-
-::: tip Parameter Naming
-In these examples, parameters are named, but you can name the parameters however you want.
-:::
-
-When the request body is no longer JSON formatted, you need to declare the media type using `options.mediaType` so the OpenAPI schemas are generated correctly.
+### Text Body
 
 ```ts
-html: Body(String, { mediaType: "text/html" })
+import { Body } from "cerces"
+
+app.post("/upload-text", {
+    parameters: {
+        content: Body(String, { mediaType: "text/plain" }), // [!code focus]
+    },
+    handle: ({ content }) => { // [!code focus:2]
+        return { received: content.length + " characters" }
+    },
+})
 ```
 
-## Automatic docs
+Receives the request body as plain text, equivalent to `await req.text()`.
 
-The body schema will be part of your OpenAPI route, and will be shown in the interactive API docs:
+### Binary File Body
+
+```ts
+import { Body } from "cerces"
+
+app.post("/upload-file", {
+    parameters: {
+        file: Body(Blob, { mediaType: "application/octet-stream" }), // [!code focus]
+    },
+    handle: ({ file }) => { // [!code focus:2]
+        return { size: file.size, type: file.type }
+    },
+})
+```
+
+Receives the request body as a binary blob, equivalent to `await req.blob()`.
+
+### Stream Body
+
+```ts
+import { Body } from "cerces"
+
+app.post("/upload-stream", {
+    parameters: {
+        stream: Body(ReadableStream, { mediaType: "application/octet-stream" }), // [!code focus]
+    },
+    handle: ({ stream }) => { // [!code focus:2]
+        // Process stream without loading it entirely into memory
+        return { isStream: true }
+    },
+})
+```
+
+Receives the request body as a readable stream, equivalent to `req.body`.
+
+## Error Handling
+
+When body validation fails, Cerces returns detailed error information. For example, sending invalid data to the `/items` endpoint above might return:
+
+```json
+{
+  "detail": [
+    {
+      "location": "body",
+      "name": "item",
+      "issues": [
+        {
+          "code": "invalid_type",
+          "expected": "string",
+          "received": "number",
+          "path": ["name"],
+          "message": "Expected string, received number"
+        },
+        {
+          "code": "too_small",
+          "minimum": 0,
+          "type": "number",
+          "inclusive": true,
+          "path": ["price"],
+          "message": "Number must be greater than or equal to 0"
+        }
+      ]
+    }
+  ]
+}
+```
+
+The error response includes the parameter location, name, and an array of Zod validation issues with detailed error information for each validation failure.
+
+## Interactive Docs
+
+The body schema will be included in your OpenAPI specification and displayed in the interactive API documentation:
 
 ![Docs Post Request](/docspostreq.jpg)
 
-## Type Annotations
+## Type Safety
 
-Body arguments are typed. In your editor, on your handler function you will get type hints and completion with their infered schema type.
+Body arguments are typed. In your editor, on your handler function you will get type resolution and completion with their inferred schema type.
 
-![Editor Body Param](/editorbodyparam.png)
+```ts
+import { Body } from "cerces" // [!code focus]
+import { z } from "zod"
+
+app.post("/items", {
+    parameters: {
+        item: Body(z.object({ // [!code focus:5]
+			name: z.string(),
+			price: z.number().min(0),
+			description: z.string(),
+		})),
+    },
+    handle: ({ item }) => { // [!code focus:3]
+        // item: { name: string; price: number; description: string }
+        item.name // autocompletes
+        return item
+    },
+})
+```

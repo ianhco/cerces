@@ -1,37 +1,33 @@
 import { z } from "zod"
-import { extendZodWithOpenApi, ResponseConfig } from "@asteasolutions/zod-to-openapi"
-import { Dependency } from "./dependencies"
-import { isJsonCoercible, jsonCoerce } from "./helpers"
+import type { ResponseConfig } from "@asteasolutions/zod-to-openapi"
+
+import { Dependency } from "./core"
 import type {
+    ArgsOf,
     BodyParameter,
     CookieParameter,
     DependsParameter,
     HeaderParameter,
-    RouteParameterOptions,
+    Later,
+    ResolveArgsError,
+    ResolveArgsInfo,
     PathParameter,
     QueryParameter,
-    RouteParameters,
-    ArgsOf,
-    ParseArgsInfo,
-    ParseArgsError,
     RespondsOptions,
-    ZodBodyable,
-    Later,
     RouteParameter,
+    RouteParameterOptions,
+    RouteParameters,
+    ZodBodyable,
 } from "./types"
-
-if (z.string().openapi === undefined) {
-    extendZodWithOpenApi(z)
-}
 
 export function Path(): PathParameter<z.ZodString>
 export function Path<S extends z.ZodType>(
     schema: S,
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Omit<RouteParameterOptions, "mediaType" | "altName">
 ): PathParameter<S>
 export function Path(
     schema: z.ZodType = z.string(),
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Omit<RouteParameterOptions, "mediaType" | "altName">
 ): PathParameter<z.ZodType> {
     return {
         location: "path",
@@ -132,18 +128,100 @@ export function Body(
     }
 }
 
-export function Depends<R>(dependency: Dependency<R, any, any>): DependsParameter<z.ZodType<R>> {
+export function Depends<R, Ps extends RouteParameters>(
+    dependency: Dependency<R, Ps>
+): DependsParameter<z.ZodType<R>, Ps> {
     return {
-        location: "$depends",
+        location: "@depends",
         dependency: dependency,
         options: { includeInSchema: true },
     }
 }
 
-export async function parseArgs<Ps extends RouteParameters, E = unknown>(
+export function jsonCoerce<Out = unknown>(value: string): Out | string
+export function jsonCoerce<Out = unknown>(value: string[]): Out[] | string[]
+export function jsonCoerce<Out = unknown>(
+    value: string | string[]
+): Out | Out[] | string | string[] {
+    try {
+        if (value instanceof Array) {
+            return value.map((item: string) => JSON.parse(item))
+        }
+        return JSON.parse(value)
+    } catch (e) {
+        return value
+    }
+}
+
+export function isJsonCoercible(schema: z.ZodType): boolean {
+    return (
+        schema instanceof z.ZodNumber ||
+        schema instanceof z.ZodBoolean ||
+        (schema instanceof z.ZodArray && isJsonCoercible(schema.unwrap() as z.ZodType)) ||
+        (schema instanceof z.ZodOptional && isJsonCoercible(schema.unwrap() as z.ZodType)) ||
+        (schema instanceof z.ZodDefault && isJsonCoercible(schema.unwrap() as z.ZodType)) ||
+        (schema instanceof z.ZodEnum && !!Object.values(schema.enum).find((v) => String(v) !== v))
+    )
+}
+
+export function Responds(): ResponseConfig
+export function Responds(schema: typeof String, options?: RespondsOptions): ResponseConfig
+export function Responds(schema: typeof Blob, options?: RespondsOptions): ResponseConfig
+export function Responds(schema: typeof ReadableStream, options?: RespondsOptions): ResponseConfig
+export function Responds(schema: z.ZodType, options?: RespondsOptions): ResponseConfig
+export function Responds(schema: ZodBodyable = String, options?: RespondsOptions): ResponseConfig {
+    if (schema instanceof z.ZodType) {
+        return {
+            description: options?.description ?? "",
+            headers: z.object(options?.headers ?? {}),
+            content: {
+                [options?.mediaType ?? "application/json"]: {
+                    schema: schema,
+                },
+            },
+        }
+    }
+    return {
+        description: options?.description ?? "",
+        headers: z.object(options?.headers ?? {}),
+        content: {
+            [options?.mediaType ?? "application/json"]: {
+                schema:
+                    schema === String ? { type: "string" } : { type: "string", format: "binary" },
+            },
+        },
+    }
+}
+
+export function parseCookie(cookieHeader?: string | null): Record<string, string> {
+    if (!cookieHeader) {
+        return {}
+    }
+    const cookies: Record<string, string> = {}
+    const pairs = cookieHeader.split(";")
+    for (let pair of pairs.map((p) => p.trim())) {
+        if (!pair) continue
+        const eqIndex = pair.indexOf("=")
+        if (eqIndex < 0) continue // Skip flags (e.g., HttpOnly)
+        const name = pair.slice(0, eqIndex).trim()
+        let value = pair.slice(eqIndex + 1).trim()
+        if (value.startsWith('"') && value.endsWith('"')) {
+            value = value.slice(1, -1)
+        }
+        try {
+            value = decodeURIComponent(value)
+        } catch {
+            // Fallback to raw if decode fails
+        }
+        cookies[name] = value
+    }
+    return cookies
+}
+
+export async function resolveArgs<Ps extends RouteParameters>(
     parameters: Ps,
     input: {
-        baseArgs: ArgsOf<{}, E>
+        baseArgs: ArgsOf<{}>
         rawParameters?: {
             params?: Record<string, string>
             queries?: Record<string, string[]>
@@ -151,20 +229,20 @@ export async function parseArgs<Ps extends RouteParameters, E = unknown>(
         }
         later: Later
     },
-    cache?: WeakMap<Dependency<any, any, any>, any>
-): Promise<ParseArgsInfo<Ps, E>> {
+    cache?: WeakMap<Dependency<any, any>, { args: any; value: any }>
+): Promise<ResolveArgsInfo<Ps>> {
     const { req } = input.baseArgs
     const { params, queries, cookies } = input.rawParameters ?? {}
     cache = cache ?? new WeakMap()
 
     let success = true
     const args: Record<string, any> = {}
-    const errors: ParseArgsError[] = []
+    const errors: ResolveArgsError[] = []
 
     const parsers = {
         path: (name: string, _parameter: RouteParameter<z.ZodType>) => {
             const parameter = _parameter as PathParameter<z.ZodType>
-            let input = (params ?? {})[parameter.options.altName ?? name]
+            let input = (params ?? {})[name]
             return parameter.schema.safeParse(
                 input !== undefined && parameter.options.preprocessor
                     ? parameter.options.preprocessor(input)
@@ -224,22 +302,32 @@ export async function parseArgs<Ps extends RouteParameters, E = unknown>(
     }
 
     for (const [name, _parameter] of Object.entries(parameters)) {
-        let parseOut!: z.SafeParseSuccess<unknown> | z.SafeParseError<unknown>
-        if (_parameter.location == "$depends") {
-            const parameter = _parameter as DependsParameter<z.ZodType>
+        let parseOut!: z.ZodSafeParseSuccess<unknown> | z.ZodSafeParseError<unknown>
+        if (_parameter.location == "@depends") {
+            const parameter = _parameter as DependsParameter<any, any>
             const dependency = parameter.dependency
-            if (dependency.useCache && cache.get(dependency) !== undefined) {
-                args[name] = cache.get(dependency)
-                continue
+            if (dependency.useCache) {
+                const cached = cache.get(dependency)
+                if (cached) {
+                    args[name] = cached.value
+                    for (const [depArgName, depArgValue] of Object.entries(cached.args)) {
+                        if (args[depArgName] === undefined) args[depArgName] = depArgValue
+                    }
+                    continue
+                }
             }
-            const dependencyParseInfo = await parseArgs(dependency.parameters, input, cache)
+            const dependencyParseInfo = await resolveArgs(dependency.parameters, input, cache)
             success &&= dependencyParseInfo.success
             if (dependencyParseInfo.success) {
                 args[name] = await dependency.handle(
                     { ...input.baseArgs, ...dependencyParseInfo.args },
                     input.later
                 )
-                if (dependency.useCache) cache.set(dependency, args[name])
+                for (const [depArgName, depArgValue] of Object.entries(dependencyParseInfo.args)) {
+                    if (args[depArgName] === undefined) args[depArgName] = depArgValue
+                }
+                if (dependency.useCache)
+                    cache.set(dependency, { value: args[name], args: dependencyParseInfo.args })
             } else {
                 errors.push(...dependencyParseInfo.errors)
             }
@@ -257,34 +345,5 @@ export async function parseArgs<Ps extends RouteParameters, E = unknown>(
             }
         }
     }
-    return { success, errors, args: args as ArgsOf<Ps, E> }
-}
-
-export function Responds(): ResponseConfig
-export function Responds(schema: typeof String, options?: RespondsOptions): ResponseConfig
-export function Responds(schema: typeof Blob, options?: RespondsOptions): ResponseConfig
-export function Responds(schema: typeof ReadableStream, options?: RespondsOptions): ResponseConfig
-export function Responds(schema: z.ZodType, options?: RespondsOptions): ResponseConfig
-export function Responds(schema: ZodBodyable = String, options?: RespondsOptions): ResponseConfig {
-    if (schema instanceof z.ZodType) {
-        return {
-            description: options?.description ?? schema._def.openapi?.metadata?.description ?? "",
-            headers: z.object(options?.headers ?? {}),
-            content: {
-                [options?.mediaType ?? "application/json"]: {
-                    schema: schema,
-                },
-            },
-        }
-    }
-    return {
-        description: options?.description ?? "",
-        headers: z.object(options?.headers ?? {}),
-        content: {
-            [options?.mediaType ?? "application/json"]: {
-                schema:
-                    schema === String ? { type: "string" } : { type: "string", format: "binary" },
-            },
-        },
-    }
+    return { success, errors, args: args as ArgsOf<Ps> }
 }

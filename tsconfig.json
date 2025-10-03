@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "allowSyntheticDefaultImports": true,
         "baseUrl": ".",
         "declaration": true,
         "sourceMap": true,
@@ -27,13 +26,11 @@
         "types": [
             "@types/node",
             "@types/jest",
-            "@cloudflare/workers-types"
         ]
     },
     "exclude": [
         "node_modules",
         "dist",
-        "tests/**/*.ts",
     ],
     "include": [
         "src",

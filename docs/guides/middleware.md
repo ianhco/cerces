@@ -1,110 +1,176 @@
 # Middleware
 
-You can add middleware to **Workery** applications.
+**Middleware** in Cerces allows you to run code on every request and response, enabling cross-cutting concerns like logging, authentication, CORS handling, compression, and more.
 
-A "middleware" is a function that works with every **request** before it is processed by any route handler function regardless of the state and content. And also with every **response** before returning it.
+Middleware functions act as interceptors that can:
+- **Inspect requests** before they reach your route handlers
+- **Process responses** before they're sent to clients
+- **Handle errors** and edge cases consistently across all routes
+- **Add common functionality** without duplicating code in individual routes
 
-- It takes each **request** that comes to your application.
-- It can then do something with that request or run any needed code.
-- Then it passes the **request** to be processed by route handlers.
-- It then takes the **response** returned by route handlers.
-- It can do something to that **response** or run any needed code.
-- Then it returns the **response**.
+This is perfect for tasks like request logging, setting response headers, integrity checks, rate limiting, and response compression.
 
-## Definition
+## Creating Middleware
 
-To create a middleware you use the `Middleware` class to create a middleware instance.
-
-The middleware init receives:
-
-- `name`: (optional) name of the middleware, this does not have any functional effect.
-- `handle`: the usual handler function, but with a **second positional argument**:
-    - `next`: async function for calling the next handler in line, this could be the next middleware handler or the route handler itself. Returns a response.
-
-Example:
-
-```ts {5-7}
-import { Middleware } from "workery"
-
-const responseAddDate = new Middleware<Env>({
-    handle: async ({}, next) => {
-        const res = await next()
-		res.headers.set("Date", new Date().toISOString())
-		return res
-    },
-})
-```
-
-This example adds a `Date` header to all responses of the app. Remember to add the middleware to the app init for it to take effect.
-
-```ts {2-4}
-const app = new App<Env>({
-	middleware: [
-		responseAddDate,
-	]
-})
-```
-
-::: tip Middleware Order
-The order of your middleware array is also the call order, the first middleware in the array is the first one to be called before route handlers and last one to be called after route handlers have returned a response.
-:::
-
-## Before & After Request
-
-You can add code to be run before the request is processed by any route handler.
-
-And also after the response is generated, before returning it.
-
-```ts {3-6}
-const myMiddleware = new Middleware<Env>({
-    handle: async ({ req, env, ctx }, next) => {
-        // code executed before route handlers
-        const res = await next()
-        // code executed after route handlers
-		return res
-    },
-})
-```
-
-::: warning Runtime Gotchas
-In Cloudflare Workers, `Request` (unpack arg `req`) objects are immutable, modifying this object results in error. Also, [performance and timers](https://developers.cloudflare.com/workers/runtime-apis/performance/) only advance or increment after I/O occurs.
-:::
-
-## Lower middleware
-
-You may choose to have middleware to only a subset of your routes. You can do so by [grouping them in a router](./bigger-apps) and defining middleware on that level, or directly on route handlers.
-
-```ts{2}
-const router = new Router<Env>({
-    middleware: [...]
-})
-
-router.get(...)
-
-// later included to main app
-app.include("/subroute", router)
-```
-
-or
-
-```ts{2}
-app.get("/", {
-    middleware: [...],
-    parameters: {},
-    handle: () => { ... },
-})
-```
-
-Middleware defined on routers (sub apps) and route handlers, are **merged** when included to higher level objects (main app, and other sub apps) respecting the following middleware execution order:
+Create middleware using the `Middleware` class. The `handle` function receives two parameters:
+- **Context object**: Contains `req` (Request), along with other [runtime arguments](./runtime-args.md).
+- **`next` function**: Calls the next middleware or route handler in the chain.
 
 ```ts
-// middleware execution order
-defined on main app -> defined on routers -> defined on route handlers
+import { Middleware } from "cerces"
+
+const requestLogger = new Middleware({
+    name: "requestLogger", // optional name for debugging
+    handle: async ({ req }, next) => {
+        console.log(`${req.method} ${req.url}`)
+        const start = Date.now()
+
+        const response = await next() // call next middleware/route handler
+
+        const duration = Date.now() - start
+        console.log(`Response: ${response.status} (${duration}ms)`)
+
+        return response
+    },
+})
 ```
+
+Apply middleware to your app:
+
+```ts
+import { App } from "cerces"
+
+const app = new App({
+    middleware: [requestLogger] // [!code focus]
+})
+```
+
+::: tip Middleware Execution Order
+Middleware executes in the order you define it. The first middleware in your array runs first on requests and last on responses (like an onion - outer layers first, then inner layers).
+:::
+
+## Processing Order
+
+Middleware can run code **before** the request reaches route handlers and **after** responses are generated:
+
+```ts
+const timingMiddleware = new Middleware({
+    handle: async ({ req }, next) => {
+        // BEFORE: Request processing // [!code focus:3]
+        const startTime = Date.now()
+        console.log(`Processing ${req.method} ${req.url}`)
+
+        const response = await next() // Route handler executes here
+
+        // AFTER: Response processing // [!code focus:4]
+        const duration = Date.now() - startTime
+        response.headers.set("X-Response-Time", `${duration}ms`)
+        console.log(`Completed in ${duration}ms`)
+
+        return response
+    },
+})
+```
+
+**Before request processing**: Perfect for logging, authentication, request modification, or early validation.
+
+**After response processing**: Ideal for adding headers, logging response metrics, compression, or cleanup tasks.
+
+## Maybe Dependencies?
+
+While middleware can intercept and process requests/responses, it **cannot provide additional data to route handlers**. For that, use [dependencies](./dependencies.md):
+
+**Use middleware for:**
+- Request/response logging and monitoring
+- Adding headers to responses
+- CORS handling
+- Compression
+- Error handling and recovery
+
+**Use dependencies for:**
+- Providing processed data to route handlers (user objects, database connections, etc.)
+- Parameter validation and transformation
+- Business logic that handlers need access to
+- Reusable data fetching and processing
+
+```ts
+// ❌ Middleware cannot provide data to handlers
+const authMiddleware = new Middleware({
+    handle: async ({ req }, next) => {
+        const user = await authenticateUser(req)
+        // This user data is NOT available in route handlers!
+        return next()
+    },
+})
+```
+```ts
+// ✅ Dependencies CAN provide data to handlers
+const requireAuth = new Dependency({
+    parameters: { authorization: Header(z.string()) },
+    handle: async ({ authorization }) => {
+        const user = await authenticateUser(authorization)
+        return user // This IS available in route handlers!
+    }
+})
+
+app.get("/profile", {
+    parameters: {
+        user: Depends(requireAuth), // user data available here
+    },
+    handle: ({ user }) => ({ profile: user.profile })
+})
+```
+
+::: tip Choose Wisely
+If your route handlers need access to processed data (user objects, parsed tokens, database results), use dependencies. Use middleware for cross-cutting concerns that don't need to pass data to handlers.
+:::
+::: warning Runtime Nuances
+In some runtimes, `Request` objects may be immutable. Always check your runtime's documentation for request/response handling limitations.
+:::
+
+## Scoped Middleware
+
+Apply middleware to specific routes or [routers](./bigger-apps.md) instead of globally:
+
+**Router-level middleware** (affects all routes in that router):
+
+```ts
+import { Router, Base } from "cerces"
+import type app from "src/index"
+
+const apiRouter = new Router({
+    base: Base<typeof app>(),
+    middleware: [authMiddleware] // applies to all routes in this router
+})
+
+apiRouter.get("/users", { /* ... */ })
+apiRouter.post("/posts", { /* ... */ })
+```
+```ts
+app.include("/api", apiRouter) // /api/users and /api/posts get auth middleware
+```
+
+**Route-level middleware** (affects only specific routes):
+
+```ts
+app.get("/admin", {
+    middleware: [adminAuthMiddleware], // only this route
+    parameters: {},
+    handle: () => ({ message: "Admin area" })
+})
+```
+
+**Middleware merging**: When middleware is defined at multiple levels, they're combined in this order:
+1. App-level middleware
+2. Router-level middleware
+3. Route-level middleware
+
+Each level's middleware wraps the next, maintaining proper execution order.
 
 ## Built-in Middleware
 
-**Workery** provides built-in middleware for common use-cases (even though they are not necessarily common in the context of Cloudflare Workers):
+Cerces provides ready-to-use middleware for common web development needs:
 
-- [CORS (Cross-Origin Resource Sharing)](./cors.md)
-- [Compression](./compression.md)
+- [CORS](cors.md): Handle Cross-Origin Resource Sharing with flexible configuration.
+- [Trusted Host](trusted-host.md): Restrict requests to specified hostnames for security.
+- [Compress](compress.md): Automatically compress responses to save bandwidth.

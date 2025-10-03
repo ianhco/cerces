@@ -1,0 +1,11 @@
+{
+    "type": "module",
+    "scripts": {
+        "dev": "bun run --watch src/index.ts"
+    },
+    "dependencies": {
+        "cerces": "^2.0.1-beta.5"
+    },
+    "devDependencies": {
+    }
+}

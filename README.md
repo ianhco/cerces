@@ -1,40 +1,51 @@
-# Workery
+# Cerces
 
-Documentation: https://workery.iann838.com/
+Documentation: https://cerces.dev/
 
-Workery is a Modern, OpenAPI based, fast to code, fully typed, ready for production, web framework for building APIs on Cloudflare Workers.
+Cerces is a type-safe, modern, and intuitive web framework built on Web Standards and OpenAPI, designed with a developer-first approach to streamline API development across various JavaScript runtimes and deployment platforms.
 
 ## Features
 
--   ⚡️ **Fast to code and fewer bugs.** Increase the speed to develop features and reduce developer induced errors.
--   ⚙️ **OpenAPI and Zod integrated seamlessly.** Built-in integration of Zod validators and OpenAPI schema generators.
--   🏷️ **Fully typed schemas and parameters.** All parameters and schemas are typed when implementing route handlers.
--   📖 **Interactive API documentation.** Swagger and Redoc pages are available by default at `/docs` and `/redoc`.
--   🪝 **Dependencies over complicated middleware.** Prepare variables, enforce authentication, and run other tasks before processing a request.
--   🔩 **Highly flexible and adaptable.** Designed for effortless addition, removal, and replacement of modules or components.
+- 👨‍💻 **Developer-first and intuitive.** Designed for ease of use, enabling rapid development with a focus on developer experience.
+- ⚙️ **OpenAPI and Zod integrated seamlessly.** Built-in integration of Zod validators and OpenAPI schema generators.
+- 🏷️ **Type-safe routes and parameters.** All parameters and schemas are typed when implementing route handlers.
+- 📖 **Interactive API documentation.** Swagger and Redoc pages are available by default at `/docs` and `/redoc`.
+- 🪝 **Dependency injection mechanism.** Prepare variables, enforce authentication, and run other tasks before processing a request.
+- 🌐 **Runtime agnostic and portable.** Easily adaptable to any JavaScript runtime or deployment platform.
 
 ## Setup
 
+Starter templates are available for supported platforms. Get started quickly with:
+
 ```sh
-npm create workery
+bun create cerces@latest
 ```
 
-Select a base template, and start developing, some templates may require extra setup. Available templates:
+You will be prompted to select a template:
 
 ```md
--   hello-world
--   d1-drizzle
--   do-sql-drizzle
+? Which template do you want to use?
+❯ bun
+cf-workers
+aws-lambda
+docker
+```
+
+Once dependencies are installed, start the development server:
+
+```sh
+bun dev
 ```
 
 ## Example
 
-```ts
-import { App } from "workery"
-import { Path, Query } from "workery/parameters"
-import z from "zod"
+Below is a simple example demonstrating how to create a GET endpoint with path and query parameters using Cerces and Zod for validation, along with the interactive API documentation.
 
-const app = new App<Env>({})
+```ts
+import { App, Path, Query } from "cerces"
+import { z } from "zod"
+
+const app = new App({})
 
 app.get("/items/{itemId}", {
     parameters: {
@@ -49,7 +60,7 @@ app.get("/items/{itemId}", {
 export default app
 ```
 
-![Swagger Docs](https://workery.iann838.com/swaggerdocs.jpg)
+![Swagger Docs](https://cerces.dev/swaggerdocs.jpg)
 
 ---
 

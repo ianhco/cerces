@@ -1,16 +1,19 @@
 # Dependencies
 
-**Dependency Injection** means, in programming, that there is a way for your code (in this case, your route handlers) to define things that it requires to work and use: "dependencies".
+**Dependencies** in Cerces provide a powerful way to **reuse parameter validation and processing logic** across multiple routes. They allow you to define reusable pieces of functionality that can validate request data, authenticate users, connect to databases, or perform any other common operations.
 
-And then, that system (in this case **Workery**) will take care of doing what is needed to provide your code with those defined dependencies ("inject" the dependencies).
+When you declare a dependency in a route, Cerces automatically handles:
+- Parameter validation and parsing
+- Execution of dependency logic
+- [Parameter flattening](#parameter-flattening) - making all dependency parameters available in your handlers
+- [Caching](#dependency-caching) to avoid redundant computations
+- OpenAPI documentation generation
 
-This is very useful when you need to:
-
-- Have shared logic (the same code logic again and again).
-- Share database connections.
-- Enforce security, authentication, role requirements, etc.
-- And many other things...
-- All these, while minimizing code repetition.
+This approach helps you:
+- **Avoid code duplication** by centralizing common logic
+- **Enforce consistency** across routes (authentication, validation, etc.)
+- **Keep route handlers focused** on their specific business logic
+- **Generate accurate OpenAPI docs** automatically
 
 ## Definition
 
@@ -18,122 +21,243 @@ To create a dependency you use the `Dependency` class to create a dependency ins
 
 The dependency init receives:
 
-- `of`: (optional) instance from which to inherit the `env` type (see [Dependency Env](./fetch-args.md#dependency-env)).
 - `name`: (optional) name of the middleware, this does not have any functional effect.
-- `useCache` <Badge type="tip" text="^1.2" />: (optional) allow dependency handler responses to be cached and reused during parameter resolution on requests (details below). Default: `true`  
-- `parameters`: the usual parameters declaration, these parameters will also be part of the generated OpenAPI document for the routes that uses this dependency.
+- `useCache`: (optional) allow dependency handler responses to be cached and reused during parameter resolution on requests (details below). Default: `true`  
+- `parameters`: the usual parameters declaration, these parameters will also be part of the generated OpenAPI document for the routes that use this dependency.
 - `handle`: the usual handler function, but with a **second optional positional argument**:
     - `later`: after-request hook, void function receiving a response, [see details below](#after-request-hook).
 
 Example:
 
-```ts {11-14}
-import { App, Dependency } from "workery"
+```ts
+import { App, Dependency, Header, JSONResponse } from "cerces" // [!code focus]
+import { z } from "zod"
 
-const app = new App<Env>({})
+const app = new App({})
 
-const requireAuth = new Dependency({
-    of: app,
+const requireAuth = new Dependency({ // [!code focus:5]
     parameters: {
         authorization: Header(z.string()),
     },
-    handle: async ({ authorization, env }) => {
+    handle: async ({ authorization }) => {
         const user = /* authenticate user with header content */
         if (!user)
             throw new JSONResponse({ detail: "Unauthenticated" }, { status: 401 })
-        return user
+        return user // [!code focus:3]
     },
 })
 ```
 
-This example creates a dependency that requires an `authorization` header, that is then used for authenticating the user, return the user object if it was successfully authenticated, otherwise throw an HTTP 401 response.
+This example creates a dependency that requires an `authorization` header, that is then used for authenticating the user, returning the user object if it was successfully authenticated, otherwise throw an HTTP 401 response.
 
-To inject this dependency to routes, declare it as a `Depends` parameter:
+## Route Usage
 
-```ts {5,7-8}
-import { Depends } from "workery/parameters"
+To use a dependency in a route, declare it as a `Depends` parameter. The dependency's return value will be available in your handler, and all parameters from the dependency (including nested ones) will be automatically validated and made available.
 
-app.get("/", {
-    parameters: {
-		user: Depends(requireAuth),
-	},
+```ts
+import { App, Dependency, Header, JSONResponse, Depends } from "cerces" // [!code focus]
+import { z } from "zod"
+
+/** requireAuth dependency declaration (refer section above) */
+
+app.get("/protected", {
+    parameters: { // [!code focus:5]
+        user: Depends(requireAuth), // dependency result available as 'user'
+        // Note: 'authorization' header is automatically handled by the dependency
+    },
     handle: ({ user }) => {
-        return { message: `Hello ${user}` }
+        return { message: `Hello ${user.name}!` }
     },
 })
 ```
+
+In this example, the `authorization` header is validated and processed by the `requireAuth` dependency. Your route handler only needs to declare `user: Depends(requireAuth)` to get the authenticated user object.
 
 ## Nested Dependencies
 
-You can create **dependencies** that have sub-dependencies.
-
-They can be as **deep** as you need them to be.
+Dependencies can depend on other dependencies, creating a tree of reusable validation and processing logic. Cerces handles the complexity of resolving these nested dependencies automatically.
 
 ```ts
-const requireNestedNest = new Dependency({
+import { Dependency, Query, Header, Depends } from "cerces" // [!code focus]
+import { z } from "zod"
+
+// Base dependency for user preferences
+const userPrefs = new Dependency({ // [!code focus:9]
     parameters: {
-        one: Query(z.string()),
-        two: Query(z.string())
+        theme: Query(z.enum(["light", "dark"]).default("light")),
+        lang: Query(z.string().default("en"))
     },
-    handle: ({ one, two }) => {
-        return { one, two }
+    handle: ({ theme, lang }) => {
+        return { theme, lang }
     }
 })
 
-const requireNested = new Dependency({
+// Authentication dependency that uses user preferences
+const requireAuth = new Dependency({ // [!code focus]
     parameters: {
-        three: Depends(requireNestedNest),
-        zero: Query(z.number())
+        authorization: Header(z.string()),
+        preferences: Depends(userPrefs) // depends on userPrefs // [!code focus]
     },
-    handle: ({ three, zero }) => {
-        return { three, zero }
+    handle: async ({ authorization, preferences }) => { // [!code focus:4]
+        const user = /* authenticate user */
+        return { ...user, preferences }
     }
 })
 
-// Inferred type:
-// { zero: number, three: { one: string, two: string } }
+// Route using nested dependencies
+app.get("/dashboard", {
+    parameters: {
+        user: Depends(requireAuth), // gets auth + preferences // [!code focus]
+    },
+    handle: ({ user, theme, lang }) => { // flattened parameters also available // [!code focus]
+        return {
+            user: user,
+            display: { theme, lang }
+        }
+    },
+})
 ```
 
-All declared parameters in nested dependencies will be also be rendered on the OpenAPI document.
+In this example:
+- `requireAuth` depends on `userPrefs`
+- The route only declares `user: Depends(requireAuth)`
+- But the handler can access `theme` and `lang` directly due to parameter flattening
+- The final parameter structure is: `{ user: {...}, theme: "light", lang: "en" }`
 
-## After-Request Hook
+## Parameter Flattening
 
-Dependency handlers has a second optional argument, this argument is an after-request hook named `later`, this hook performs actions after the request has been processed an a response has been returned.
+**Cerces** automatically **flattens** all parameters from dependencies, making them directly available in your route handlers without needing to declare them again in the route's `parameters`.
+
+This means you can access parameters from dependencies (and their nested dependencies) directly in your handler function, regardless of how deep the nesting goes.
+
+```ts
+import { Dependency, Query, Depends } from "cerces" // [!code focus]
+import { z } from "zod"
+
+const userPrefs = new Dependency({ // [!code focus]
+    parameters: { // [!code focus:4]
+        theme: Query(z.enum(["light", "dark"])),
+        lang: Query(z.string())
+    },
+    handle: ({ theme, lang }) => {
+        return { theme, lang }
+    }
+})
+
+const requireAuth = new Dependency({ // [!code focus]
+    parameters: { // [!code focus:4]
+        authorization: Header(z.string()),
+        userPrefs: Depends(userPrefs) // nested dependency
+    },
+    handle: async ({ authorization, userPrefs }) => { // [!code focus:3]
+        const user = /* authenticate user */
+        return { ...user, preferences: userPrefs }
+    }
+})
+
+app.get("/profile", {
+    parameters: {
+        user: Depends(requireAuth), // only declare the top-level dependency // [!code focus]
+    },
+    handle: ({ user, theme, lang, authorization }) => { // [!code focus:3]
+        // `theme`, `lang`, `authorization` are available
+        // without declaring them in route parameters!
+        return {
+            user: user,
+            theme: theme,
+            lang: lang
+        }
+    },
+})
+```
+
+In this example, even though `theme` and `lang` are defined deep in the nested `userPrefs` dependency, they're automatically available in the route handler. This eliminates the need to manually destructure nested dependency results.
+
+Dependency handlers have a second optional argument, this argument is an after-request promise hook named `later`, this hook performs follow-up actions after the request has been resolved and a response has been returned.
 
 Example:
 
-```ts{9-12}
+```ts
+import { Dependency, Header, JSONResponse } from "cerces"
+import { z } from "zod"
+
 const requireAuth = new Dependency({
     parameters: {
         authorization: Header(z.string()),
     },
-    handle: async ({ authorization, env }, later) => {
+    handle: async ({ authorization, env }, later) => { // [!code focus]
         const user = /* authenticate user with header content */
         if (!user)
             throw new JSONResponse({ detail: "Unauthenticated" }, { status: 401 })
-        later(async (res) => {
-            if (res.status >= 400)
-                // do something to user if the response status is >= 400.
+        later(async (res) => { // [!code focus:3]
+            // do something to user
         })
         return user
     },
 })
 ```
 
-## Dependency Caching <Badge type="tip" text="^1.2" />
+## Dependency Caching
 
-Dependencies are smart, if you define a route that declares two dependencies that are identical (the same `Dependency` object), by default, the return value of them are cached and reused during parameter resolution, for example:
+By default, Cerces **caches** dependency results during parameter resolution. If the same dependency is used multiple times in a request (directly or through nesting), it's only executed once and the result is reused.
+
+This is especially useful for expensive operations like database connections or authentication checks.
 
 ```ts
-app.get("/", {
+const dbConnection = new Dependency({
+    parameters: {},
+    handle: async () => {
+        // Expensive database connection
+        return await createDatabaseConnection()
+    }
+})
+
+const requireUser = new Dependency({
     parameters: {
-		user: Depends(requireAuth),
-        role: Depends(requireAuthedRole), // also uses requireAuth
-	},
-    handle: ({ user, role }) => {
-        // ...
+        authorization: Header(z.string()),
+        db: Depends(dbConnection) // uses db connection
+    },
+    handle: async ({ authorization, db }) => {
+        return await db.findUserByToken(authorization)
+    }
+})
+
+const requirePermissions = new Dependency({
+    parameters: {
+        user: Depends(requireUser), // also uses requireUser
+        db: Depends(dbConnection)   // also uses db connection
+    },
+    handle: async ({ user, db }) => {
+        return await db.getUserPermissions(user.id)
+    }
+})
+
+app.get("/protected-resource", {
+    parameters: {
+        user: Depends(requireUser),        // executes requireUser + dbConnection
+        perms: Depends(requirePermissions), // reuses requireUser + dbConnection results
+    },
+    handle: ({ user, perms }) => {
+        return { user, permissions: perms }
     },
 })
 ```
 
-The dependency handler `requireAuth` will only be executed **once** during parameter resolution of the request. To disable this behavior, set `useCache: false` on dependency definition.
+In this example:
+- `dbConnection` executes only once, even though it's used by both dependencies
+- `requireUser` executes only once, even though it's a dependency of `requirePermissions`
+- This prevents redundant database connections and authentication checks
+
+```ts
+const requireAuth = new Dependency({
+    useCache: false, // disable caching // [!code focus]
+    parameters: {
+        authorization: Header(z.string()),
+    },
+    handle: async ({ authorization }) => {
+        const user = /* authenticate user with header content */
+        if (!user)
+            throw new JSONResponse({ detail: "Unauthenticated" }, { status: 401 })
+        return user
+    },
+})

@@ -1,0 +1,11 @@
+{
+    "type": "module",
+    "scripts": {
+    },
+    "dependencies": {
+        "cerces": "^2.0.1-beta.5"
+    },
+    "devDependencies": {
+        "@types/aws-lambda": "^8.10.121"
+    }
+}

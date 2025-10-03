@@ -1,67 +1,68 @@
 # Responses
 
-A **response** is the data sent back from the server to the client after an HTTP request. It includes a status code, headers, and the body.
+**Responses** are what your Cerces application sends back to clients after processing HTTP requests. Every route handler must return a response containing a status code, headers, and body content.
 
-**Workery** provides built-in response classes for different body types: **JSON**, **HTML**, and **plain text**. All response classes are extended from the `Response` class.
+Cerces provides built-in response classes for common content types: **JSON**, **HTML**, and **plain text**. All extend from the base `Response` class.
 
 ```ts
-import { HTMLResponse } from "workery/responses"
-import { JSONResponse } from "workery/responses"
-import { PlainTextResponse } from "workery/responses"
-
+import { HTMLResponse, JSONResponse, PlainTextResponse } from "cerces"
 ```
 
 ## Implicit Response
 
-By default, you are not required to return a response instance, when the return value of route handlers is not a response, it is **implicitly** used as the body to create a `JSONResponse` with status code `200`.
+You don't always need to explicitly create response objects. When your route handler returns a plain JavaScript value (object, string, etc.), Cerces **automatically wraps it** in a `JSONResponse` with status code `200`.
+
+```ts
+app.get("/", {
+    parameters: {},
+    handle: () => {
+        return { message: "Hello World" } // [!code focus]
+    },
+})
+```
+
+This is equivalent to manually creating:
 
 ```ts{4}
 app.get("/", {
     parameters: {},
     handle: () => {
-        return { message: "Hello World" }
+        return new JSONResponse({ message: "Hello World" }) // [!code focus]
     },
 })
 ```
 
-is implicitly the same as:
+### Customizing Default Response Types
 
-```ts{4}
+You can change the automatic response type at different levels:
+
+**App-wide default:**
+
+```ts
+const app = new App({
+	defaultResponseClass: PlainTextResponse // [!code focus]
+})
+```
+
+**Per-route override:**
+
+```ts
 app.get("/", {
+	responseClass: PlainTextResponse, // [!code focus]
     parameters: {},
     handle: () => {
-        return new JSONResponse({ message: "Hello World" })
+        return { message: "Hello World" } // returns "[object Object]" // [!code focus]
     },
 })
 ```
 
-You can modify the default response class that is used to instantiate the implicit response at multiple level of your application.
+### Setting Default Status Codes
 
-- On the app level:
+You can also specify a default status code for automatic responses:
 
-```ts{2}
-const app = new App<Env>({
-	defaultResponseClass: PlainTextResponse
-})
-```
-
-- On the route level:
-
-```ts{2}
+```ts
 app.get("/", {
-	responseClass: PlainTextResponse,
-    parameters: {},
-    handle: () => {
-        return { message: "Hello World" }
-    },
-})
-```
-
-The default status code used for implicit responses can also be modified:
-
-```ts{2}
-app.get("/", {
-    statusCode: 204,
+    statusCode: 204, // [!code focus]
 	responseClass: PlainTextResponse,
     parameters: {},
     handle: () => {
@@ -72,11 +73,15 @@ app.get("/", {
 
 ## Status and Headers
 
-You can provide status code, and headers on the second optional argument when instantiating responses.
+All response classes accept an optional second parameter for status code and headers:
+
+**Setting status code:**
 
 ```ts
 new JSONResponse({ message: "Hello World" }, { status: 200 })
 ```
+
+**Adding custom headers:**
 
 ```ts
 new JSONResponse({ message: "Hello World" }, {
@@ -88,12 +93,21 @@ new JSONResponse({ message: "Hello World" }, {
 
 ## Custom Responses
 
-If none of the response classes fit your need, you can:
+When the built-in response classes don't meet your needs, you have two options:
 
-- Return a `Response` (base class) instance, and manually declaring headers such as `Content-Type`.
-- Extend a new class from `Response`, pre-processing the body and pre-setting the needed headers in the constructor.
+### Option 1: Use Base Response Class
+Return a `Response` instance directly and manually set headers like `Content-Type`:
 
-```ts {3,4}
+```ts
+return new Response(customBody, {
+    headers: { "Content-Type": "application/xml" }
+})
+```
+
+### Option 2: Extend Response Classes
+Create your own response class by extending `Response` and pre-configuring headers:
+
+```ts
 export class HTMLResponse extends Response {
     constructor(body: any, init?: ResponseInit) {
         super(String(body), init)
@@ -102,29 +116,35 @@ export class HTMLResponse extends Response {
 }
 ```
 
-## Accept Header
+This approach encapsulates the content-type logic and makes your custom response reusable across routes.
 
-While it is rare, you may want to return different response formats based on the `Accept` header provided on request:
+## Content Negotiation
+
+For APIs that support multiple response formats, you can check the client's `Accept` header to return different content types:
 
 ```ts
-accept: Header(z.enum(["application/json", /* ... */]), { includeInSchema: false })
+import { Header } from "cerces"
+import { z } from "zod"
+
+accept: Header(z.enum(["application/json", /* ... */]))
 ```
 
-You may have noticed the `{ includeInSchema: false }`. That is because in Swagger, this header is controlled by the response schemas (see below OpenAPI Schemas). Therefore, it has to be excluded from the generated OpenAPI document.
+::: tip Accept Header in OpenAPI
+The `accept` header is excluded by default from the generated OpenAPI schemas because response formats are controlled by the response schemas (covered in the next section).
+:::
 
 ## OpenAPI Schemas
 
-By default the generated OpenAPI document does not include response schemas in routes.
+By default, Cerces generates OpenAPI documentation without response schemas. Response schemas are for **documentation only** - they don't validate or modify your actual response data.
+To document your API responses, add response schemas to your routes:
 
-To declare response schemas for the generated OpenAPI document, specify an OAS3.1 `ResponseConfig` object in routes, this **does not manipulate the route handler nor validate** the return value.
+Use the `Responds` helper for simple cases:
 
-There is a shortcut function provided by the `workery/parameters` module to make declaring response schemas easier:
-
-```ts{5}
-import { Responds } from "workery/parameters"
+```ts
+import { Responds } from "cerces"
 
 app.get("/", {
-	responses: {
+	responses: { // [!code focus:3]
 		200: Responds(z.object({ message: z.string() }))
 	},
     parameters: {},
@@ -134,14 +154,39 @@ app.get("/", {
 })
 ```
 
-You can specify the media type, description and headers info on the second optional argument of `Responds`:
+### Advanced Response Configuration
+
+For more control, specify media type, description, and response headers:
 
 ```ts
 Responds(z.object({ message: z.string() }), {
-    mediaType: "application/json"
-    description: "Sample description"
+    mediaType: "application/json",
+    description: "Sample description",
     headers: { Date: z.string() }
 })
 ```
 
-The `Responds` shortcut only supports single media type per status code, if you need multiple media types, you need to manually provide the OAS3.1 `ResponseConfig` object.
+::: warning Single Media Type Limitation
+`Responds` supports **only one** media type per status code. For multiple media types (content negotiation purposes) per status code, use the full OAS3.1 `ResponseConfig` object directly.
+
+```ts
+import type { ResponseConfig } from "@asteasolutions/zod-to-openapi" // [!code focus]
+
+app.get("/", {
+	responses: { // [!code focus:10]
+		200: {
+            description: "Successful response",
+            content: {
+                "application/json": { schema: z.object({ message: z.string() }) },
+                "text/html": { schema: z.string() }
+            },
+            headers: { Date: z.string() }
+        } as ResponseConfig
+	},
+    parameters: {
+        accept: Header(z.enum(["application/json", "text/html"])), // [!code focus]
+    },
+    handle: () => { /* ... */ },
+})
+```
+:::

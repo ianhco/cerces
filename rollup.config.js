@@ -1,18 +1,9 @@
 import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
+import { globSync } from 'fs'
 
 export default {
-    input: [
-        'src/index.ts',
-        'src/applications.ts',
-        'src/dependencies.ts',
-        'src/helpers.ts',
-        'src/middleware.ts',
-        'src/parameters.ts',
-        'src/renderers.ts',
-        'src/responses.ts',
-        'src/routing.ts',
-    ],
+    input: globSync('src/**/*.ts'),
     output: [
         {
             format: 'cjs',
@@ -36,5 +27,5 @@ export default {
         }),
         terser(),
     ],
-    external: ['cookie', 'zod', '@asteasolutions/zod-to-openapi'],
+    external: ['zod', '@asteasolutions/zod-to-openapi'],
 }

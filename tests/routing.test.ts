@@ -1,29 +1,13 @@
 import { z } from "zod"
-import { Body, Depends, Header, Path, Query } from "../src/parameters"
+import { Body, Depends, Header, Path, Query, Dependency } from "../src"
 import {
     Route,
     RouteNode,
     RouteMatcher,
-    fixPathSlashes,
-    searchParamsToQueries,
     generateRouteSummary
 } from "../src/routing"
-import { Dependency } from "../src/dependencies"
 
 const nullHandler = async () => null
-
-describe("function fixPathSlashes", () => {
-    test("[invocation]: return value", () => {
-        expect(fixPathSlashes("path/to/route")).toBe("/path/to/route")
-        expect(fixPathSlashes("/path/to/route/")).toBe("/path/to/route")
-        expect(fixPathSlashes("path/to/route/")).toBe("/path/to/route")
-    })
-    test("[invocation]: return value edge cases", () => {
-        expect(fixPathSlashes("")).toBe("/")
-        expect(fixPathSlashes("/")).toBe("/")
-        expect(fixPathSlashes("//path/to/route/")).toBe("/path/to/route")
-    })
-})
 
 describe("function generateRouteSummary", () => {
     test("[invocation]: return value", () => {
@@ -70,19 +54,6 @@ describe("class RouteNode", () => {
         expect(routeNode.match("new")!.match("dfg45")).toBeInstanceOf(RouteNode)
         expect(routeNode.match("new")!.match("dfg45")!.match("new2")).toBeInstanceOf(RouteNode)
         expect(routeNode.match("new")!.match("dfg45")!.match("new3")).toBeUndefined()
-    })
-})
-
-describe("function searchParamsToQueries", () => {
-    test("[invocation]: return value", () => {
-        const searchParams = new URL(
-            "https://google.com/path?name=myName&values=2&text=aText&values=10"
-        ).searchParams
-        expect(searchParamsToQueries(searchParams)).toStrictEqual({
-            name: ["myName"],
-            values: ["2", "10"],
-            text: ["aText"],
-        })
     })
 })
 
@@ -207,7 +178,7 @@ describe("class RouteMatcher", () => {
                 header2: Header(z.string()),
                 Host: Header(z.string()), // default excluded
                 Origin: Header(z.string(), { includeInSchema: true }), // excluded, force include
-                query: Query(z.string()), // repeated
+                query3: Query(z.string()), // repeated
             },
             handle: nullHandler,
         })
@@ -233,6 +204,7 @@ describe("class RouteMatcher", () => {
         expect((openapi.request?.params as z.ZodObject<any>)?.shape.path2).toBeTruthy()
         expect((openapi.request?.query as z.ZodObject<any>)?.shape.query).toBeTruthy()
         expect((openapi.request?.query as z.ZodObject<any>)?.shape.query2).toBeTruthy()
+        expect((openapi.request?.query as z.ZodObject<any>)?.shape.query3).toBeTruthy()
         expect((openapi.request?.headers as z.ZodObject<any>)?.shape.header).toBeTruthy()
         expect((openapi.request?.headers as z.ZodObject<any>)?.shape.header2).toBeTruthy()
         expect((openapi.request?.headers as z.ZodObject<any>)?.shape.Accept).toBeFalsy()
