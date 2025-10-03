@@ -171,6 +171,6 @@ Each level's middleware wraps the next, maintaining proper execution order.
 
 Cerces provides ready-to-use middleware for common web development needs:
 
-- [CORS](cors.md): Handle Cross-Origin Resource Sharing with flexible configuration.
-- [Trusted Host](trusted-host.md): Restrict requests to specified hostnames for security.
-- [Compress](compress.md): Automatically compress responses to save bandwidth.
+- [CORS](middleware/cors.md): Handle Cross-Origin Resource Sharing with flexible configuration.
+- [Trusted Host](middleware/trusted-host.md): Restrict requests to specified hostnames for security.
+- [Compress](middleware/compress.md): Automatically compress responses to save bandwidth.

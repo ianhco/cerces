@@ -28,7 +28,7 @@ Main application class. Extends `Router`.
 | `redocUrl?` | ``null`` \| `string` | Route path URL for serving the ReDoc alternative documentation. | `"/redoc"` |
 | `defaultResponseClass?` | [`ResponseClass`](/reference/types/type-aliases/ResponseClass.md) | Default response class of all routes. | `JSONResponse` |
 | `errorHandler?` | [`ErrorHandler`](/reference/types/type-aliases/ErrorHandler.md) | Exception handler when an exception or error has occurred during requests. | `baseExceptionHandler` |
-| `middleware?` | [`Middleware`](/reference/middleware/classes/Middleware.md)[] | List of middleware applied to this app. | `[]` |
+| `middleware?` | [`Middleware`](/reference/core/classes/Middleware.md)[] | List of middleware applied to this app. | `[]` |
 | `parameters?` | `GenericRouteParameters` | App-level parameters applied to all routes. | `{}` |
 
 ## Class `Router`
@@ -44,5 +44,5 @@ This class is used for structuring [big applications](./bigger-apps.md) into mul
 | `security?` | `SecurityRequirementObject[]` | Array of security authentication requirements applied to all routes | `undefined` |
 | `responses?` | `Record`\<`number`, `ResponseConfig`\> | Additional [response schemas](./responses.md#openapi-schemas) to all routes, shown in the generated OpenAPI document. | `{ 422: ... }` |
 | `defaultResponseClass?` | [`ResponseClass`](/reference/types/type-aliases/ResponseClass.md) | Default response class of all routes. | `JSONResponse` |
-| `middleware?` | [`Middleware`](/reference/middleware/classes/Middleware.md)[] | List of middleware applied to this router, merged when included in higher level routers. | `[]` |
+| `middleware?` | [`Middleware`](/reference/core/classes/Middleware.md)[] | List of middleware applied to this router, merged when included in higher level routers. | `[]` |
 | `parameters?` | `Ps1` | Router-level parameters applied to all routes. | `{}` |

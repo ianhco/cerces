@@ -20,7 +20,7 @@ npm create cerces@latest
 :::
 
 ::: info About Templates
-After executing the `create` command, you will be prompted to select from a list of available templates. These templates are provided ready-to-use. For comprehensive details on each template, including usage examples and customization options, refer to the [Templates](/templates/) documentation.
+After executing the `create` command, you will be prompted to select from a list of available templates. These templates are provided, pre-configured, and ready-to-use.
 
 Available templates:
 ```md
