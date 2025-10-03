@@ -1,5 +1,18 @@
 import { z } from "zod"
-import { Dependency, Body, Cookie, Depends, Header, Path, Query, jsonCoerce, Responds, isJsonCoercible, resolveArgs, parseCookie } from "../src"
+import {
+    Dependency,
+    Body,
+    Cookie,
+    Depends,
+    Header,
+    Path,
+    Query,
+    jsonCoerce,
+    Responds,
+    isJsonCoercible,
+    resolveArgs,
+    parseCookie,
+} from "../src"
 import { createResolveLater } from "../src/helpers"
 
 const nullLater = () =>
@@ -587,7 +600,13 @@ describe("function resolveArgs", () => {
                 pCookie: Cookie(z.string(), { altName: "pAltCookie" }),
                 pDep2: Depends(dependency2),
             },
-            handle: ({ pQuery, pDep1, p_Header, pCookie, pDep2 }) => ({ pQuery, pDep1, p_Header, pCookie, pDep2 }),
+            handle: ({ pQuery, pDep1, p_Header, pCookie, pDep2 }) => ({
+                pQuery,
+                pDep1,
+                p_Header,
+                pCookie,
+                pDep2,
+            }),
         })
         const parseInfo1 = await resolveArgs(
             {
@@ -656,7 +675,13 @@ describe("function resolveArgs", () => {
                 pDep2: Depends(dependency2),
                 pDep1: Depends(dependency1),
             },
-            handle: ({ pQuery, pDep1, p_Header, pCookie, pDep2 }) => ({ pQuery, pDep1, p_Header, pCookie, pDep2 }),
+            handle: ({ pQuery, pDep1, p_Header, pCookie, pDep2 }) => ({
+                pQuery,
+                pDep1,
+                p_Header,
+                pCookie,
+                pDep2,
+            }),
         })
         const parseInfo1 = await resolveArgs(
             {
@@ -717,7 +742,7 @@ describe("function Responds", () => {
 
 describe("function parseCookie", () => {
     test("[invocation]: return value null", () => {
-        expect(parseCookie('')).toStrictEqual({})
+        expect(parseCookie("")).toStrictEqual({})
         expect(parseCookie(undefined)).toStrictEqual({})
         expect(parseCookie(null)).toStrictEqual({})
         expect(parseCookie("HttpOnly")).toStrictEqual({})
@@ -732,13 +757,20 @@ describe("function parseCookie", () => {
         expect(parseCookie("a")).toStrictEqual({})
     })
     test("[invocation]: return value quoted", () => {
-        expect(parseCookie('a="1"; b="2"')).toStrictEqual({ a: '1', b: '2' })
-        expect(parseCookie(' a = "1" ; b = "fisg fih s jog" ')).toStrictEqual({ a: '1', b: 'fisg fih s jog' })
-        expect(parseCookie('a="1"; b=""; c="3"')).toStrictEqual({ a: '1', b: '', c: '3' })
-        expect(parseCookie('a=1; b; c="3"')).toStrictEqual({ a: '1', c: '3' })
+        expect(parseCookie('a="1"; b="2"')).toStrictEqual({ a: "1", b: "2" })
+        expect(parseCookie(' a = "1" ; b = "fisg fih s jog" ')).toStrictEqual({
+            a: "1",
+            b: "fisg fih s jog",
+        })
+        expect(parseCookie('a="1"; b=""; c="3"')).toStrictEqual({ a: "1", b: "", c: "3" })
+        expect(parseCookie('a=1; b; c="3"')).toStrictEqual({ a: "1", c: "3" })
     })
     test("[invocation]: return value advanced", () => {
-        expect(parseCookie("a=1=2=3; b=2; c=3=4=5=6")).toStrictEqual({ a: "1=2=3", b: "2", c: "3=4=5=6" })
+        expect(parseCookie("a=1=2=3; b=2; c=3=4=5=6")).toStrictEqual({
+            a: "1=2=3",
+            b: "2",
+            c: "3=4=5=6",
+        })
         expect(parseCookie("a==1; b===2; c====3")).toStrictEqual({ a: "=1", b: "==2", c: "===3" })
         expect(parseCookie("a=%3B%20%3D%20%25; b=%7B%7D")).toStrictEqual({ a: "; = %", b: "{}" })
     })

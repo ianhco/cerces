@@ -9,14 +9,14 @@ let zlibMod: any
 
 function getStream() {
     if (!streamMod) {
-        streamMod = require("stream")
+        streamMod = require("node:stream")
     }
     return streamMod
 }
 
 function getZlib() {
     if (!zlibMod) {
-        zlibMod = require("zlib")
+        zlibMod = require("node:zlib")
     }
     return zlibMod
 }

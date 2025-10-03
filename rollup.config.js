@@ -1,6 +1,6 @@
 import terser from '@rollup/plugin-terser'
 import typescript from '@rollup/plugin-typescript'
-import { globSync } from 'fs'
+import { globSync } from 'node:fs'
 
 export default {
     input: globSync('src/**/*.ts'),

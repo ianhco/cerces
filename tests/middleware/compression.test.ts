@@ -8,7 +8,7 @@ describe("function createCompressionMiddleware", () => {
 
     const originalContent = "sample body for compression test"
 
-    ;["gzip", "deflate", "deflate-raw"].forEach(format => {
+    ;["gzip", "deflate", "deflate-raw"].forEach((format) => {
         describe(`with ${format} compression`, () => {
             const middleware = createCompressionMiddleware(format as any)
             const next = async () => new Response(originalContent)
@@ -29,7 +29,9 @@ describe("function createCompressionMiddleware", () => {
                 // Verify decompressed content
                 if (response.body) {
                     const decompressionStream = new DecompressionStream(format as any)
-                    const decompressedResponse = new Response(response.body.pipeThrough(decompressionStream))
+                    const decompressedResponse = new Response(
+                        response.body.pipeThrough(decompressionStream)
+                    )
                     const decompressedText = await decompressedResponse.text()
                     expect(decompressedText).toBe(originalContent)
                 }

@@ -66,7 +66,10 @@ describe("function createCORSMiddleware", () => {
         const response3 = await middleware.handle(
             {
                 req: new Request("https://google.com/path", {
-                    headers: { Origin: "https://google.com", "Access-Control-Request-Method": "GET" },
+                    headers: {
+                        Origin: "https://google.com",
+                        "Access-Control-Request-Method": "GET",
+                    },
                 }),
             },
             next
@@ -78,7 +81,10 @@ describe("function createCORSMiddleware", () => {
             {
                 req: new Request("https://google.com/path", {
                     method: "OPTIONS",
-                    headers: { Origin: "https://google.com", "Access-Control-Request-Method": "GET" },
+                    headers: {
+                        Origin: "https://google.com",
+                        "Access-Control-Request-Method": "GET",
+                    },
                 }),
             },
             next

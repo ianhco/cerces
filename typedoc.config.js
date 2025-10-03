@@ -1,4 +1,4 @@
-import { globSync } from 'fs';
+import { globSync } from 'node:fs'
 
 /** @type {import('typedoc').TypeDocOptions} */
 export default {

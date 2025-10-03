@@ -193,13 +193,13 @@ describe("class App", () => {
             securitySchemes: {
                 bearerAuth: {
                     type: "http",
-                    scheme: "bearer"
-                }
-            }
+                    scheme: "bearer",
+                },
+            },
         })
         const tempAppSub = new Router({
             base: Base<typeof tempApp>(),
-            security: []
+            security: [],
         })
         const tempAppSub2 = new Router({
             base: Base<typeof tempApp>(),
@@ -215,14 +215,12 @@ describe("class App", () => {
         expect(openapi.components!.securitySchemes).toEqual({
             bearerAuth: {
                 type: "http",
-                scheme: "bearer"
-            }
+                scheme: "bearer",
+            },
         })
         for (const route of tempApp.routeMatcher.routes) {
-            if (route.path.startsWith("/sub/"))
-                expect(route.openapi().security).toEqual([])
-            else
-                expect(route.openapi().security).toEqual([{ bearerAuth: [] }])
+            if (route.path.startsWith("/sub/")) expect(route.openapi().security).toEqual([])
+            else expect(route.openapi().security).toEqual([{ bearerAuth: [] }])
         }
     })
 
@@ -329,7 +327,9 @@ describe("class App", () => {
     })
 
     test("[method] handle: root path include success", async () => {
-        const res1 = await appAlt.handle({ req: new Request("http://a.co/alt/subpath/hello-world") })
+        const res1 = await appAlt.handle({
+            req: new Request("http://a.co/alt/subpath/hello-world"),
+        })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
         expect(await res1.text()).toEqual("Hello World!")
@@ -354,7 +354,9 @@ describe("class App", () => {
 
     test("[method] handle: dependency flatten params success", async () => {
         const res1 = await app.handle({
-            req: new Request("http://a.co/test-dependencies-flatten-params?zero=1&one=a&two=b&another=hello"),
+            req: new Request(
+                "http://a.co/test-dependencies-flatten-params?zero=1&one=a&two=b&another=hello"
+            ),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -364,13 +366,13 @@ describe("class App", () => {
             three: { one: "a", two: "b" },
             another: "hello",
             one: "a",
-            two: "b"
+            two: "b",
         })
     })
 
     test("[method] handle: cookie yummy", async () => {
         const res1 = await app.handle({
-            req: new Request("http://a.co/cookie-yummy", { headers: { Cookie: "yummy=oreo"} }),
+            req: new Request("http://a.co/cookie-yummy", { headers: { Cookie: "yummy=oreo" } }),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -409,7 +411,7 @@ describe("class App", () => {
         })
         expect(res2).toBeTruthy()
         expect(res2.status).toBe(200)
-        expect(await res2.json()).toEqual({ counter: 1, counter2: 1})
+        expect(await res2.json()).toEqual({ counter: 1, counter2: 1 })
 
         // ensure it runs again
         const res3 = await appDepCache.handle({
@@ -417,7 +419,7 @@ describe("class App", () => {
         })
         expect(res3).toBeTruthy()
         expect(res3.status).toBe(200)
-        expect(await res3.json()).toEqual({ counter: 2, counter2: 2})
+        expect(await res3.json()).toEqual({ counter: 2, counter2: 2 })
     })
 
     test("[method] handle: dependency caching nested", async () => {
@@ -428,14 +430,14 @@ describe("class App", () => {
         })
         expect(res2).toBeTruthy()
         expect(res2.status).toBe(200)
-        expect(await res2.json()).toEqual({ counter: 1, counter3: 1})
+        expect(await res2.json()).toEqual({ counter: 1, counter3: 1 })
 
         const res3 = await appDepCache.handle({
             req: new Request("http://d.co/cache-counter-deep", { method: "GET" }),
         })
         expect(res3).toBeTruthy()
         expect(res3.status).toBe(200)
-        expect(await res3.json()).toEqual({ counter: 2, counter3: 2})
+        expect(await res3.json()).toEqual({ counter: 2, counter3: 2 })
     })
 
     test("[method] handle: dependency caching disabled", async () => {
@@ -448,7 +450,6 @@ describe("class App", () => {
         expect(res2.status).toBe(200)
         const { counter, counter2 } = await res2.json()
         expect(counter + counter2).toEqual(3)
-
     })
 
     test("[method] fetch: req + 2 args", async () => {
@@ -483,7 +484,7 @@ describe("class App", () => {
 
     test("[method] handle: path item id", async () => {
         const res1 = await app.handle({
-            req: new Request("http://a.co/items/563?q=something", { method: "GET" })
+            req: new Request("http://a.co/items/563?q=something", { method: "GET" }),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -492,7 +493,10 @@ describe("class App", () => {
 
     test("[method] handle: app level params", async () => {
         const res1 = await appWithParams.handle({
-            req: new Request("http://a.co/test-params?zero=0&one=a&two=b&TEST_APP_LEVEL_PARAMETER=true&testOpenAPI=2", { method: "GET" })
+            req: new Request(
+                "http://a.co/test-params?zero=0&one=a&two=b&TEST_APP_LEVEL_PARAMETER=true&testOpenAPI=2",
+                { method: "GET" }
+            ),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -505,7 +509,7 @@ describe("class App", () => {
 
     test("[method] handle: sub app extend base params", async () => {
         const res1 = await appRootPath.handle({
-            req: new Request("http://a.co/api/v1/params?zero=0&one=a&two=b", { method: "GET" })
+            req: new Request("http://a.co/api/v1/params?zero=0&one=a&two=b", { method: "GET" }),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -515,13 +519,13 @@ describe("class App", () => {
             three: { one: "a", two: "b" },
             one: "a",
             two: "b",
-            version: "v1"
+            version: "v1",
         })
     })
 
     test("[method] handle: sub app extend base params with path", async () => {
         const res1 = await appRootPath.handle({
-            req: new Request("http://a.co/api/v1/items/111?someQuery=foo", { method: "GET" })
+            req: new Request("http://a.co/api/v1/items/111?someQuery=foo", { method: "GET" }),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -529,13 +533,15 @@ describe("class App", () => {
             itemId: 111,
             someQuery: "foo",
             version: "v1",
-            item: { id: 111 }
+            item: { id: 111 },
         })
     })
 
     test("[method] handle: triple nested sub app params", async () => {
         const res1 = await appRootPath.handle({
-            req: new Request("http://a.co/api/v1/items/111/subitems/222?someQuery=foo", { method: "GET" })
+            req: new Request("http://a.co/api/v1/items/111/subitems/222?someQuery=foo", {
+                method: "GET",
+            }),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -544,13 +550,13 @@ describe("class App", () => {
             subItemId: 222,
             someQuery: "foo",
             version: "v1",
-            item: { id: 111 }
+            item: { id: 111 },
         })
     })
 
     test("[method] handle: app nonexistent param", async () => {
         const res1 = await app.handle({
-            req: new Request("https://a.co/nonexistent", { method: "GET" })
+            req: new Request("https://a.co/nonexistent", { method: "GET" }),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
@@ -559,13 +565,15 @@ describe("class App", () => {
 
     test("[method] handle: app level params nonexistent param", async () => {
         const res1 = await appWithParams.handle({
-            req: new Request("https://a.co/test-nonexistent-params?zero=0&one=a&two=b&TEST_APP_LEVEL_PARAMETER=true&testOpenAPI=2", { method: "GET" })
+            req: new Request(
+                "https://a.co/test-nonexistent-params?zero=0&one=a&two=b&TEST_APP_LEVEL_PARAMETER=true&testOpenAPI=2",
+                { method: "GET" }
+            ),
         })
         expect(res1).toBeTruthy()
         expect(res1.status).toBe(200)
         expect(await res1.json()).toEqual({ nonexistent: "undefined" })
     })
-
 })
 
 describe("class Dependency", () => {

@@ -1,4 +1,9 @@
-import { createObjectPartial, createResolveLater, fixPathSlashes, searchParamsToQueries } from "../src/helpers"
+import {
+    createObjectPartial,
+    createResolveLater,
+    fixPathSlashes,
+    searchParamsToQueries,
+} from "../src/helpers"
 
 describe("function createResolveLater", () => {
     test("[invocation]: return value", () => {

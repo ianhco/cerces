@@ -75,7 +75,7 @@
     "scripts": {
         "build": "rimraf dist && rollup -c && bun pm pack --dry-run",
         "package": "bun run build && bun pm pack",
-        "prettify": "prettier --check src README.md || (prettier -w src README.md)",
+        "prettify": "prettier --check src tests README.md || (prettier -w src tests README.md)",
         "prepare": "husky install",
         "test": "jest --no-cache --runInBand --config jestconfig.json --verbose",
         "test:cov": "jest --no-cache --runInBand --config jestconfig.json --verbose --coverage",

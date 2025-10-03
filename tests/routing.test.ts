@@ -1,11 +1,6 @@
 import { z } from "zod"
 import { Body, Depends, Header, Path, Query, Dependency } from "../src"
-import {
-    Route,
-    RouteNode,
-    RouteMatcher,
-    generateRouteSummary
-} from "../src/routing"
+import { Route, RouteNode, RouteMatcher, generateRouteSummary } from "../src/routing"
 
 const nullHandler = async () => null
 

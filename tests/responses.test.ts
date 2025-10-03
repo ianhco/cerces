@@ -8,7 +8,9 @@ describe("class JSONResponse", () => {
             await Response.json(testData).json()
         )
         expect(new JSONResponse(testData).headers.get("content-type")).toBe(
-            Response.json(testData).headers.get("content-type")?.replace(/;charset=utf-8/, "")
+            Response.json(testData)
+                .headers.get("content-type")
+                ?.replace(/;charset=utf-8/, "")
         )
     })
 

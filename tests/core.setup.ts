@@ -51,19 +51,19 @@ export const requireItemId = new Dependency({
 const testNestedDependencyNested = new Dependency({
     parameters: {
         one: Query(z.string()),
-        two: Query(z.string())
+        two: Query(z.string()),
     },
     handle: ({ one, two }) => {
         // Type checks
         const _0: string = one
         const _1: string = two
         return { one, two }
-    }
+    },
 })
 export const testNestedDependency = new Dependency({
     parameters: {
         three: Depends(testNestedDependencyNested),
-        zero: Query(z.number())
+        zero: Query(z.number()),
     },
     handle: ({ three, zero, one, two }) => {
         // Type checks
@@ -72,46 +72,42 @@ export const testNestedDependency = new Dependency({
         const _2: string = one
         const _3: string = two
         return { three, zero }
-    }
+    },
 })
 
 // Sample Apps
 
 export const app = new App({
-    middleware: [
-        createCORSMiddleware({ origin: ["http://a.co"] })
-    ],
+    middleware: [createCORSMiddleware({ origin: ["http://a.co"] })],
 })
 export const appAlt = new App({
     rootPath: "/alt",
-    middleware: [
-        createCORSMiddleware({ origin: ["http://a.co"] })
-    ],
+    middleware: [createCORSMiddleware({ origin: ["http://a.co"] })],
 })
 export const appWithParams = new App({
     parameters: {
         depends: Depends(testNestedDependency),
-        TEST_APP_LEVEL_PARAMETER: Query(z.boolean().default(false))
-    }
+        TEST_APP_LEVEL_PARAMETER: Query(z.boolean().default(false)),
+    },
 })
 export const appRootPath = new App({
     rootPath: "/api/{version}",
     parameters: {
-        version: Path(z.string())
-    }
+        version: Path(z.string()),
+    },
 })
 export const appRootPath1 = new App({
     // @ts-expect-error Testing invalid rootPath
     rootPath: "/api/v1",
     parameters: {
-        id: Path(z.string())
-    }
+        id: Path(z.string()),
+    },
 })
 // @ts-expect-error Testing missing rootPath
 export const appRootPath2 = new App({
     parameters: {
-        id: Path(z.string())
-    }
+        id: Path(z.string()),
+    },
 })
 
 // Sample route definitions
@@ -349,7 +345,7 @@ appWithParams.get("/test-nonexistent-params", {
 // Sample sub apps
 
 export const subapp = new Router({
-    base: Base<typeof app>()
+    base: Base<typeof app>(),
 })
 subapp.get("/hello-world", {
     responseClass: PlainTextResponse,
@@ -366,7 +362,7 @@ export const subappParams = new Router({
     base: Base<typeof appRootPath>(),
     parameters: {
         depends: Depends(testNestedDependency),
-    }
+    },
 })
 subappParams.get("/", {
     handle: ({ depends, three, zero, one, two, version }) => {
@@ -378,7 +374,7 @@ subappParams.get("/", {
         const _4: { one: string; two: string } = three
         const _5: string = version
         return { depends, three, zero, one, two, version }
-    }
+    },
 })
 
 export const subappItems = new Router({
@@ -386,7 +382,7 @@ export const subappItems = new Router({
     parameters: {
         item: Depends(requireItemId),
         someQuery: Query(z.string()),
-    }
+    },
 })
 subappItems.get("/", {
     handle: ({ item, itemId, version, someQuery }) => {
@@ -396,14 +392,14 @@ subappItems.get("/", {
         const _2: string = version
         const _3: string = someQuery
         return { item, itemId, version, someQuery }
-    }
+    },
 })
 
 export const subappSubItems = new Router({
     base: Base<typeof subappItems>(),
     parameters: {
         subItemId: Path(z.number().int().min(0)),
-    }
+    },
 })
 subappSubItems.get("/", {
     handle: ({ item, itemId, version, subItemId, someQuery }) => {
@@ -414,7 +410,7 @@ subappSubItems.get("/", {
         const _3: number = subItemId
         const _4: string = someQuery
         return { item, itemId, version, subItemId, someQuery }
-    }
+    },
 })
 
 subappItems.include("/subitems/{subItemId}", subappSubItems)
@@ -500,20 +496,20 @@ export let depCacheCounter2 = 0
 export let depNoCacheCounter = 0
 export const cacheTestDep = new Dependency({
     parameters: {},
-    handle: () => ++depCacheCounter
+    handle: () => ++depCacheCounter,
 })
 export const cacheTestDep2 = new Dependency({
     parameters: {
-        counter: Depends(cacheTestDep)
+        counter: Depends(cacheTestDep),
     },
-    handle: () => ++depCacheCounter2
+    handle: () => ++depCacheCounter2,
 })
 export const noCacheTestDep = new Dependency({
     useCache: false,
     parameters: {
-        counter: Depends(cacheTestDep)
+        counter: Depends(cacheTestDep),
     },
-    handle: () => ++depNoCacheCounter
+    handle: () => ++depNoCacheCounter,
 })
 
 export const appDepCache = new App({})
@@ -523,7 +519,9 @@ appDepCache.get("/cache-counter", {
         counter: Depends(cacheTestDep),
         counter2: Depends(cacheTestDep),
     },
-    handle: ({ counter, counter2 }) => { return { counter, counter2 }}
+    handle: ({ counter, counter2 }) => {
+        return { counter, counter2 }
+    },
 })
 
 appDepCache.get("/cache-counter-deep", {
@@ -531,7 +529,9 @@ appDepCache.get("/cache-counter-deep", {
         counter3: Depends(cacheTestDep2),
         counter: Depends(cacheTestDep),
     },
-    handle: ({ counter, counter3 }) => { return { counter, counter3 }}
+    handle: ({ counter, counter3 }) => {
+        return { counter, counter3 }
+    },
 })
 
 appDepCache.get("/cache-counter-no-cache", {
@@ -539,7 +539,9 @@ appDepCache.get("/cache-counter-no-cache", {
         counter: Depends(noCacheTestDep),
         counter2: Depends(noCacheTestDep),
     },
-    handle: ({ counter, counter2 }) => { return { counter, counter2 }}
+    handle: ({ counter, counter2 }) => {
+        return { counter, counter2 }
+    },
 })
 
 export const resetDepCounters = () => {
