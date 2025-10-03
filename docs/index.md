@@ -125,5 +125,3 @@ app.get("/profile", {
 **For Teams**: Shared understanding through type-safe contracts and auto-generated docs
 
 Cerces isn't just another framework—it's a commitment to **type-safe**, **modern**, and **intuitive** web development. Whether you're building APIs, microservices, or full-stack applications, Cerces provides the foundation to build with confidence and clarity.
-
-
