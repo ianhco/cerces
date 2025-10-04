@@ -37,7 +37,7 @@ declare module "cerces/types" {
 ```ts [cf-workers]
 declare module "cerces/types" {
     interface RuntimeArgs {
-        env: Env
+        env: Cloudflare.Env
         ctx: ExecutionContext
     }
 }
@@ -60,7 +60,7 @@ app.get("/", {
 app.get("/", {
     parameters: {},
     handle: ({ req, env, ctx }) => { // [!code focus:2]
-        // req: Request; env: Env; ctx: ExecutionContext;
+        // req: Request; env: Cloudflare.Env; ctx: ExecutionContext;
         return { message: "Hello World" }
     },
 })
