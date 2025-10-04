@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        // Environment setup & latest features
-        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "baseUrl": ".",
+
         "target": "ESNext",
         "module": "ESNext",
         "moduleDetection": "force",
@@ -21,9 +21,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noPropertyAccessFromIndexSignature": true,
-
-        "baseUrl": ".",
     },
-    "include": ["src", "runtime.d.ts"],
+    "include": ["src", "*.d.ts"],
     "exclude": ["node_modules"],
 }

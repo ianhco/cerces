@@ -5,11 +5,6 @@
         "sourceMap": true,
         "esModuleInterop": true,
         "inlineSourceMap": false,
-        "lib": [
-            "esnext",
-            "dom",
-            "dom.iterable"
-        ],
         "listEmittedFiles": false,
         "listFiles": false,
         "moduleResolution": "Bundler",

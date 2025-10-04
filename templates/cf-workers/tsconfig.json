@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        // Environment setup & latest features
-        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "baseUrl": ".",
+
         "target": "ESNext",
         "module": "ESNext",
         "moduleDetection": "force",
@@ -21,12 +21,7 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noPropertyAccessFromIndexSignature": true,
-
-        "baseUrl": ".",
-        "types": [
-            "@cloudflare/workers-types",
-        ],
     },
-    "include": ["src", "runtime.d.ts", "worker-configuration.d.ts"],
+    "include": ["src", "*.d.ts"],
     "exclude": ["node_modules"],
 }
