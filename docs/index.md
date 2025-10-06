@@ -40,17 +40,11 @@ features:
         details: Easily adaptable to any JavaScript runtime or deployment platform.
 ---
 
-<br>
-
----
-
-# Why Cerces?
+## The Philosophy of Cerces
 
 **Cerces** reimagines web framework development by embracing modern **TypeScript patterns** and **web standards**. Built from the ground up with **type safety** as a first-class citizen, Cerces **eliminates** entire categories of runtime errors while maintaining the **flexibility** and **performance** you expect from a **modern** framework.
 
-## The Philosophy of Cerces
-
-Cerces embraces a philosophy where **type safety is paramount**, **simplicity guides design**, **clean code is non-negotiable**, and **intuitive APIs** make development a joy. Every feature is crafted to eliminate complexity while maximizing expressiveness and reliability.
+Cerces embraces a philosophy where **type safety is paramount**, **simplicity guides design**, **clean code is non-negotiable**, and **intuitive APIs** make development an enjoyable experience. Every feature is crafted to eliminate complexity while maximizing expressiveness and reliability.
 
 - **Type Safety First**: End-to-end type checking prevents runtime errors
 - **Simplicity**: Complex problems solved with elegant, minimal APIs
@@ -125,3 +119,23 @@ app.get("/profile", {
 **For Teams**: Shared understanding through type-safe contracts and auto-generated docs
 
 Cerces isn't just another framework—it's a commitment to **type-safe**, **modern**, and **intuitive** web development. Whether you're building APIs, microservices, or full-stack applications, Cerces provides the foundation to build with confidence and clarity.
+
+## Sponsor Cerces
+
+<script setup>
+import { VPTeamMembers } from 'vitepress/theme'
+
+const members = [
+    {
+        avatar: 'https://avatars.githubusercontent.com/u/58193352?v=4',
+        name: 'Ian Huang',
+        title: 'Creator',
+        links: [
+            { icon: 'github', link: 'https://avatars.githubusercontent.com/u/ianhco' },
+        ],
+        sponsor: 'https://github.com/sponsors/ianhco'
+    },
+]
+</script>
+
+<VPTeamMembers size="small" :members="members" />
