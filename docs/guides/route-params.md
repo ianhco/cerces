@@ -54,6 +54,12 @@ selectedItems: Query(z.array(z.number())) // or
 selectedItems: Query(z.number().array())
 ```
 
+::: warning Array Query Parameters
+Do not use comma-separated values for arrays, e.g. `?selectedItems=1,2,3`, this is not supported by Cerces. Use repeated query parameters instead, e.g. `?selectedItems=1&selectedItems=2&selectedItems=3`.
+
+Do not use `.array().optional()`, the resulting parser will fail to treat the query parameter as an array. By using only `.array()`, an empty array will be returned if the query parameter is not present. To require at least one item, use `.array().min(1)`.
+:::
+
 ## Header Parameters
 
 Header parameters are extracted from HTTP request headers and are useful for authentication, content negotiation, and custom metadata.
