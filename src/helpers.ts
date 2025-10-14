@@ -1,3 +1,5 @@
+import { z } from "zod"
+
 /**
  * Creates a promise that can be resolved later.
  *
@@ -57,4 +59,18 @@ export function searchParamsToQueries(searchParams: URLSearchParams): Record<str
         queries[key].push(value)
     }
     return queries
+}
+
+/**
+ * Unwraps a Zod type if it has an `unwrap` method.
+ * This is useful for extracting the inner type from wrapper types like `ZodOptional` or `ZodNullable`.
+ *
+ * @param type The Zod type to unwrap.
+ * @returns The unwrapped Zod type, or `undefined` if it cannot be unwrapped.
+ */
+export function unsafeZodUnwrap<T extends z.ZodType>(type: T): z.ZodType | undefined {
+    if ("unwrap" in type && typeof (type as any).unwrap === "function") {
+        return (type as any).unwrap()
+    }
+    return undefined
 }

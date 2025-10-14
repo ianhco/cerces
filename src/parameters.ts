@@ -2,6 +2,7 @@ import { z } from "zod"
 import type { ResponseConfig } from "@asteasolutions/zod-to-openapi"
 
 import { Dependency } from "./core"
+import { unsafeZodUnwrap } from "./helpers"
 import type {
     ArgsOf,
     BodyParameter,
@@ -251,8 +252,16 @@ export async function resolveArgs<Ps extends RouteParameters>(
         },
         query: (name: string, _parameter: RouteParameter<z.ZodType>) => {
             const parameter = _parameter as QueryParameter<z.ZodType>
-            let input: string[] | string = (queries ?? {})[parameter.options.altName ?? name] ?? []
-            if (!(parameter.schema instanceof z.ZodArray)) input = input[0]
+            let input: string[] | string | undefined =
+                (queries ?? {})[parameter.options.altName ?? name] ?? undefined
+            if (
+                input &&
+                !(
+                    parameter.schema instanceof z.ZodArray ||
+                    unsafeZodUnwrap(parameter.schema) instanceof z.ZodArray
+                )
+            )
+                input = input[0]
             return parameter.schema.safeParse(
                 parameter.options.preprocessor ? parameter.options.preprocessor(input) : input
             )

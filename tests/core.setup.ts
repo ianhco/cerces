@@ -350,7 +350,7 @@ export const subapp = new Router({
 subapp.get("/hello-world", {
     responseClass: PlainTextResponse,
     parameters: {
-        testOpenAPI: Query(z.number().array()),
+        testOpenAPI: Query(z.number().array().default([])),
     },
     handle: () => "Hello World!",
 })
