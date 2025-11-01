@@ -3,7 +3,7 @@
     "scripts": {
     },
     "dependencies": {
-        "cerces": "^2.0.1-beta.7"
+        "cerces": "^2.0.1-beta.8"
     },
     "devDependencies": {
         "@types/aws-lambda": "^8.10.121"
