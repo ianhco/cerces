@@ -18,6 +18,12 @@ import {
 } from "../src"
 import { createCORSMiddleware } from "../src/middleware/cors"
 
+declare module "../src/types" {
+    interface RuntimeArgs {
+        seq?: number
+    }
+}
+
 // Sample dependency
 
 export const requireAuthSession = new Dependency({
@@ -145,6 +151,20 @@ app.get("/test-nested-dependencies", {
         return depends
     },
 })
+
+app.get("/duplicate-param-key-dependency", {
+    parameters: {
+        depends: Depends(testNestedDependency),
+        // @ts-expect-error Testing duplicate param key 'zero'
+        zero: Query(z.number()),
+    },
+    handle: ({ depends }) => {
+        // Type checks
+        const _0: { three: { one: string; two: string }; zero: number } = depends
+        return depends
+    },
+})
+
 app.get("/test-dependencies-flatten-params", {
     parameters: {
         another: Query(z.string()),
@@ -395,6 +415,46 @@ subappItems.get("/", {
     },
 })
 
+subappItems.get("/test-conflict-param", {
+    parameters: {
+        // @ts-expect-error Testing conflicting path param base router dependency
+        itemId: Path(z.number().int().min(0)),
+        // @ts-expect-error Testing conflicting path param Request object
+        req: Query(z.number().optional()),
+    },
+    handle: ({ item, itemId, version, someQuery }) => {
+        // Type checks
+        const _0: { id: number } = item
+        const _1: number = itemId
+        const _2: string = version
+        const _3: string = someQuery
+        return { item, itemId, version, someQuery }
+    },
+})
+
+new Router({
+    base: Base<typeof appRootPath>(),
+    parameters: {
+        item: Depends(requireItemId),
+        someQuery: Query(z.string()),
+        // @ts-expect-error Testing conflicting path param
+        itemId: Path(z.number().int().min(0)),
+        // @ts-expect-error Testing conflicting path param
+        req: Query(z.number().optional()),
+    },
+})
+
+subappItems.get("/", {
+    handle: ({ item, itemId, version, someQuery }) => {
+        // Type checks
+        const _0: { id: number } = item
+        const _1: number = itemId
+        const _2: string = version
+        const _3: string = someQuery
+        return { item, itemId, version, someQuery }
+    },
+})
+
 export const subappSubItems = new Router({
     base: Base<typeof subappItems>(),
     parameters: {
@@ -534,13 +594,24 @@ appDepCache.get("/cache-counter-deep", {
     },
 })
 
-appDepCache.get("/cache-counter-no-cache", {
+appDepCache.get("/cache-counter-no-cache-typeerror", {
     parameters: {
+        // @ts-expect-error Duplicate dependency param key 'counter'
         counter: Depends(noCacheTestDep),
         counter2: Depends(noCacheTestDep),
     },
     handle: ({ counter, counter2 }) => {
         return { counter, counter2 }
+    },
+})
+
+appDepCache.get("/cache-counter-no-cache", {
+    parameters: {
+        counter1: Depends(noCacheTestDep),
+        counter2: Depends(noCacheTestDep),
+    },
+    handle: ({ counter1, counter2 }) => {
+        return { counter1, counter2 }
     },
 })
 

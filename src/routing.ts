@@ -2,16 +2,20 @@ import { z } from "zod"
 import type { ResponseConfig, RouteConfig, ZodRequestBody } from "@asteasolutions/zod-to-openapi"
 import type { SecurityRequirementObject } from "openapi3-ts/oas31"
 import type {
+    ArgsOf,
     BodyParameter,
-    GenericRouteParameters,
     DependsParameter,
+    DisallowBaseDependencyParameters,
+    DisallowBaseParameters,
+    DisallowDependencyParameters,
+    DisallowRuntimeParameters,
+    GenericRouteParameters,
     HTTPMethod,
     HTTPMethodLower,
+    ImplicitParameters,
     ResponseClass,
     RouteHandler,
     RouteParameters,
-    NeverMap,
-    ImplicitParameters,
 } from "./types"
 import { Middleware } from "./core"
 import { JSONResponse } from "./responses"
@@ -78,14 +82,14 @@ export function generateRouteSummary(method: HTTPMethod, path: string): string {
  * This class encapsulates all the configuration and metadata for a single HTTP route,
  * including its method, path, handler, parameters, responses, and OpenAPI schema information.
  *
- * @template R The response type returned by the route handler.
+ * @template PsBase The route parameters type inherited from parent routers or apps.
  * @template Ps The route parameters type specific to this route.
- * @template Ps0 The route parameters type inherited from parent routers or apps.
+ * @template R The response type returned by the route handler.
  */
 export class Route<
-    R,
+    PsBase extends GenericRouteParameters<PsBase> = {},
     Ps extends GenericRouteParameters<Ps> = {},
-    Ps0 extends GenericRouteParameters<Ps0> = {},
+    R = unknown,
 > {
     method: HTTPMethod
     path: string
@@ -101,7 +105,7 @@ export class Route<
     responseClass: ResponseClass
     middleware: Middleware[]
     parameters: Ps
-    handle: RouteHandler<R, Ps & Ps0>
+    handle: RouteHandler<ArgsOf<Ps & PsBase>, R>
 
     constructor(init: {
         method: HTTPMethod
@@ -117,8 +121,12 @@ export class Route<
         statusCode?: number
         responseClass?: ResponseClass
         middleware?: Middleware[]
-        parameters?: Ps & NeverMap<ImplicitParameters<Ps & Ps0>> & NeverMap<Ps0>
-        handle: RouteHandler<R, Ps & Ps0>
+        parameters?: Ps &
+            DisallowDependencyParameters<ImplicitParameters<Ps>> &
+            DisallowBaseDependencyParameters<ImplicitParameters<PsBase>> &
+            DisallowBaseParameters<PsBase> &
+            DisallowRuntimeParameters<Ps>
+        handle: RouteHandler<ArgsOf<Ps & PsBase>, R>
     }) {
         this.method = init.method
         this.path = fixPathSlashes(init.path)

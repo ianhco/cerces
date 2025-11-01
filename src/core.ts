@@ -21,19 +21,21 @@ import { JSONResponse, HTMLResponse } from "./responses"
 import { Route, RouteMatcher } from "./routing"
 import type {
     ArgsOf,
-    ErrorHandler,
-    RouteParameters,
-    ResponseClass,
     DependencyHandler,
-    MiddlewareHandler,
-    UnboundRoute,
-    HTTPMethod,
-    GenericRouteParameters,
-    PathStringOf,
+    DisallowBaseDependencyParameters,
+    DisallowBaseParameters,
+    DisallowDependencyParameters,
+    DisallowRuntimeParameters,
+    ErrorHandler,
     FlattenParameters,
-    ExcludeParameters,
+    GenericRouteParameters,
+    HTTPMethod,
     ImplicitParameters,
-    NeverMap,
+    MiddlewareHandler,
+    PathStringOf,
+    ResponseClass,
+    RouteParameters,
+    UnboundRoute,
 } from "./types"
 
 /**
@@ -42,23 +44,25 @@ import type {
  * @template B The `Router` or `App` type to extract base route parameters from.
  * @returns An empty value carrying the extracted base route parameters types.
  */
-export function Base<B extends Router>(): B extends Router<infer Ps1, infer Ps0>
-    ? Ps1 & Ps0
+export function Base<B extends Router>(): B extends Router<infer PsBase, infer PsThis>
+    ? PsBase & PsThis
     : never {
-    return {} as B extends Router<infer Ps1, infer Ps0> ? Ps1 & Ps0 : never
+    return {} as B extends Router<infer PsBase, infer PsThis> ? PsBase & PsThis : never
 }
 
-export class Dependency<R, Ps extends GenericRouteParameters<Ps> = {}> {
+export class Dependency<Ps extends GenericRouteParameters<Ps> = {}, R = unknown> {
     name?: string
     useCache: boolean
     parameters: Ps
-    handle: DependencyHandler<R, Ps>
+    handle: DependencyHandler<ArgsOf<Ps>, R>
 
     constructor(init: {
         name?: string
         useCache?: boolean
-        parameters?: Ps & NeverMap<ImplicitParameters<Ps>>
-        handle: DependencyHandler<R, Ps>
+        parameters?: Ps &
+            DisallowDependencyParameters<ImplicitParameters<Ps>> &
+            DisallowRuntimeParameters<Ps>
+        handle: DependencyHandler<ArgsOf<Ps>, R>
     }) {
         this.name = init.name
         this.useCache = init.useCache ?? true
@@ -78,10 +82,10 @@ export class Middleware {
 }
 
 export class Router<
-    Ps1 extends GenericRouteParameters<Ps1> = {},
-    Ps0 extends GenericRouteParameters<Ps0> = {},
+    PsBase extends GenericRouteParameters<PsBase> = {},
+    PsThis extends GenericRouteParameters<PsThis> = {},
 > {
-    private _base: Ps0
+    private _base: PsBase
     readonly rootPath: string = "/"
     tags: string[]
     deprecated: boolean
@@ -89,12 +93,12 @@ export class Router<
     responses: Record<number, ResponseConfig>
     security?: SecurityRequirementObject[]
     defaultResponseClass: ResponseClass
-    parameters: Ps1
+    parameters: PsThis
     middleware: Middleware[]
     routeMatcher: RouteMatcher
 
     constructor(init: {
-        base: Ps0
+        base: PsBase
         tags?: string[]
         deprecated?: boolean
         includeInSchema?: boolean
@@ -102,14 +106,18 @@ export class Router<
         responses?: Record<number, ResponseConfig>
         defaultResponseClass?: ResponseClass
         middleware?: Middleware[]
-        parameters?: Ps1 & NeverMap<ImplicitParameters<Ps1 & Ps0>> & NeverMap<Ps0>
+        parameters?: PsThis &
+            DisallowDependencyParameters<ImplicitParameters<PsThis>> &
+            DisallowBaseDependencyParameters<ImplicitParameters<PsBase>> &
+            DisallowBaseParameters<PsBase> &
+            DisallowRuntimeParameters<PsThis>
     }) {
         this._base = init.base
         this.tags = init.tags ?? []
         this.deprecated = init.deprecated ?? false
         this.includeInSchema = init.includeInSchema ?? true
         this.defaultResponseClass = init.defaultResponseClass ?? JSONResponse
-        this.parameters = init.parameters ?? ({} as Ps1)
+        this.parameters = init.parameters ?? ({} as PsThis)
         this.middleware = init.middleware ?? []
         this.responses = init.responses ?? {
             422: Responds(
@@ -129,61 +137,61 @@ export class Router<
         this.routeMatcher = new RouteMatcher()
     }
 
-    get<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    get<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("GET", path, unboundRoute)
     }
-    post<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    post<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("POST", path, unboundRoute)
     }
-    put<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    put<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("PUT", path, unboundRoute)
     }
-    delete<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    delete<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("DELETE", path, unboundRoute)
     }
-    patch<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    patch<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("PATCH", path, unboundRoute)
     }
-    head<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    head<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("HEAD", path, unboundRoute)
     }
-    trace<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    trace<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("TRACE", path, unboundRoute)
     }
-    options<R, Ps extends RouteParameters = {}>(
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
+    options<Ps extends RouteParameters = {}, R = unknown>(
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
         return this.route("OPTIONS", path, unboundRoute)
     }
 
-    route<R, Ps extends RouteParameters = {}>(
+    route<Ps extends RouteParameters = {}, R = unknown>(
         method: HTTPMethod,
-        path: PathStringOf<ExcludeParameters<FlattenParameters<Ps>, FlattenParameters<Ps1 & Ps0>>>,
-        unboundRoute: UnboundRoute<R, Ps, Ps1 & Ps0>
-    ): Route<R, Ps, Ps1 & Ps0> {
-        const route = new Route<R, Ps, Ps1 & Ps0>({
+        path: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        unboundRoute: UnboundRoute<PsThis & PsBase, Ps, R>
+    ): Route<PsThis & PsBase, Ps, R> {
+        const route = new Route<PsThis & PsBase, Ps, R>({
             method: method,
             path: this.rootPath + path,
             deprecated: this.deprecated,
@@ -199,17 +207,15 @@ export class Router<
             parameters: {
                 ...this.parameters,
                 ...unboundRoute.parameters,
-            } as Ps1 & Ps,
+            } as any,
         })
         this.routeMatcher.push(route)
         return route
     }
 
-    include<Ps2 extends RouteParameters>(
-        prefix: PathStringOf<
-            ExcludeParameters<FlattenParameters<Ps2>, FlattenParameters<Ps1 & Ps0>>
-        >,
-        router: Router<Ps2, Ps1 & Ps0>
+    include<Ps extends RouteParameters>(
+        prefix: PathStringOf<Omit<FlattenParameters<Ps>, keyof FlattenParameters<PsThis & PsBase>>>,
+        router: Router<PsThis & PsBase, Ps>
     ) {
         for (const route of router.routeMatcher) {
             const includeRoute = new Route({
@@ -227,7 +233,7 @@ export class Router<
     }
 }
 
-export class App<Ps1 extends GenericRouteParameters<Ps1> = {}> extends Router<Ps1, {}> {
+export class App<PsThis extends GenericRouteParameters<PsThis> = {}> extends Router<{}, PsThis> {
     rootPath: string
     title: string
     description: string
@@ -246,9 +252,9 @@ export class App<Ps1 extends GenericRouteParameters<Ps1> = {}> extends Router<Ps
     private _openapi?: OpenAPIObject
 
     constructor(
-        init: (`/${string}` extends PathStringOf<Ps1>
+        init: (`/${string}` extends PathStringOf<PsThis>
             ? { rootPath?: string }
-            : { rootPath: PathStringOf<Ps1> }) & {
+            : { rootPath: PathStringOf<PsThis> }) & {
             title?: string
             description?: string
             version?: string
@@ -269,7 +275,9 @@ export class App<Ps1 extends GenericRouteParameters<Ps1> = {}> extends Router<Ps
             defaultResponseClass?: ResponseClass
             errorHandler?: ErrorHandler
             middleware?: Middleware[]
-            parameters?: Ps1 & NeverMap<ImplicitParameters<Ps1>>
+            parameters?: PsThis &
+                DisallowDependencyParameters<ImplicitParameters<PsThis>> &
+                DisallowRuntimeParameters<PsThis>
         }
     ) {
         super({ base: {}, ...init })
@@ -303,25 +311,25 @@ export class App<Ps1 extends GenericRouteParameters<Ps1> = {}> extends Router<Ps
             this.get(this.openapiUrl, {
                 includeInSchema: false,
                 responseClass: JSONResponse,
-                handle: () => this.openapi(),
+                handle: (() => this.openapi()) as any,
             })
             if (this.swaggerUrl)
                 this.get(this.swaggerUrl, {
                     includeInSchema: false,
                     responseClass: HTMLResponse,
-                    handle: () =>
+                    handle: (() =>
                         createSwaggerHTML(fixPathSlashes(this.rootPath + this.openapiUrl!), {
                             title: this.title,
-                        }),
+                        })) as any,
                 })
             if (this.redocUrl)
                 this.get(this.redocUrl, {
                     includeInSchema: false,
                     responseClass: HTMLResponse,
-                    handle: () =>
+                    handle: (() =>
                         createRedocHTML(fixPathSlashes(this.rootPath + this.openapiUrl!), {
                             title: this.title,
-                        }),
+                        })) as any,
                 })
         }
     }

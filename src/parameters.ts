@@ -19,16 +19,17 @@ import type {
     RouteParameterOptions,
     RouteParameters,
     ZodBodyable,
+    Simplify,
 } from "./types"
 
 export function Path(): PathParameter<z.ZodString>
 export function Path<S extends z.ZodType>(
     schema: S,
-    options?: Omit<RouteParameterOptions, "mediaType" | "altName">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType" | "altName">>
 ): PathParameter<S>
 export function Path(
     schema: z.ZodType = z.string(),
-    options?: Omit<RouteParameterOptions, "mediaType" | "altName">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType" | "altName">>
 ): PathParameter<z.ZodType> {
     return {
         location: "path",
@@ -43,11 +44,11 @@ export function Path(
 export function Query(): QueryParameter<z.ZodString>
 export function Query<S extends z.ZodType>(
     schema: S,
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType">>
 ): QueryParameter<S>
 export function Query(
     schema: z.ZodType = z.string(),
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType">>
 ): QueryParameter<z.ZodType> {
     return {
         location: "query",
@@ -62,11 +63,11 @@ export function Query(
 export function Header(): HeaderParameter<z.ZodString>
 export function Header<S extends z.ZodType>(
     schema: S,
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType">>
 ): HeaderParameter<S>
 export function Header(
     schema: z.ZodType = z.string(),
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType">>
 ): HeaderParameter<z.ZodType> {
     return {
         location: "header",
@@ -81,11 +82,11 @@ export function Header(
 export function Cookie(): CookieParameter<z.ZodString>
 export function Cookie<S extends z.ZodType>(
     schema: S,
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType">>
 ): CookieParameter<S>
 export function Cookie(
     schema: z.ZodType = z.string(),
-    options?: Omit<RouteParameterOptions, "mediaType">
+    options?: Simplify<Omit<RouteParameterOptions, "mediaType">>
 ): CookieParameter<z.ZodType> {
     return {
         location: "cookie",
@@ -100,23 +101,23 @@ export function Cookie(
 export function Body(): BodyParameter<z.ZodString>
 export function Body(
     schema: typeof String,
-    options?: Omit<RouteParameterOptions, "altName">
+    options?: Simplify<Omit<RouteParameterOptions, "altName">>
 ): BodyParameter<z.ZodString>
 export function Body(
     schema: typeof Blob,
-    options?: Omit<RouteParameterOptions, "altName">
+    options?: Simplify<Omit<RouteParameterOptions, "altName">>
 ): BodyParameter<z.ZodType<Blob>>
 export function Body(
     schema: typeof ReadableStream,
-    options?: Omit<RouteParameterOptions, "altName">
+    options?: Simplify<Omit<RouteParameterOptions, "altName">>
 ): BodyParameter<z.ZodType<ReadableStream>>
 export function Body<S extends z.ZodType>(
     schema: S,
-    options?: Omit<RouteParameterOptions, "altName">
+    options?: Simplify<Omit<RouteParameterOptions, "altName" | "mediaType">>
 ): BodyParameter<S>
 export function Body(
     schema: ZodBodyable = String,
-    options?: Omit<RouteParameterOptions, "altName">
+    options?: Simplify<Omit<RouteParameterOptions, "altName">>
 ): BodyParameter<z.ZodType> {
     return {
         location: "body",
@@ -129,8 +130,8 @@ export function Body(
     }
 }
 
-export function Depends<R, Ps extends RouteParameters>(
-    dependency: Dependency<R, Ps>
+export function Depends<Ps extends RouteParameters, R>(
+    dependency: Dependency<Ps, R>
 ): DependsParameter<z.ZodType<R>, Ps> {
     return {
         location: "@depends",
@@ -301,7 +302,7 @@ export async function resolveArgs<Ps extends RouteParameters>(
                     return {
                         success: false as const,
                         error: new z.ZodError([
-                            { message: "Invalid JSON.", path: [], code: z.ZodIssueCode.custom },
+                            { message: "Invalid JSON.", path: [], code: "custom" },
                         ]),
                     }
                 }

@@ -679,7 +679,6 @@ describe("function resolveArgs", () => {
             parameters: {
                 pCookie: Cookie(z.string(), { altName: "pAltCookie" }),
                 pDep2: Depends(dependency2),
-                pDep1: Depends(dependency1),
             },
             handle: ({ pQuery, pDep1, p_Header, pCookie, pDep2 }) => ({
                 pQuery,

@@ -6,6 +6,9 @@ import type { Route } from "./routing"
 /** Runtime arguments for the request to be declared in `.d.ts`. */
 export interface RuntimeArgs {}
 
+/** Simplifies a type by resolving intersections and mapped types. */
+export type Simplify<T> = T extends infer O ? { [K in keyof O]: O[K] } : never
+
 export type HTTPMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS" | "TRACE"
 export type HTTPMethodLower =
     | "get"
@@ -26,7 +29,7 @@ export type Later = (fn: (res: Response) => void) => void
 export type Preprocessor = <Out = any, In = any>(value: In) => Out | In
 
 /** Options for route parameters declaration. */
-export interface RouteParameterOptions {
+export type RouteParameterOptions = {
     altName?: string
     mediaType?: string
     description?: string
@@ -35,7 +38,7 @@ export interface RouteParameterOptions {
 }
 
 /** Options for the response schema in `Responds`. */
-export interface RespondsOptions {
+export type RespondsOptions = {
     mediaType?: string
     description?: string
     headers?: Record<string, z.ZodType>
@@ -48,7 +51,7 @@ export type ZodBodyable = z.ZodType | typeof String | typeof Blob | typeof Reada
 export type RouteParameterLocation = "path" | "query" | "header" | "cookie" | "body" | "@depends"
 
 /** Base type for route parameters. */
-export interface RouteParameter<S extends z.ZodType> {
+export type RouteParameter<S extends z.ZodType> = {
     location: RouteParameterLocation
     schema?: S
     schemaOr?: any
@@ -81,16 +84,42 @@ export type DependsParameter<
     Ps extends RouteParameters,
 > = RouteParameter<S> & {
     location: "@depends"
-    dependency: Dependency<z.infer<S>, Ps>
+    dependency: Dependency<Ps, z.infer<S>>
 }
 
-/** Map all properties to `never`. */
-export type NeverMap<T> = RouteParameters extends T ? {} : { [K in keyof T]?: never }
+/** Overwrite map values with template literal strings. */
+export type MapValueOverwriteLiteral<
+    M,
+    F extends [string, string] = ["", ""],
+> = string extends keyof M ? {} : { [K in keyof M]?: `${F[0]}\`${K & string}\`${F[1]}` }
 
 /** Base type for route parameters dictionary. */
-export type RouteParameters = { [k: string]: RouteParameter<z.ZodType> } & {
-    req?: never
-} & { [K in keyof RuntimeArgs]?: never }
+export type RouteParameters = { [k: string]: RouteParameter<z.ZodType> }
+
+export type DisallowRuntimeParameters<M> = string extends keyof M
+    ? {}
+    : {
+          req?: "Parameter key `req` is already taken by the `Request` object."
+      } & MapValueOverwriteLiteral<
+          RuntimeArgs,
+          ["Parameter key ", " is already taken by a declared runtime argument."]
+      >
+
+export type DisallowDependencyParameters<M> = MapValueOverwriteLiteral<
+    M,
+    ["Parameter key ", " is already taken by an implicit parameter on a declared dependency."]
+>
+export type DisallowBaseDependencyParameters<M> = MapValueOverwriteLiteral<
+    M,
+    [
+        "Parameter key ",
+        " is already taken by an implicit parameter on a declared dependency from the base router.",
+    ]
+>
+export type DisallowBaseParameters<M> = MapValueOverwriteLiteral<
+    M,
+    ["Parameter key ", " is already taken by a declared parameter on the base router."]
+>
 
 /** Generic route parameters enforcing dual extension to allow optional default values. */
 export type GenericRouteParameters<Ps0 extends RouteParameters> = RouteParameters extends Ps0
@@ -119,33 +148,28 @@ export type UnionToIntersection<U> = (U extends any ? (arg: U) => void : never) 
 /** Flatten all parameters, including dependencies. */
 export type FlattenParameters<Ps extends RouteParameters> = UnionToIntersection<
     {
-        [K in keyof Ps]: Ps[K] extends DependsParameter<any, infer SubPs>
-            ? FlattenParameters<SubPs> & { [P in K]: Ps[K] } // Preserve Dependency + flattened inner
+        [K in keyof Ps]: Ps[K] extends DependsParameter<any, infer PsDepend>
+            ? FlattenParameters<PsDepend> & { [P in K]: Ps[K] } // Preserve Dependency + flattened inner
             : { [P in K]: Ps[K] } // Leaf as singleton
     }[keyof Ps]
 >
 
-/** Flatten second level base parameters only, excluding root base parameters. */
-type ImplicitParametersHelper<Ps extends RouteParameters> = UnionToIntersection<
-    {
-        [K in keyof Ps]: Ps[K] extends DependsParameter<any, infer SubPs>
-            ? ImplicitParametersHelper<SubPs>
-            : { [P in K]: Ps[K] }
-    }[keyof Ps]
->
+/** Infer implicit parameters from dependencies. */
 export type ImplicitParameters<Ps extends RouteParameters> = UnionToIntersection<
     | {
-          [K in keyof Ps]: Ps[K] extends DependsParameter<any, infer SubPs>
-              ? ImplicitParametersHelper<SubPs>
+          [K in keyof Ps]: Ps[K] extends DependsParameter<any, infer PsDepend>
+              ? FlattenParameters<PsDepend>
               : never
       }[keyof Ps]
     | {}
 >
 
 /** Infer the arguments of a handler based on provided route parameters. */
-export type ArgsOf<Ps extends RouteParameters> = RuntimeArgs & { req: Request } & {
-    [K in keyof FlattenParameters<Ps>]: TypeOf<FlattenParameters<Ps>[K]>
-}
+export type ArgsOf<Ps extends RouteParameters> = Simplify<
+    RuntimeArgs & { req: Request } & {
+        [K in keyof FlattenParameters<Ps>]: TypeOf<FlattenParameters<Ps>[K]>
+    }
+>
 
 /** Infer the `init` type of a class constructor. */
 export type InitOf<C extends abstract new (...args: any) => any> = C extends new (
@@ -154,41 +178,37 @@ export type InitOf<C extends abstract new (...args: any) => any> = C extends new
     ? I
     : never
 
+export type Awaitable<T> = T | Promise<T>
+
 /** Shape for error handler. */
-export type ErrorHandler =
-    | ((args: ArgsOf<{}>, e: any) => Promise<Response>)
-    | ((args: ArgsOf<{}>, e: any) => Response)
+export type ErrorHandler = (args: ArgsOf<{}>, e: any) => Awaitable<Response>
 
 /** Shape for route handler. */
-export type RouteHandler<R, Ps extends RouteParameters> =
-    | ((args: ArgsOf<Ps>) => Promise<R>)
-    | ((args: ArgsOf<Ps>) => R)
+export type RouteHandler<Args, R> = Args extends any ? (args: Args) => Awaitable<R> : never
 
 /** Shape for dependency handler. */
-export type DependencyHandler<R, Ps extends RouteParameters> =
-    | ((args: ArgsOf<Ps>, later: Later) => Promise<R>)
-    | ((args: ArgsOf<Ps>, later: Later) => R)
+export type DependencyHandler<Args, R> = Args extends any
+    ? (args: Args, later: Later) => Awaitable<R>
+    : never
 
 /** Shape for middleware. */
-export type MiddlewareHandler =
-    | ((args: ArgsOf<{}>, next: Next) => Promise<Response>)
-    | ((args: ArgsOf<{}>, next: Next) => Response)
+export type MiddlewareHandler = (args: ArgsOf<{}>, next: Next) => Awaitable<Response>
 
 /** Type for an unbound route that is not connected to method and path. */
-export type UnboundRoute<R, Ps extends RouteParameters, Ps0 extends RouteParameters> = Omit<
-    InitOf<typeof Route<R, Ps, Ps0>>,
+export type UnboundRoute<PsBase extends RouteParameters, Ps extends RouteParameters, R> = Omit<
+    InitOf<typeof Route<PsBase, Ps, R>>,
     "method" | "path"
 > & { method?: never; path?: never }
 
 /** Error information for a single route parameter during `resolveArgs` */
-export interface ResolveArgsError {
+export type ResolveArgsError = {
     location: RouteParameterLocation
     name: string
     issues: z.core.$ZodIssue[]
 }
 
 /** Return type for `resolveArgs` */
-export interface ResolveArgsInfo<Ps extends RouteParameters> {
+export type ResolveArgsInfo<Ps extends RouteParameters> = {
     success: boolean
     errors: ResolveArgsError[]
     args: ArgsOf<Ps>
@@ -212,7 +232,6 @@ type PathJoin<T extends string[]> = T["length"] extends 0
     : `/${string}${PathJoinHelper<T>}${string}`
 export type PathString<T extends string> =
     Permutation<T> extends infer U extends string[] ? PathJoin<U> : never
-
 /** Infer the path string literal template of route parameters. */
 export type PathStringOf<Ps> = PathString<
     keyof {
@@ -223,8 +242,3 @@ export type PathStringOf<Ps> = PathString<
             : never]: Ps[K]
     }
 >
-
-/** Exclude parameters of one route parameters dictionary from another. */
-export type ExcludeParameters<PsA, PsB> = {
-    [K in keyof PsA as K extends keyof PsB ? never : K]: PsA[K]
-}

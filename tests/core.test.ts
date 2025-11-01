@@ -448,8 +448,8 @@ describe("class App", () => {
         })
         expect(res2).toBeTruthy()
         expect(res2.status).toBe(200)
-        const { counter, counter2 } = await res2.json()
-        expect(counter + counter2).toEqual(3)
+        const { counter1, counter2 } = await res2.json()
+        expect(counter1 + counter2).toEqual(3)
     })
 
     test("[method] fetch: req + 2 args", async () => {
