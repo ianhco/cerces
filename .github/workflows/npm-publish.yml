@@ -6,6 +6,11 @@ name: Node.js Package
 on:
   release:
     types: [published]
+  workflow_dispatch:
+
+permissions:
+  id-token: write  # Required for OIDC
+  contents: read
 
 jobs:
   publish-npm:
@@ -32,7 +37,8 @@ jobs:
       - name: "Run test suites"
         run: bun test
 
+      - name: "Pack package"
+        run: bun pm pack
+
       - name: Publish to npm
-        run: bun publish --ignore-scripts
-        env:
-          NPM_CONFIG_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: bunx npm publish *.tgz --provenance
