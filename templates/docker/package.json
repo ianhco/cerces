@@ -4,7 +4,7 @@
         "dev": "bun run --watch src/index.ts"
     },
     "dependencies": {
-        "cerces": "^2.0.1-beta.8"
+        "cerces": "^2.0.1"
     },
     "devDependencies": {
     }
