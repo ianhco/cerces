@@ -38,7 +38,7 @@ jobs:
         run: bun test
 
       - name: "Pack package"
-        run: bun pm pack
+        run: bun pm pack --ignore-scripts
 
       - name: Publish to npm
         run: bunx npm publish *.tgz --provenance
