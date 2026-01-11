@@ -1,6 +1,6 @@
 {
     "name": "cerces",
-    "version": "2.0.1-beta.8",
+    "version": "2.0.1",
     "description": "Type-safe, modern, and intuitive web framework built on Web Standards and OpenAPI.",
     "type": "module",
     "main": "./dist/index.cjs",

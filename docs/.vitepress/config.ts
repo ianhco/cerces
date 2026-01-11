@@ -52,7 +52,7 @@ export default {
                 activeMatch: "/reference/*"
             },
             {
-                text: "2.0.1-beta.8",
+                text: "2.0.1",
                 items: [
                     {
                         text: "Migrations",

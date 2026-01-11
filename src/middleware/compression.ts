@@ -82,6 +82,7 @@ export const createCompressionMiddleware = (format: CompressionFormat) => {
         name: "CompressionMiddleware",
         handle: async ({ req }, next) => {
             let response = await next()
+            if (response.status === 101) return response
             const accepted = req.headers.get("Accept-Encoding")
             if (!accepted?.includes(format) || !response.body) {
                 return response

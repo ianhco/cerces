@@ -69,6 +69,7 @@ export const createCORSMiddleware = (options?: {
             }
 
             const response = await next()
+            if (response.status === 101) return response
 
             if (isCorsPreflightRequest) {
                 const availableMethods = (

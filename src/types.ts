@@ -99,26 +99,35 @@ export type RouteParameters = { [k: string]: RouteParameter<z.ZodType> }
 export type DisallowRuntimeParameters<M> = string extends keyof M
     ? {}
     : {
-          req?: "Parameter key `req` is already taken by the `Request` object."
+          req?: "Parameter key `req` is already taken by the `Request` object. Use a different key."
       } & MapValueOverwriteLiteral<
           RuntimeArgs,
-          ["Parameter key ", " is already taken by a declared runtime argument."]
+          [
+              "Parameter key ",
+              " is already taken by a declared runtime argument. Use a different key.",
+          ]
       >
 
 export type DisallowDependencyParameters<M> = MapValueOverwriteLiteral<
     M,
-    ["Parameter key ", " is already taken by an implicit parameter on a declared dependency."]
+    [
+        "Parameter key ",
+        " is already taken by an implicit parameter on a declared dependency. The declaration may be redundant, remove it or use a different key.",
+    ]
 >
 export type DisallowBaseDependencyParameters<M> = MapValueOverwriteLiteral<
     M,
     [
         "Parameter key ",
-        " is already taken by an implicit parameter on a declared dependency from the base router.",
+        " is already taken by an implicit parameter on a declared dependency from the base router. The declaration may be redundant, remove it or use a different key.",
     ]
 >
 export type DisallowBaseParameters<M> = MapValueOverwriteLiteral<
     M,
-    ["Parameter key ", " is already taken by a declared parameter on the base router."]
+    [
+        "Parameter key ",
+        " is already taken by a declared parameter on the base router. The declaration may be redundant, remove it or use a different key.",
+    ]
 >
 
 /** Generic route parameters enforcing dual extension to allow optional default values. */
