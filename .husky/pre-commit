@@ -2,5 +2,8 @@
 . "$(dirname "$0")/_/husky.sh"
 . "$(dirname "$0")/common.sh"
 
+bun run docs:ref
+bun run docs:llms
 bun prettify
+git add docs/ src/ tests/ README.md
 bun test

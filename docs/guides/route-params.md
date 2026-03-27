@@ -2,6 +2,10 @@
 
 You can declare "parameters" or "variables" under the `parameters` key on route declaration. Parameter declaration involves parameter constructors and Zod schemas for validation and type safety.
 
+::: warning Zod Compatibility
+Ensure that Zod version 4.1 or higher is used. Older versions of Zod will raise type errors due to incompatible APIs. Some package managers may install multiple versions of Zod, or refuse to install the peer dependency declared by Cerces. In such cases, you may need to manually install Zod version 4.1 or higher.
+:::
+
 ## Path Parameters
 
 Path parameters are extracted from the URL path and are required for routes that use dynamic segments. They must match the route pattern exactly.

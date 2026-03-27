@@ -80,6 +80,7 @@
         "test": "jest --no-cache --runInBand --config jestconfig.json --verbose",
         "test:cov": "jest --no-cache --runInBand --config jestconfig.json --verbose --coverage",
         "docs:ref": "typedoc --options typedoc.config.js",
+        "docs:llms": "bun generate-llms.ts",
         "docs:dev": "vitepress dev docs",
         "docs:build": "vitepress build docs",
         "docs:serve": "vitepress serve docs"

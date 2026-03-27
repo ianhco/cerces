@@ -135,7 +135,7 @@ export async function toLambdaResponse(response: Response): Promise<APIGatewayPr
  * @param app The App instance to handle incoming requests.
  * @returns A handler function for AWS Lambda.
  */
-export async function createHandler(app: App) {
+export function createHandler(app: App) {
     return async (
         event: APIGatewayProxyEvent,
         context: Context
