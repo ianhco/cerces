@@ -87,6 +87,6 @@ for (const file of allFiles) {
 
 const llmsTxt = `Cerces is a type-safe, modern, and intuitive web framework built on Web Standards and OpenAPI.\n\n${links.join('\n')}\n\n[Full Documentation](https://cerces.dev/llms-full.txt)`;
 
-fs.writeFileSync('docs/llms.txt', llmsTxt);
-fs.writeFileSync('docs/llms-full.txt', fullText.trim());
-console.log('Generated docs/llms.txt and docs/llms-full.txt');
+fs.writeFileSync('docs/public/llms.txt', llmsTxt);
+fs.writeFileSync('docs/public/llms-full.txt', fullText.trim());
+console.log('Generated docs/public/llms.txt and docs/public/llms-full.txt');
