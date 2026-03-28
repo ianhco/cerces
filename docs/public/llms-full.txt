@@ -3215,7 +3215,7 @@ Contains 3 minor breaking changes.
 
 > **ZodBodyable** = `z.ZodType` \| *typeof* `String` \| *typeof* `Blob` \| *typeof* `ReadableStream`
 
-Defined in: [src/types.ts:49](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L49)
+Defined in: [src/types.ts:49](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L49)
 
 Types that can be used to declare `BodyParameter`s.
 
@@ -3231,7 +3231,7 @@ Types that can be used to declare `BodyParameter`s.
 
 > **UnionToIntersection**\<`U`\> = `U` *extends* `any` ? (`arg`) => `void` : `never` *extends* (`arg`) => `void` ? `I` : `never`
 
-Defined in: [src/types.ts:151](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L151)
+Defined in: [src/types.ts:151](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L151)
 
 Convert a union type to an intersection type.
 
@@ -3253,7 +3253,7 @@ Convert a union type to an intersection type.
 
 > **UnboundRoute**\<`PsBase`, `Ps`, `R`\> = `Omit`\<[`InitOf`](InitOf.md)\<*typeof* [`Route`](../../routing/classes/Route.md)\>, `"method"` \| `"path"`\> & `object`
 
-Defined in: [src/types.ts:207](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L207)
+Defined in: [src/types.ts:207](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L207)
 
 Type for an unbound route that is not connected to method and path.
 
@@ -3293,7 +3293,7 @@ Type for an unbound route that is not connected to method and path.
 
 > **TypeOf**\<`T`\> = `T` *extends* [`DependsParameter`](DependsParameter.md)\<infer S, `any`\> ? `z.TypeOf`\<`S`\> : `T` *extends* [`RouteParameter`](RouteParameter.md)\<infer S\> ? `z.TypeOf`\<`S`\> : `T` *extends* `z.ZodType` ? `z.TypeOf`\<`T`\> : `T` *extends* [`Dependency`](../../core/classes/Dependency.md)\<infer R, `any`\> ? `R` : `unknown`
 
-Defined in: [src/types.ts:139](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L139)
+Defined in: [src/types.ts:139](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L139)
 
 Infer the type of a route parameter.
 
@@ -3315,7 +3315,7 @@ Infer the type of a route parameter.
 
 > **Simplify**\<`T`\> = `T` *extends* infer O ? `{ [K in keyof O]: O[K] }` : `never`
 
-Defined in: [src/types.ts:10](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L10)
+Defined in: [src/types.ts:10](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L10)
 
 Simplifies a type by resolving intersections and mapped types.
 
@@ -3337,7 +3337,7 @@ Simplifies a type by resolving intersections and mapped types.
 
 > **RouteParameters** = `object`
 
-Defined in: [src/types.ts:97](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L97)
+Defined in: [src/types.ts:97](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L97)
 
 Base type for route parameters dictionary.
 
@@ -3357,7 +3357,7 @@ Base type for route parameters dictionary.
 
 > **RouteParameterOptions** = `object`
 
-Defined in: [src/types.ts:32](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L32)
+Defined in: [src/types.ts:32](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L32)
 
 Options for route parameters declaration.
 
@@ -3367,7 +3367,7 @@ Options for route parameters declaration.
 
 > `optional` **altName**: `string`
 
-Defined in: [src/types.ts:33](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L33)
+Defined in: [src/types.ts:33](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L33)
 
 ***
 
@@ -3375,7 +3375,7 @@ Defined in: [src/types.ts:33](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **mediaType**: `string`
 
-Defined in: [src/types.ts:34](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L34)
+Defined in: [src/types.ts:34](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L34)
 
 ***
 
@@ -3383,7 +3383,7 @@ Defined in: [src/types.ts:34](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **description**: `string`
 
-Defined in: [src/types.ts:35](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L35)
+Defined in: [src/types.ts:35](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L35)
 
 ***
 
@@ -3391,7 +3391,7 @@ Defined in: [src/types.ts:35](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **includeInSchema**: `boolean`
 
-Defined in: [src/types.ts:36](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L36)
+Defined in: [src/types.ts:36](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L36)
 
 ***
 
@@ -3399,7 +3399,7 @@ Defined in: [src/types.ts:36](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **preprocessor**: [`Preprocessor`](Preprocessor.md)
 
-Defined in: [src/types.ts:37](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L37)
+Defined in: [src/types.ts:37](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L37)
 
 ## reference/types/type-aliases/RouteParameterLocation.md
 
@@ -3413,7 +3413,7 @@ Defined in: [src/types.ts:37](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **RouteParameterLocation** = `"path"` \| `"query"` \| `"header"` \| `"cookie"` \| `"body"` \| `"@depends"`
 
-Defined in: [src/types.ts:51](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L51)
+Defined in: [src/types.ts:51](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L51)
 
 ## reference/types/type-aliases/RouteParameter.md
 
@@ -3427,7 +3427,7 @@ Defined in: [src/types.ts:51](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **RouteParameter**\<`S`\> = `object`
 
-Defined in: [src/types.ts:54](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L54)
+Defined in: [src/types.ts:54](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L54)
 
 Base type for route parameters.
 
@@ -3443,7 +3443,7 @@ Base type for route parameters.
 
 > **location**: [`RouteParameterLocation`](RouteParameterLocation.md)
 
-Defined in: [src/types.ts:55](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L55)
+Defined in: [src/types.ts:55](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L55)
 
 ***
 
@@ -3451,7 +3451,7 @@ Defined in: [src/types.ts:55](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **schema**: `S`
 
-Defined in: [src/types.ts:56](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L56)
+Defined in: [src/types.ts:56](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L56)
 
 ***
 
@@ -3459,7 +3459,7 @@ Defined in: [src/types.ts:56](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **schemaOr**: `any`
 
-Defined in: [src/types.ts:57](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L57)
+Defined in: [src/types.ts:57](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L57)
 
 ***
 
@@ -3467,7 +3467,7 @@ Defined in: [src/types.ts:57](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **options**: [`RouteParameterOptions`](RouteParameterOptions.md)
 
-Defined in: [src/types.ts:58](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L58)
+Defined in: [src/types.ts:58](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L58)
 
 ## reference/types/type-aliases/RouteHandler.md
 
@@ -3481,7 +3481,7 @@ Defined in: [src/types.ts:58](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **RouteHandler**\<`Args`, `R`\> = `Args` *extends* `any` ? (`args`) => [`Awaitable`](Awaitable.md)\<`R`\> : `never`
 
-Defined in: [src/types.ts:196](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L196)
+Defined in: [src/types.ts:196](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L196)
 
 Shape for route handler.
 
@@ -3507,7 +3507,7 @@ Shape for route handler.
 
 > **ResponseClass** = (`body`, `init?`) => `Response`
 
-Defined in: [src/types.ts:23](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L23)
+Defined in: [src/types.ts:23](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L23)
 
 ## Parameters
 
@@ -3535,7 +3535,7 @@ Defined in: [src/types.ts:23](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **RespondsOptions** = `object`
 
-Defined in: [src/types.ts:41](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L41)
+Defined in: [src/types.ts:41](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L41)
 
 Options for the response schema in `Responds`.
 
@@ -3545,7 +3545,7 @@ Options for the response schema in `Responds`.
 
 > `optional` **mediaType**: `string`
 
-Defined in: [src/types.ts:42](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L42)
+Defined in: [src/types.ts:42](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L42)
 
 ***
 
@@ -3553,7 +3553,7 @@ Defined in: [src/types.ts:42](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **description**: `string`
 
-Defined in: [src/types.ts:43](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L43)
+Defined in: [src/types.ts:43](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L43)
 
 ***
 
@@ -3561,7 +3561,7 @@ Defined in: [src/types.ts:43](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **headers**: `Record`\<`string`, `z.ZodType`\>
 
-Defined in: [src/types.ts:44](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L44)
+Defined in: [src/types.ts:44](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L44)
 
 ***
 
@@ -3569,7 +3569,7 @@ Defined in: [src/types.ts:44](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **links**: `LinksObject`
 
-Defined in: [src/types.ts:45](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L45)
+Defined in: [src/types.ts:45](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L45)
 
 ## reference/types/type-aliases/ResolveArgsInfo.md
 
@@ -3583,7 +3583,7 @@ Defined in: [src/types.ts:45](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **ResolveArgsInfo**\<`Ps`\> = `object`
 
-Defined in: [src/types.ts:220](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L220)
+Defined in: [src/types.ts:220](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L220)
 
 Return type for `resolveArgs`
 
@@ -3599,7 +3599,7 @@ Return type for `resolveArgs`
 
 > **success**: `boolean`
 
-Defined in: [src/types.ts:221](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L221)
+Defined in: [src/types.ts:221](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L221)
 
 ***
 
@@ -3607,7 +3607,7 @@ Defined in: [src/types.ts:221](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **errors**: [`ResolveArgsError`](ResolveArgsError.md)[]
 
-Defined in: [src/types.ts:222](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L222)
+Defined in: [src/types.ts:222](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L222)
 
 ***
 
@@ -3615,7 +3615,7 @@ Defined in: [src/types.ts:222](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **args**: [`ArgsOf`](ArgsOf.md)\<`Ps`\>
 
-Defined in: [src/types.ts:223](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L223)
+Defined in: [src/types.ts:223](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L223)
 
 ## reference/types/type-aliases/ResolveArgsError.md
 
@@ -3629,7 +3629,7 @@ Defined in: [src/types.ts:223](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **ResolveArgsError** = `object`
 
-Defined in: [src/types.ts:213](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L213)
+Defined in: [src/types.ts:213](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L213)
 
 Error information for a single route parameter during `resolveArgs`
 
@@ -3639,7 +3639,7 @@ Error information for a single route parameter during `resolveArgs`
 
 > **location**: [`RouteParameterLocation`](RouteParameterLocation.md)
 
-Defined in: [src/types.ts:214](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L214)
+Defined in: [src/types.ts:214](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L214)
 
 ***
 
@@ -3647,7 +3647,7 @@ Defined in: [src/types.ts:214](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **name**: `string`
 
-Defined in: [src/types.ts:215](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L215)
+Defined in: [src/types.ts:215](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L215)
 
 ***
 
@@ -3655,7 +3655,7 @@ Defined in: [src/types.ts:215](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **issues**: `z.core.$ZodIssue`[]
 
-Defined in: [src/types.ts:216](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L216)
+Defined in: [src/types.ts:216](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L216)
 
 ## reference/types/type-aliases/QueryParameter.md
 
@@ -3669,7 +3669,7 @@ Defined in: [src/types.ts:216](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **QueryParameter**\<`S`\> = [`RouteParameter`](RouteParameter.md)\<`S`\> & `object`
 
-Defined in: [src/types.ts:65](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L65)
+Defined in: [src/types.ts:65](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L65)
 
 ## Type Declaration
 
@@ -3699,7 +3699,7 @@ Defined in: [src/types.ts:65](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **Preprocessor** = \<`Out`, `In`\>(`value`) => `Out` \| `In`
 
-Defined in: [src/types.ts:29](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L29)
+Defined in: [src/types.ts:29](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L29)
 
 ## Type Parameters
 
@@ -3733,7 +3733,7 @@ Defined in: [src/types.ts:29](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **Permutation**\<`T`, `K`\> = \[`T`\] *extends* \[`never`\] ? \[\] : `T` *extends* `unknown` ? \[`T`, `...Permutation<Exclude<K, T>>`\] : `never`
 
-Defined in: [src/types.ts:227](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L227)
+Defined in: [src/types.ts:227](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L227)
 
 Permutation of a union type.
 
@@ -3759,7 +3759,7 @@ Permutation of a union type.
 
 > **PathStringOf**\<`Ps`\> = [`PathString`](PathString.md)\<keyof `{ [K in keyof Ps as Ps[K] extends PathParameter<infer Schema> ? Schema extends z.ZodOptional<z.ZodTypeAny> ? never : K : never]: Ps[K] }`\>
 
-Defined in: [src/types.ts:245](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L245)
+Defined in: [src/types.ts:245](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L245)
 
 Infer the path string literal template of route parameters.
 
@@ -3781,7 +3781,7 @@ Infer the path string literal template of route parameters.
 
 > **PathString**\<`T`\> = [`Permutation`](Permutation.md)\<`T`\> *extends* infer U ? `PathJoin`\<`U`\> : `never`
 
-Defined in: [src/types.ts:242](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L242)
+Defined in: [src/types.ts:242](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L242)
 
 ## Type Parameters
 
@@ -3801,7 +3801,7 @@ Defined in: [src/types.ts:242](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **PathParameter**\<`S`\> = [`RouteParameter`](RouteParameter.md)\<`S`\> & `object`
 
-Defined in: [src/types.ts:61](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L61)
+Defined in: [src/types.ts:61](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L61)
 
 ## Type Declaration
 
@@ -3831,7 +3831,7 @@ Defined in: [src/types.ts:61](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **Next** = () => `Promise`\<`Response`\>
 
-Defined in: [src/types.ts:25](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L25)
+Defined in: [src/types.ts:25](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L25)
 
 ## Returns
 
@@ -3849,7 +3849,7 @@ Defined in: [src/types.ts:25](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **MiddlewareHandler** = (`args`, `next`) => [`Awaitable`](Awaitable.md)\<`Response`\>
 
-Defined in: [src/types.ts:204](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L204)
+Defined in: [src/types.ts:204](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L204)
 
 Shape for middleware.
 
@@ -3879,7 +3879,7 @@ Shape for middleware.
 
 > **MapValueOverwriteLiteral**\<`M`, `F`\> = `string` *extends* keyof `M` ? `object` : `` { [K in keyof M]?: `${F[0]}`${K & string}`${F[1]}` } ``
 
-Defined in: [src/types.ts:91](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L91)
+Defined in: [src/types.ts:91](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L91)
 
 Overwrite map values with template literal strings.
 
@@ -3905,7 +3905,7 @@ Overwrite map values with template literal strings.
 
 > **Later** = (`fn`) => `void`
 
-Defined in: [src/types.ts:27](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L27)
+Defined in: [src/types.ts:27](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L27)
 
 ## Parameters
 
@@ -3929,7 +3929,7 @@ Defined in: [src/types.ts:27](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **InitOf**\<`C`\> = `C` *extends* (`init`) => `InstanceType`\<`C`\> ? `I` : `never`
 
-Defined in: [src/types.ts:184](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L184)
+Defined in: [src/types.ts:184](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L184)
 
 Infer the `init` type of a class constructor.
 
@@ -3951,7 +3951,7 @@ Infer the `init` type of a class constructor.
 
 > **ImplicitParameters**\<`Ps`\> = [`UnionToIntersection`](UnionToIntersection.md)\<`{ [K in keyof Ps]: Ps[K] extends DependsParameter<any, infer PsDepend> ? FlattenParameters<PsDepend> : never }`\[keyof `Ps`\] \| \{ \}\>
 
-Defined in: [src/types.ts:167](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L167)
+Defined in: [src/types.ts:167](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L167)
 
 Infer implicit parameters from dependencies.
 
@@ -3973,7 +3973,7 @@ Infer implicit parameters from dependencies.
 
 > **HTTPMethodLower** = `"get"` \| `"post"` \| `"put"` \| `"patch"` \| `"delete"` \| `"head"` \| `"options"` \| `"trace"`
 
-Defined in: [src/types.ts:13](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L13)
+Defined in: [src/types.ts:13](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L13)
 
 ## reference/types/type-aliases/HTTPMethod.md
 
@@ -3987,7 +3987,7 @@ Defined in: [src/types.ts:13](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **HTTPMethod** = `"GET"` \| `"POST"` \| `"PUT"` \| `"PATCH"` \| `"DELETE"` \| `"HEAD"` \| `"OPTIONS"` \| `"TRACE"`
 
-Defined in: [src/types.ts:12](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L12)
+Defined in: [src/types.ts:12](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L12)
 
 ## reference/types/type-aliases/HeaderParameter.md
 
@@ -4001,7 +4001,7 @@ Defined in: [src/types.ts:12](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **HeaderParameter**\<`S`\> = [`RouteParameter`](RouteParameter.md)\<`S`\> & `object`
 
-Defined in: [src/types.ts:69](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L69)
+Defined in: [src/types.ts:69](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L69)
 
 ## Type Declaration
 
@@ -4031,7 +4031,7 @@ Defined in: [src/types.ts:69](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **GenericRouteParameters**\<`Ps0`\> = [`RouteParameters`](RouteParameters.md) *extends* `Ps0` ? `object` : [`RouteParameters`](RouteParameters.md)
 
-Defined in: [src/types.ts:134](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L134)
+Defined in: [src/types.ts:134](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L134)
 
 Generic route parameters enforcing dual extension to allow optional default values.
 
@@ -4053,7 +4053,7 @@ Generic route parameters enforcing dual extension to allow optional default valu
 
 > **FlattenParameters**\<`Ps`\> = [`UnionToIntersection`](UnionToIntersection.md)\<`{ [K in keyof Ps]: Ps[K] extends DependsParameter<any, infer PsDepend> ? FlattenParameters<PsDepend> & { [P in K]: Ps[K] } : { [P in K]: Ps[K] } }`\[keyof `Ps`\]\>
 
-Defined in: [src/types.ts:158](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L158)
+Defined in: [src/types.ts:158](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L158)
 
 Flatten all parameters, including dependencies.
 
@@ -4075,7 +4075,7 @@ Flatten all parameters, including dependencies.
 
 > **ErrorHandler** = (`args`, `e`) => [`Awaitable`](Awaitable.md)\<`Response`\>
 
-Defined in: [src/types.ts:193](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L193)
+Defined in: [src/types.ts:193](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L193)
 
 Shape for error handler.
 
@@ -4105,7 +4105,7 @@ Shape for error handler.
 
 > **DisallowRuntimeParameters**\<`M`\> = `string` *extends* keyof `M` ? `object` : `object` & [`MapValueOverwriteLiteral`](MapValueOverwriteLiteral.md)\<[`RuntimeArgs`](../interfaces/RuntimeArgs.md), \[`"Parameter key "`, `" is already taken by a declared runtime argument. Use a different key."`\]\>
 
-Defined in: [src/types.ts:99](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L99)
+Defined in: [src/types.ts:99](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L99)
 
 ## Type Parameters
 
@@ -4125,7 +4125,7 @@ Defined in: [src/types.ts:99](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **DisallowDependencyParameters**\<`M`\> = [`MapValueOverwriteLiteral`](MapValueOverwriteLiteral.md)\<`M`, \[`"Parameter key "`, `" is already taken by an implicit parameter on a declared dependency. The declaration may be redundant, remove it or use a different key."`\]\>
 
-Defined in: [src/types.ts:111](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L111)
+Defined in: [src/types.ts:111](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L111)
 
 ## Type Parameters
 
@@ -4145,7 +4145,7 @@ Defined in: [src/types.ts:111](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **DisallowBaseParameters**\<`M`\> = [`MapValueOverwriteLiteral`](MapValueOverwriteLiteral.md)\<`M`, \[`"Parameter key "`, `" is already taken by a declared parameter on the base router. The declaration may be redundant, remove it or use a different key."`\]\>
 
-Defined in: [src/types.ts:125](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L125)
+Defined in: [src/types.ts:125](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L125)
 
 ## Type Parameters
 
@@ -4165,7 +4165,7 @@ Defined in: [src/types.ts:125](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **DisallowBaseDependencyParameters**\<`M`\> = [`MapValueOverwriteLiteral`](MapValueOverwriteLiteral.md)\<`M`, \[`"Parameter key "`, `" is already taken by an implicit parameter on a declared dependency from the base router. The declaration may be redundant, remove it or use a different key."`\]\>
 
-Defined in: [src/types.ts:118](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L118)
+Defined in: [src/types.ts:118](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L118)
 
 ## Type Parameters
 
@@ -4185,7 +4185,7 @@ Defined in: [src/types.ts:118](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **DependsParameter**\<`S`, `Ps`\> = [`RouteParameter`](RouteParameter.md)\<`S`\> & `object`
 
-Defined in: [src/types.ts:82](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L82)
+Defined in: [src/types.ts:82](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L82)
 
 ## Type Declaration
 
@@ -4219,7 +4219,7 @@ Defined in: [src/types.ts:82](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **DependencyHandler**\<`Args`, `R`\> = `Args` *extends* `any` ? (`args`, `later`) => [`Awaitable`](Awaitable.md)\<`R`\> : `never`
 
-Defined in: [src/types.ts:199](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L199)
+Defined in: [src/types.ts:199](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L199)
 
 Shape for dependency handler.
 
@@ -4245,7 +4245,7 @@ Shape for dependency handler.
 
 > **CookieParameter**\<`S`\> = [`RouteParameter`](RouteParameter.md)\<`S`\> & `object`
 
-Defined in: [src/types.ts:73](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L73)
+Defined in: [src/types.ts:73](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L73)
 
 ## Type Declaration
 
@@ -4275,7 +4275,7 @@ Defined in: [src/types.ts:73](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **BodyParameter**\<`S`\> = [`RouteParameter`](RouteParameter.md)\<`S`\> & `object`
 
-Defined in: [src/types.ts:77](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L77)
+Defined in: [src/types.ts:77](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L77)
 
 ## Type Declaration
 
@@ -4313,7 +4313,7 @@ Defined in: [src/types.ts:77](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **Awaitable**\<`T`\> = `T` \| `Promise`\<`T`\>
 
-Defined in: [src/types.ts:190](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L190)
+Defined in: [src/types.ts:190](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L190)
 
 ## Type Parameters
 
@@ -4333,7 +4333,7 @@ Defined in: [src/types.ts:190](https://github.com/ianhco/cerces/blob/9671bd13fcd
 
 > **ArgsOf**\<`Ps`\> = [`Simplify`](Simplify.md)\<[`RuntimeArgs`](../interfaces/RuntimeArgs.md) & `object` & `{ [K in keyof FlattenParameters<Ps>]: TypeOf<FlattenParameters<Ps>[K]> }`\>
 
-Defined in: [src/types.ts:177](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L177)
+Defined in: [src/types.ts:177](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L177)
 
 Infer the arguments of a handler based on provided route parameters.
 
@@ -4353,7 +4353,7 @@ Infer the arguments of a handler based on provided route parameters.
 
 # Interface: RuntimeArgs
 
-Defined in: [src/types.ts:7](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/types.ts#L7)
+Defined in: [src/types.ts:7](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/types.ts#L7)
 
 Runtime arguments for the request to be declared in `.d.ts`.
 
@@ -4369,7 +4369,7 @@ Runtime arguments for the request to be declared in `.d.ts`.
 
 > **generateRouteSummary**(`method`, `path`): `string`
 
-Defined in: [src/routing.ts:59](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L59)
+Defined in: [src/routing.ts:59](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L59)
 
 Generate a default summary string for a route based on its method and path.
 
@@ -4397,7 +4397,7 @@ Generate a default summary string for a route based on its method and path.
 
 # Class: RouteNode
 
-Defined in: [src/routing.ts:245](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L245)
+Defined in: [src/routing.ts:245](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L245)
 
 Represents a node in the routing tree structure.
 
@@ -4410,7 +4410,7 @@ associated routes for different HTTP methods, middleware, and parameter names fo
 
 > **new RouteNode**(`name`): `RouteNode`
 
-Defined in: [src/routing.ts:252](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L252)
+Defined in: [src/routing.ts:252](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L252)
 
 #### Parameters
 
@@ -4428,7 +4428,7 @@ Defined in: [src/routing.ts:252](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **name**: `string`
 
-Defined in: [src/routing.ts:247](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L247)
+Defined in: [src/routing.ts:247](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L247)
 
 ***
 
@@ -4436,7 +4436,7 @@ Defined in: [src/routing.ts:247](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **routes**: `Record`\<`string`, [`Route`](Route.md)\<`any`, `any`, `any`\>\>
 
-Defined in: [src/routing.ts:248](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L248)
+Defined in: [src/routing.ts:248](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L248)
 
 ***
 
@@ -4444,7 +4444,7 @@ Defined in: [src/routing.ts:248](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **middleware**: [`Middleware`](../../core/classes/Middleware.md)[]
 
-Defined in: [src/routing.ts:249](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L249)
+Defined in: [src/routing.ts:249](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L249)
 
 ***
 
@@ -4452,7 +4452,7 @@ Defined in: [src/routing.ts:249](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **paramNames**: `string`[]
 
-Defined in: [src/routing.ts:250](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L250)
+Defined in: [src/routing.ts:250](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L250)
 
 ## Methods
 
@@ -4460,7 +4460,7 @@ Defined in: [src/routing.ts:250](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **touch**(`node`): `RouteNode`
 
-Defined in: [src/routing.ts:260](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L260)
+Defined in: [src/routing.ts:260](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L260)
 
 #### Parameters
 
@@ -4478,7 +4478,7 @@ Defined in: [src/routing.ts:260](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **match**(`node`): `undefined` \| `RouteNode`
 
-Defined in: [src/routing.ts:265](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L265)
+Defined in: [src/routing.ts:265](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L265)
 
 #### Parameters
 
@@ -4500,7 +4500,7 @@ Defined in: [src/routing.ts:265](https://github.com/ianhco/cerces/blob/9671bd13f
 
 # Class: RouteMatcher
 
-Defined in: [src/routing.ts:275](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L275)
+Defined in: [src/routing.ts:275](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L275)
 
 Manages a collection of routes and provides functionality to match incoming HTTP requests to routes.
 
@@ -4512,7 +4512,7 @@ This class builds a tree structure for efficient route matching and supports mid
 
 > **new RouteMatcher**(): `RouteMatcher`
 
-Defined in: [src/routing.ts:279](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L279)
+Defined in: [src/routing.ts:279](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L279)
 
 #### Returns
 
@@ -4524,7 +4524,7 @@ Defined in: [src/routing.ts:279](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **routes**: [`Route`](Route.md)\<`any`, `any`, `any`\>[]
 
-Defined in: [src/routing.ts:276](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L276)
+Defined in: [src/routing.ts:276](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L276)
 
 ***
 
@@ -4532,7 +4532,7 @@ Defined in: [src/routing.ts:276](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **tree**: [`RouteNode`](RouteNode.md)
 
-Defined in: [src/routing.ts:277](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L277)
+Defined in: [src/routing.ts:277](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L277)
 
 ## Accessors
 
@@ -4542,7 +4542,7 @@ Defined in: [src/routing.ts:277](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **get** **length**(): `number`
 
-Defined in: [src/routing.ts:290](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L290)
+Defined in: [src/routing.ts:290](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L290)
 
 ##### Returns
 
@@ -4554,7 +4554,7 @@ Defined in: [src/routing.ts:290](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **\[iterator\]**(): `IterableIterator`\<[`Route`](Route.md)\<`any`, `any`, `any`\>\>
 
-Defined in: [src/routing.ts:284](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L284)
+Defined in: [src/routing.ts:284](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L284)
 
 #### Returns
 
@@ -4566,7 +4566,7 @@ Defined in: [src/routing.ts:284](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **get**(`path`): [`RouteNode`](RouteNode.md)
 
-Defined in: [src/routing.ts:294](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L294)
+Defined in: [src/routing.ts:294](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L294)
 
 #### Parameters
 
@@ -4584,7 +4584,7 @@ Defined in: [src/routing.ts:294](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **set**(`path`, `values`): [`RouteNode`](RouteNode.md)
 
-Defined in: [src/routing.ts:312](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L312)
+Defined in: [src/routing.ts:312](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L312)
 
 #### Parameters
 
@@ -4608,7 +4608,7 @@ Defined in: [src/routing.ts:312](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **push**(...`routes`): `number`
 
-Defined in: [src/routing.ts:320](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L320)
+Defined in: [src/routing.ts:320](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L320)
 
 #### Parameters
 
@@ -4626,7 +4626,7 @@ Defined in: [src/routing.ts:320](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **match**(`method`, `path`): \[`undefined` \| `null` \| [`Route`](Route.md)\<`any`, `any`, `any`\>, `Record`\<`string`, `string`\>, [`Middleware`](../../core/classes/Middleware.md)[]\]
 
-Defined in: [src/routing.ts:329](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L329)
+Defined in: [src/routing.ts:329](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L329)
 
 #### Parameters
 
@@ -4652,7 +4652,7 @@ Defined in: [src/routing.ts:329](https://github.com/ianhco/cerces/blob/9671bd13f
 
 # Class: Route\<PsBase, Ps, R\>
 
-Defined in: [src/routing.ts:89](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L89)
+Defined in: [src/routing.ts:89](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L89)
 
 Represents a route declaration in the routing system.
 
@@ -4685,7 +4685,7 @@ The response type returned by the route handler.
 
 > **new Route**\<`PsBase`, `Ps`, `R`\>(`init`): `Route`\<`PsBase`, `Ps`, `R`\>
 
-Defined in: [src/routing.ts:110](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L110)
+Defined in: [src/routing.ts:110](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L110)
 
 #### Parameters
 
@@ -4761,7 +4761,7 @@ Defined in: [src/routing.ts:110](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **method**: [`HTTPMethod`](../../types/type-aliases/HTTPMethod.md)
 
-Defined in: [src/routing.ts:94](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L94)
+Defined in: [src/routing.ts:94](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L94)
 
 ***
 
@@ -4769,7 +4769,7 @@ Defined in: [src/routing.ts:94](https://github.com/ianhco/cerces/blob/9671bd13fc
 
 > **path**: `string`
 
-Defined in: [src/routing.ts:95](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L95)
+Defined in: [src/routing.ts:95](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L95)
 
 ***
 
@@ -4777,7 +4777,7 @@ Defined in: [src/routing.ts:95](https://github.com/ianhco/cerces/blob/9671bd13fc
 
 > `optional` **name**: `string`
 
-Defined in: [src/routing.ts:96](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L96)
+Defined in: [src/routing.ts:96](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L96)
 
 ***
 
@@ -4785,7 +4785,7 @@ Defined in: [src/routing.ts:96](https://github.com/ianhco/cerces/blob/9671bd13fc
 
 > **tags**: `string`[]
 
-Defined in: [src/routing.ts:97](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L97)
+Defined in: [src/routing.ts:97](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L97)
 
 ***
 
@@ -4793,7 +4793,7 @@ Defined in: [src/routing.ts:97](https://github.com/ianhco/cerces/blob/9671bd13fc
 
 > **summary**: `string`
 
-Defined in: [src/routing.ts:98](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L98)
+Defined in: [src/routing.ts:98](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L98)
 
 ***
 
@@ -4801,7 +4801,7 @@ Defined in: [src/routing.ts:98](https://github.com/ianhco/cerces/blob/9671bd13fc
 
 > **description**: `string`
 
-Defined in: [src/routing.ts:99](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L99)
+Defined in: [src/routing.ts:99](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L99)
 
 ***
 
@@ -4809,7 +4809,7 @@ Defined in: [src/routing.ts:99](https://github.com/ianhco/cerces/blob/9671bd13fc
 
 > **deprecated**: `boolean`
 
-Defined in: [src/routing.ts:100](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L100)
+Defined in: [src/routing.ts:100](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L100)
 
 ***
 
@@ -4817,7 +4817,7 @@ Defined in: [src/routing.ts:100](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **responses**: `Record`\<`number`, `ResponseConfig`\>
 
-Defined in: [src/routing.ts:101](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L101)
+Defined in: [src/routing.ts:101](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L101)
 
 ***
 
@@ -4825,7 +4825,7 @@ Defined in: [src/routing.ts:101](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > `optional` **security**: `SecurityRequirementObject`[]
 
-Defined in: [src/routing.ts:102](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L102)
+Defined in: [src/routing.ts:102](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L102)
 
 ***
 
@@ -4833,7 +4833,7 @@ Defined in: [src/routing.ts:102](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **statusCode**: `number`
 
-Defined in: [src/routing.ts:103](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L103)
+Defined in: [src/routing.ts:103](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L103)
 
 ***
 
@@ -4841,7 +4841,7 @@ Defined in: [src/routing.ts:103](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **includeInSchema**: `boolean`
 
-Defined in: [src/routing.ts:104](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L104)
+Defined in: [src/routing.ts:104](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L104)
 
 ***
 
@@ -4849,7 +4849,7 @@ Defined in: [src/routing.ts:104](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **responseClass**: [`ResponseClass`](../../types/type-aliases/ResponseClass.md)
 
-Defined in: [src/routing.ts:105](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L105)
+Defined in: [src/routing.ts:105](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L105)
 
 ***
 
@@ -4857,7 +4857,7 @@ Defined in: [src/routing.ts:105](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **middleware**: [`Middleware`](../../core/classes/Middleware.md)[]
 
-Defined in: [src/routing.ts:106](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L106)
+Defined in: [src/routing.ts:106](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L106)
 
 ***
 
@@ -4865,7 +4865,7 @@ Defined in: [src/routing.ts:106](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **parameters**: `Ps`
 
-Defined in: [src/routing.ts:107](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L107)
+Defined in: [src/routing.ts:107](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L107)
 
 ***
 
@@ -4873,7 +4873,7 @@ Defined in: [src/routing.ts:107](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **handle**: [`RouteHandler`](../../types/type-aliases/RouteHandler.md)\<[`Simplify`](../../types/type-aliases/Simplify.md)\<[`RuntimeArgs`](../../types/interfaces/RuntimeArgs.md) & `object` & \{ \[K in string \| number \| symbol\]: TypeOf\<UnionToIntersection\<\{ \[K in string \| number \| symbol\]: (...)\[(...)\] extends DependsParameter\<(...), (...)\> ? (...) & (...) : \{ \[P in (...)\]: (...) \} \}\[keyof Ps \| keyof PsBase\]\>\[K\]\> \}\>, `R`\>
 
-Defined in: [src/routing.ts:108](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L108)
+Defined in: [src/routing.ts:108](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L108)
 
 ## Methods
 
@@ -4881,7 +4881,7 @@ Defined in: [src/routing.ts:108](https://github.com/ianhco/cerces/blob/9671bd13f
 
 > **openapi**(): `RouteConfig`
 
-Defined in: [src/routing.ts:148](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/routing.ts#L148)
+Defined in: [src/routing.ts:148](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/routing.ts#L148)
 
 #### Returns
 
@@ -4897,7 +4897,7 @@ Defined in: [src/routing.ts:148](https://github.com/ianhco/cerces/blob/9671bd13f
 
 # Class: PlainTextResponse
 
-Defined in: [src/responses.ts:27](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/responses.ts#L27)
+Defined in: [src/responses.ts:27](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/responses.ts#L27)
 
 A Response subclass that casts the response body using `String` and
 sets the `Content-Type` header to `text/plain`
@@ -4912,7 +4912,7 @@ sets the `Content-Type` header to `text/plain`
 
 > **new PlainTextResponse**(`body`, `init?`): `PlainTextResponse`
 
-Defined in: [src/responses.ts:28](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/responses.ts#L28)
+Defined in: [src/responses.ts:28](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/responses.ts#L28)
 
 #### Parameters
 
@@ -5290,7 +5290,7 @@ The **`redirect()`** static method of the Response interface returns a `Response
 
 # Class: JSONResponse
 
-Defined in: [src/responses.ts:5](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/responses.ts#L5)
+Defined in: [src/responses.ts:5](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/responses.ts#L5)
 
 A Response subclass that serializes the response body using `JSON.stringify`
 and sets the `Content-Type` header to `application/json`
@@ -5305,7 +5305,7 @@ and sets the `Content-Type` header to `application/json`
 
 > **new JSONResponse**(`body`, `init?`): `JSONResponse`
 
-Defined in: [src/responses.ts:6](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/responses.ts#L6)
+Defined in: [src/responses.ts:6](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/responses.ts#L6)
 
 #### Parameters
 
@@ -5683,7 +5683,7 @@ The **`redirect()`** static method of the Response interface returns a `Response
 
 # Class: HTMLResponse
 
-Defined in: [src/responses.ts:16](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/responses.ts#L16)
+Defined in: [src/responses.ts:16](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/responses.ts#L16)
 
 A Response subclass that casts the response body using `String` and
 sets the `Content-Type` header to `text/html`
@@ -5698,7 +5698,7 @@ sets the `Content-Type` header to `text/html`
 
 > **new HTMLResponse**(`body`, `init?`): `HTMLResponse`
 
-Defined in: [src/responses.ts:17](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/responses.ts#L17)
+Defined in: [src/responses.ts:17](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/responses.ts#L17)
 
 #### Parameters
 
@@ -6080,7 +6080,7 @@ The **`redirect()`** static method of the Response interface returns a `Response
 
 > **Responds**(): `ResponseConfig`
 
-Defined in: [src/parameters.ts:169](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L169)
+Defined in: [src/parameters.ts:169](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L169)
 
 ### Returns
 
@@ -6090,7 +6090,7 @@ Defined in: [src/parameters.ts:169](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Responds**(`schema`, `options?`): `ResponseConfig`
 
-Defined in: [src/parameters.ts:170](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L170)
+Defined in: [src/parameters.ts:170](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L170)
 
 ### Parameters
 
@@ -6110,7 +6110,7 @@ Defined in: [src/parameters.ts:170](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Responds**(`schema`, `options?`): `ResponseConfig`
 
-Defined in: [src/parameters.ts:171](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L171)
+Defined in: [src/parameters.ts:171](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L171)
 
 ### Parameters
 
@@ -6134,7 +6134,7 @@ Defined in: [src/parameters.ts:171](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Responds**(`schema`, `options?`): `ResponseConfig`
 
-Defined in: [src/parameters.ts:172](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L172)
+Defined in: [src/parameters.ts:172](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L172)
 
 ### Parameters
 
@@ -6158,7 +6158,7 @@ Defined in: [src/parameters.ts:172](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Responds**(`schema`, `options?`): `ResponseConfig`
 
-Defined in: [src/parameters.ts:173](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L173)
+Defined in: [src/parameters.ts:173](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L173)
 
 ### Parameters
 
@@ -6186,7 +6186,7 @@ Defined in: [src/parameters.ts:173](https://github.com/ianhco/cerces/blob/9671bd
 
 > **resolveArgs**\<`Ps`\>(`parameters`, `input`, `cache?`): `Promise`\<[`ResolveArgsInfo`](../../types/type-aliases/ResolveArgsInfo.md)\<`Ps`\>\>
 
-Defined in: [src/parameters.ts:223](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L223)
+Defined in: [src/parameters.ts:223](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L223)
 
 ## Type Parameters
 
@@ -6252,7 +6252,7 @@ Defined in: [src/parameters.ts:223](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Query**(): [`QueryParameter`](../../types/type-aliases/QueryParameter.md)\<`ZodString`\>
 
-Defined in: [src/parameters.ts:44](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L44)
+Defined in: [src/parameters.ts:44](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L44)
 
 ### Returns
 
@@ -6262,7 +6262,7 @@ Defined in: [src/parameters.ts:44](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **Query**\<`S`\>(`schema`, `options?`): [`QueryParameter`](../../types/type-aliases/QueryParameter.md)\<`S`\>
 
-Defined in: [src/parameters.ts:45](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L45)
+Defined in: [src/parameters.ts:45](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L45)
 
 ### Type Parameters
 
@@ -6312,7 +6312,7 @@ Defined in: [src/parameters.ts:45](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **Path**(): [`PathParameter`](../../types/type-aliases/PathParameter.md)\<`ZodString`\>
 
-Defined in: [src/parameters.ts:25](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L25)
+Defined in: [src/parameters.ts:25](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L25)
 
 ### Returns
 
@@ -6322,7 +6322,7 @@ Defined in: [src/parameters.ts:25](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **Path**\<`S`\>(`schema`, `options?`): [`PathParameter`](../../types/type-aliases/PathParameter.md)\<`S`\>
 
-Defined in: [src/parameters.ts:26](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L26)
+Defined in: [src/parameters.ts:26](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L26)
 
 ### Type Parameters
 
@@ -6366,7 +6366,7 @@ Defined in: [src/parameters.ts:26](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **parseCookie**(`cookieHeader?`): `Record`\<`string`, `string`\>
 
-Defined in: [src/parameters.ts:198](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L198)
+Defined in: [src/parameters.ts:198](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L198)
 
 ## Parameters
 
@@ -6392,7 +6392,7 @@ Defined in: [src/parameters.ts:198](https://github.com/ianhco/cerces/blob/9671bd
 
 > **jsonCoerce**\<`Out`\>(`value`): `string` \| `Out`
 
-Defined in: [src/parameters.ts:143](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L143)
+Defined in: [src/parameters.ts:143](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L143)
 
 ### Type Parameters
 
@@ -6414,7 +6414,7 @@ Defined in: [src/parameters.ts:143](https://github.com/ianhco/cerces/blob/9671bd
 
 > **jsonCoerce**\<`Out`\>(`value`): `string`[] \| `Out`[]
 
-Defined in: [src/parameters.ts:144](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L144)
+Defined in: [src/parameters.ts:144](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L144)
 
 ### Type Parameters
 
@@ -6444,7 +6444,7 @@ Defined in: [src/parameters.ts:144](https://github.com/ianhco/cerces/blob/9671bd
 
 > **isJsonCoercible**(`schema`): `boolean`
 
-Defined in: [src/parameters.ts:158](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L158)
+Defined in: [src/parameters.ts:158](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L158)
 
 ## Parameters
 
@@ -6470,7 +6470,7 @@ Defined in: [src/parameters.ts:158](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Header**(): [`HeaderParameter`](../../types/type-aliases/HeaderParameter.md)\<`ZodString`\>
 
-Defined in: [src/parameters.ts:63](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L63)
+Defined in: [src/parameters.ts:63](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L63)
 
 ### Returns
 
@@ -6480,7 +6480,7 @@ Defined in: [src/parameters.ts:63](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **Header**\<`S`\>(`schema`, `options?`): [`HeaderParameter`](../../types/type-aliases/HeaderParameter.md)\<`S`\>
 
-Defined in: [src/parameters.ts:64](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L64)
+Defined in: [src/parameters.ts:64](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L64)
 
 ### Type Parameters
 
@@ -6528,7 +6528,7 @@ Defined in: [src/parameters.ts:64](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **Depends**\<`Ps`, `R`\>(`dependency`): [`DependsParameter`](../../types/type-aliases/DependsParameter.md)\<`ZodType`\<`R`, `unknown`, `$ZodTypeInternals`\<`R`, `unknown`\>\>, `Ps`\>
 
-Defined in: [src/parameters.ts:133](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L133)
+Defined in: [src/parameters.ts:133](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L133)
 
 ## Type Parameters
 
@@ -6564,7 +6564,7 @@ Defined in: [src/parameters.ts:133](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Cookie**(): [`CookieParameter`](../../types/type-aliases/CookieParameter.md)\<`ZodString`\>
 
-Defined in: [src/parameters.ts:82](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L82)
+Defined in: [src/parameters.ts:82](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L82)
 
 ### Returns
 
@@ -6574,7 +6574,7 @@ Defined in: [src/parameters.ts:82](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **Cookie**\<`S`\>(`schema`, `options?`): [`CookieParameter`](../../types/type-aliases/CookieParameter.md)\<`S`\>
 
-Defined in: [src/parameters.ts:83](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L83)
+Defined in: [src/parameters.ts:83](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L83)
 
 ### Type Parameters
 
@@ -6624,7 +6624,7 @@ Defined in: [src/parameters.ts:83](https://github.com/ianhco/cerces/blob/9671bd1
 
 > **Body**(): [`BodyParameter`](../../types/type-aliases/BodyParameter.md)\<`ZodString`\>
 
-Defined in: [src/parameters.ts:101](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L101)
+Defined in: [src/parameters.ts:101](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L101)
 
 ### Returns
 
@@ -6634,7 +6634,7 @@ Defined in: [src/parameters.ts:101](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Body**(`schema`, `options?`): [`BodyParameter`](../../types/type-aliases/BodyParameter.md)\<`ZodString`\>
 
-Defined in: [src/parameters.ts:102](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L102)
+Defined in: [src/parameters.ts:102](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L102)
 
 ### Parameters
 
@@ -6668,7 +6668,7 @@ Defined in: [src/parameters.ts:102](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Body**(`schema`, `options?`): [`BodyParameter`](../../types/type-aliases/BodyParameter.md)\<`ZodType`\<`Blob`, `unknown`, `$ZodTypeInternals`\<`Blob`, `unknown`\>\>\>
 
-Defined in: [src/parameters.ts:106](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L106)
+Defined in: [src/parameters.ts:106](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L106)
 
 ### Parameters
 
@@ -6706,7 +6706,7 @@ Defined in: [src/parameters.ts:106](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Body**(`schema`, `options?`): [`BodyParameter`](../../types/type-aliases/BodyParameter.md)\<`ZodType`\<`ReadableStream`\<`any`\>, `unknown`, `$ZodTypeInternals`\<`ReadableStream`\<`any`\>, `unknown`\>\>\>
 
-Defined in: [src/parameters.ts:110](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L110)
+Defined in: [src/parameters.ts:110](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L110)
 
 ### Parameters
 
@@ -6744,7 +6744,7 @@ Defined in: [src/parameters.ts:110](https://github.com/ianhco/cerces/blob/9671bd
 
 > **Body**\<`S`\>(`schema`, `options?`): [`BodyParameter`](../../types/type-aliases/BodyParameter.md)\<`S`\>
 
-Defined in: [src/parameters.ts:114](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/parameters.ts#L114)
+Defined in: [src/parameters.ts:114](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/parameters.ts#L114)
 
 ### Type Parameters
 
@@ -6788,7 +6788,7 @@ Defined in: [src/parameters.ts:114](https://github.com/ianhco/cerces/blob/9671bd
 
 > **createTrustedHostMiddleware**(`allowedHosts`): [`Middleware`](../../../core/classes/Middleware.md)
 
-Defined in: [src/middleware/trusted-host.ts:21](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/trusted-host.ts#L21)
+Defined in: [src/middleware/trusted-host.ts:21](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/trusted-host.ts#L21)
 
 Creates a middleware that restricts access based on the "Host" header of incoming requests.
 It checks if the host matches any of the allowed host patterns.
@@ -6819,7 +6819,7 @@ A Middleware instance that enforces the trusted host policy.
 
 > **createHostMatcher**(`pattern`): (`host`) => `boolean`
 
-Defined in: [src/middleware/trusted-host.ts:5](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/trusted-host.ts#L5)
+Defined in: [src/middleware/trusted-host.ts:5](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/trusted-host.ts#L5)
 
 Creates a host matcher function based on the provided pattern.
 
@@ -6855,7 +6855,7 @@ Creates a host matcher function based on the provided pattern.
 
 > **createCORSMiddleware**(`options?`): [`Middleware`](../../../core/classes/Middleware.md)
 
-Defined in: [src/middleware/cors.ts:10](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/cors.ts#L10)
+Defined in: [src/middleware/cors.ts:10](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/cors.ts#L10)
 
 Creates a middleware that handles CORS (Cross-Origin Resource Sharing) for incoming requests.
 It sets appropriate CORS headers based on the provided options and handles preflight requests.
@@ -6908,7 +6908,7 @@ A Middleware instance that manages CORS for incoming requests.
 
 > **CompressionFormat** = `"deflate"` \| `"deflate-raw"` \| `"gzip"`
 
-Defined in: [src/middleware/compression.ts:3](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L3)
+Defined in: [src/middleware/compression.ts:3](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L3)
 
 ## reference/middleware/compression/index.md
 
@@ -6945,7 +6945,7 @@ Defined in: [src/middleware/compression.ts:3](https://github.com/ianhco/cerces/b
 
 > **createCompressionMiddleware**(`format`): [`Middleware`](../../../core/classes/Middleware.md)
 
-Defined in: [src/middleware/compression.ts:80](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L80)
+Defined in: [src/middleware/compression.ts:80](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L80)
 
 Creates a middleware that compresses HTTP responses using the specified format.
 It checks the "Accept-Encoding" header of the incoming request to determine
@@ -6975,7 +6975,7 @@ A Middleware instance that applies the specified compression to responses.
 
 # Class: DecompressionStream
 
-Defined in: [src/middleware/compression.ts:49](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L49)
+Defined in: [src/middleware/compression.ts:49](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L49)
 
 Polyfill for DecompressionStream using zlib if runtime does not have built-in support
 
@@ -6989,7 +6989,7 @@ Polyfill for DecompressionStream using zlib if runtime does not have built-in su
 
 > **new DecompressionStream**(`format`): `DecompressionStream`
 
-Defined in: [src/middleware/compression.ts:52](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L52)
+Defined in: [src/middleware/compression.ts:52](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L52)
 
 #### Parameters
 
@@ -7007,7 +7007,7 @@ Defined in: [src/middleware/compression.ts:52](https://github.com/ianhco/cerces/
 
 > **readable**: `ReadableStream`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: [src/middleware/compression.ts:50](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L50)
+Defined in: [src/middleware/compression.ts:50](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L50)
 
 #### Implementation of
 
@@ -7019,7 +7019,7 @@ Defined in: [src/middleware/compression.ts:50](https://github.com/ianhco/cerces/
 
 > **writable**: `WritableStream`\<`BufferSource`\>
 
-Defined in: [src/middleware/compression.ts:51](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L51)
+Defined in: [src/middleware/compression.ts:51](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L51)
 
 Provides a convenient, chainable way of piping this readable stream through a transform stream (or any other { writable, readable } pair). It simply pipes the stream into the writable side of the supplied pair, and returns the readable side for further use.
 
@@ -7039,7 +7039,7 @@ Piping a stream will lock it for the duration of the pipe, preventing any other 
 
 # Class: CompressionStream
 
-Defined in: [src/middleware/compression.ts:25](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L25)
+Defined in: [src/middleware/compression.ts:25](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L25)
 
 Polyfill for CompressionStream using zlib if runtime does not have built-in support
 
@@ -7053,7 +7053,7 @@ Polyfill for CompressionStream using zlib if runtime does not have built-in supp
 
 > **new CompressionStream**(`format`): `CompressionStream`
 
-Defined in: [src/middleware/compression.ts:28](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L28)
+Defined in: [src/middleware/compression.ts:28](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L28)
 
 #### Parameters
 
@@ -7071,7 +7071,7 @@ Defined in: [src/middleware/compression.ts:28](https://github.com/ianhco/cerces/
 
 > **readable**: `ReadableStream`\<`Uint8Array`\<`ArrayBufferLike`\>\>
 
-Defined in: [src/middleware/compression.ts:26](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L26)
+Defined in: [src/middleware/compression.ts:26](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L26)
 
 #### Implementation of
 
@@ -7083,7 +7083,7 @@ Defined in: [src/middleware/compression.ts:26](https://github.com/ianhco/cerces/
 
 > **writable**: `WritableStream`\<`BufferSource`\>
 
-Defined in: [src/middleware/compression.ts:27](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/middleware/compression.ts#L27)
+Defined in: [src/middleware/compression.ts:27](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/middleware/compression.ts#L27)
 
 Provides a convenient, chainable way of piping this readable stream through a transform stream (or any other { writable, readable } pair). It simply pipes the stream into the writable side of the supplied pair, and returns the readable side for further use.
 
@@ -7229,7 +7229,7 @@ Re-exports [PlainTextResponse](../responses/classes/PlainTextResponse.md)
 
 > **unsafeZodUnwrap**\<`T`\>(`type`): `undefined` \| `ZodType`\<`unknown`, `unknown`, `$ZodTypeInternals`\<`unknown`, `unknown`\>\>
 
-Defined in: [src/helpers.ts:71](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/helpers.ts#L71)
+Defined in: [src/helpers.ts:71](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/helpers.ts#L71)
 
 Unwraps a Zod type if it has an `unwrap` method.
 This is useful for extracting the inner type from wrapper types like `ZodOptional` or `ZodNullable`.
@@ -7266,7 +7266,7 @@ The unwrapped Zod type, or `undefined` if it cannot be unwrapped.
 
 > **searchParamsToQueries**(`searchParams`): `Record`\<`string`, `string`[]\>
 
-Defined in: [src/helpers.ts:55](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/helpers.ts#L55)
+Defined in: [src/helpers.ts:55](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/helpers.ts#L55)
 
 Converts URL search parameters to a record of query parameters.
 
@@ -7296,7 +7296,7 @@ A record of query parameters.
 
 > **fixPathSlashes**(`path`): `string`
 
-Defined in: [src/helpers.ts:42](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/helpers.ts#L42)
+Defined in: [src/helpers.ts:42](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/helpers.ts#L42)
 
 Fixes the slashes in a path string.
 Cases handled:
@@ -7330,7 +7330,7 @@ The fixed path with consistent slashes.
 
 > **createResolveLater**\<`T`\>(): \[(`res`) => `void`, (`fn`) => `void`\]
 
-Defined in: [src/helpers.ts:10](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/helpers.ts#L10)
+Defined in: [src/helpers.ts:10](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/helpers.ts#L10)
 
 Creates a promise that can be resolved later.
 
@@ -7360,7 +7360,7 @@ and the later function can be used to register a callback chaining off the promi
 
 > **createObjectPartial**\<`T1`\>(`base`): \<`T2`\>(`final`) => `T1` & `T2`
 
-Defined in: [src/helpers.ts:28](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/helpers.ts#L28)
+Defined in: [src/helpers.ts:28](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/helpers.ts#L28)
 
 Creates a partial object by merging the base object with the final object.
 
@@ -7412,7 +7412,7 @@ The partial merger function.
 
 > **createSwaggerHTML**(`url`, `options?`): `` `<!DOCTYPE html>${string}</html>` ``
 
-Defined in: [src/docs.ts:7](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/docs.ts#L7)
+Defined in: [src/docs.ts:7](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/docs.ts#L7)
 
 Creates the HTML for the Swagger UI.
 
@@ -7466,7 +7466,7 @@ The HTML string for the Swagger UI.
 
 > **createRedocHTML**(`url`, `options?`): `` `<!DOCTYPE html>${string}</html>` ``
 
-Defined in: [src/docs.ts:72](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/docs.ts#L72)
+Defined in: [src/docs.ts:72](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/docs.ts#L72)
 
 Creates the HTML for the ReDoc documentation.
 
@@ -7512,7 +7512,7 @@ The HTML string for the ReDoc documentation.
 
 > **Base**\<`B`\>(): `B` *extends* [`Router`](../classes/Router.md)\<`PsBase`, `PsThis`\> ? `PsBase` & `PsThis` : `never`
 
-Defined in: [src/core.ts:47](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L47)
+Defined in: [src/core.ts:47](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L47)
 
 Type extractor for the base route parameters of a `Router` or `App`.
 
@@ -7540,7 +7540,7 @@ An empty value carrying the extracted base route parameters types.
 
 # Class: Router\<PsBase, PsThis\>
 
-Defined in: [src/core.ts:84](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L84)
+Defined in: [src/core.ts:84](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L84)
 
 ## Extended by
 
@@ -7562,7 +7562,7 @@ Defined in: [src/core.ts:84](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **new Router**\<`PsBase`, `PsThis`\>(`init`): `Router`\<`PsBase`, `PsThis`\>
 
-Defined in: [src/core.ts:100](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L100)
+Defined in: [src/core.ts:100](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L100)
 
 #### Parameters
 
@@ -7614,7 +7614,7 @@ Defined in: [src/core.ts:100](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `readonly` **rootPath**: `string` = `"/"`
 
-Defined in: [src/core.ts:89](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L89)
+Defined in: [src/core.ts:89](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L89)
 
 ***
 
@@ -7622,7 +7622,7 @@ Defined in: [src/core.ts:89](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **tags**: `string`[]
 
-Defined in: [src/core.ts:90](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L90)
+Defined in: [src/core.ts:90](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L90)
 
 ***
 
@@ -7630,7 +7630,7 @@ Defined in: [src/core.ts:90](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **deprecated**: `boolean`
 
-Defined in: [src/core.ts:91](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L91)
+Defined in: [src/core.ts:91](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L91)
 
 ***
 
@@ -7638,7 +7638,7 @@ Defined in: [src/core.ts:91](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **includeInSchema**: `boolean`
 
-Defined in: [src/core.ts:92](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L92)
+Defined in: [src/core.ts:92](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L92)
 
 ***
 
@@ -7646,7 +7646,7 @@ Defined in: [src/core.ts:92](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **responses**: `Record`\<`number`, `ResponseConfig`\>
 
-Defined in: [src/core.ts:93](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L93)
+Defined in: [src/core.ts:93](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L93)
 
 ***
 
@@ -7654,7 +7654,7 @@ Defined in: [src/core.ts:93](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > `optional` **security**: `SecurityRequirementObject`[]
 
-Defined in: [src/core.ts:94](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L94)
+Defined in: [src/core.ts:94](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L94)
 
 ***
 
@@ -7662,7 +7662,7 @@ Defined in: [src/core.ts:94](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **defaultResponseClass**: [`ResponseClass`](../../types/type-aliases/ResponseClass.md)
 
-Defined in: [src/core.ts:95](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L95)
+Defined in: [src/core.ts:95](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L95)
 
 ***
 
@@ -7670,7 +7670,7 @@ Defined in: [src/core.ts:95](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **parameters**: `PsThis`
 
-Defined in: [src/core.ts:96](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L96)
+Defined in: [src/core.ts:96](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L96)
 
 ***
 
@@ -7678,7 +7678,7 @@ Defined in: [src/core.ts:96](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **middleware**: [`Middleware`](Middleware.md)[]
 
-Defined in: [src/core.ts:97](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L97)
+Defined in: [src/core.ts:97](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L97)
 
 ***
 
@@ -7686,7 +7686,7 @@ Defined in: [src/core.ts:97](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **routeMatcher**: [`RouteMatcher`](../../routing/classes/RouteMatcher.md)
 
-Defined in: [src/core.ts:98](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L98)
+Defined in: [src/core.ts:98](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L98)
 
 ## Methods
 
@@ -7694,7 +7694,7 @@ Defined in: [src/core.ts:98](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **get**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:140](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L140)
+Defined in: [src/core.ts:140](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L140)
 
 #### Type Parameters
 
@@ -7726,7 +7726,7 @@ Defined in: [src/core.ts:140](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **post**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:146](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L146)
+Defined in: [src/core.ts:146](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L146)
 
 #### Type Parameters
 
@@ -7758,7 +7758,7 @@ Defined in: [src/core.ts:146](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **put**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:152](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L152)
+Defined in: [src/core.ts:152](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L152)
 
 #### Type Parameters
 
@@ -7790,7 +7790,7 @@ Defined in: [src/core.ts:152](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **delete**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:158](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L158)
+Defined in: [src/core.ts:158](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L158)
 
 #### Type Parameters
 
@@ -7822,7 +7822,7 @@ Defined in: [src/core.ts:158](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **patch**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:164](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L164)
+Defined in: [src/core.ts:164](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L164)
 
 #### Type Parameters
 
@@ -7854,7 +7854,7 @@ Defined in: [src/core.ts:164](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **head**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:170](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L170)
+Defined in: [src/core.ts:170](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L170)
 
 #### Type Parameters
 
@@ -7886,7 +7886,7 @@ Defined in: [src/core.ts:170](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **trace**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:176](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L176)
+Defined in: [src/core.ts:176](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L176)
 
 #### Type Parameters
 
@@ -7918,7 +7918,7 @@ Defined in: [src/core.ts:176](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **options**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:182](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L182)
+Defined in: [src/core.ts:182](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L182)
 
 #### Type Parameters
 
@@ -7950,7 +7950,7 @@ Defined in: [src/core.ts:182](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **route**\<`Ps`, `R`\>(`method`, `path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `PsBase`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:189](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L189)
+Defined in: [src/core.ts:189](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L189)
 
 #### Type Parameters
 
@@ -7986,7 +7986,7 @@ Defined in: [src/core.ts:189](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **include**\<`Ps`\>(`prefix`, `router`): `void`
 
-Defined in: [src/core.ts:216](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L216)
+Defined in: [src/core.ts:216](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L216)
 
 #### Type Parameters
 
@@ -8018,7 +8018,7 @@ Defined in: [src/core.ts:216](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 # Class: Middleware
 
-Defined in: [src/core.ts:74](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L74)
+Defined in: [src/core.ts:74](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L74)
 
 ## Constructors
 
@@ -8026,7 +8026,7 @@ Defined in: [src/core.ts:74](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **new Middleware**(`init`): `Middleware`
 
-Defined in: [src/core.ts:78](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L78)
+Defined in: [src/core.ts:78](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L78)
 
 #### Parameters
 
@@ -8050,7 +8050,7 @@ Defined in: [src/core.ts:78](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > `optional` **name**: `string`
 
-Defined in: [src/core.ts:75](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L75)
+Defined in: [src/core.ts:75](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L75)
 
 ***
 
@@ -8058,7 +8058,7 @@ Defined in: [src/core.ts:75](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **handle**: [`MiddlewareHandler`](../../types/type-aliases/MiddlewareHandler.md)
 
-Defined in: [src/core.ts:76](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L76)
+Defined in: [src/core.ts:76](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L76)
 
 ## reference/core/classes/Dependency.md
 
@@ -8070,7 +8070,7 @@ Defined in: [src/core.ts:76](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 # Class: Dependency\<Ps, R\>
 
-Defined in: [src/core.ts:53](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L53)
+Defined in: [src/core.ts:53](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L53)
 
 ## Type Parameters
 
@@ -8088,7 +8088,7 @@ Defined in: [src/core.ts:53](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **new Dependency**\<`Ps`, `R`\>(`init`): `Dependency`\<`Ps`, `R`\>
 
-Defined in: [src/core.ts:59](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L59)
+Defined in: [src/core.ts:59](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L59)
 
 #### Parameters
 
@@ -8120,7 +8120,7 @@ Defined in: [src/core.ts:59](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > `optional` **name**: `string`
 
-Defined in: [src/core.ts:54](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L54)
+Defined in: [src/core.ts:54](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L54)
 
 ***
 
@@ -8128,7 +8128,7 @@ Defined in: [src/core.ts:54](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **useCache**: `boolean`
 
-Defined in: [src/core.ts:55](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L55)
+Defined in: [src/core.ts:55](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L55)
 
 ***
 
@@ -8136,7 +8136,7 @@ Defined in: [src/core.ts:55](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **parameters**: `Ps`
 
-Defined in: [src/core.ts:56](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L56)
+Defined in: [src/core.ts:56](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L56)
 
 ***
 
@@ -8144,7 +8144,7 @@ Defined in: [src/core.ts:56](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **handle**: [`DependencyHandler`](../../types/type-aliases/DependencyHandler.md)\<[`Simplify`](../../types/type-aliases/Simplify.md)\<[`RuntimeArgs`](../../types/interfaces/RuntimeArgs.md) & `object` & \{ \[K in string \| number \| symbol\]: TypeOf\<UnionToIntersection\<\{ \[K in string \| number \| symbol\]: (...)\[(...)\] extends DependsParameter\<(...), (...)\> ? (...) & (...) : \{ \[P in (...)\]: (...) \} \}\[keyof Ps\]\>\[K\]\> \}\>, `R`\>
 
-Defined in: [src/core.ts:57](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L57)
+Defined in: [src/core.ts:57](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L57)
 
 ## reference/core/classes/App.md
 
@@ -8156,7 +8156,7 @@ Defined in: [src/core.ts:57](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 # Class: App\<PsThis\>
 
-Defined in: [src/core.ts:236](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L236)
+Defined in: [src/core.ts:236](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L236)
 
 ## Extends
 
@@ -8174,7 +8174,7 @@ Defined in: [src/core.ts:236](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **new App**\<`PsThis`\>(`init`): `App`\<`PsThis`\>
 
-Defined in: [src/core.ts:254](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L254)
+Defined in: [src/core.ts:254](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L254)
 
 #### Parameters
 
@@ -8196,7 +8196,7 @@ Defined in: [src/core.ts:254](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **tags**: `string`[]
 
-Defined in: [src/core.ts:90](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L90)
+Defined in: [src/core.ts:90](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L90)
 
 #### Inherited from
 
@@ -8208,7 +8208,7 @@ Defined in: [src/core.ts:90](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **deprecated**: `boolean`
 
-Defined in: [src/core.ts:91](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L91)
+Defined in: [src/core.ts:91](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L91)
 
 #### Inherited from
 
@@ -8220,7 +8220,7 @@ Defined in: [src/core.ts:91](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **includeInSchema**: `boolean`
 
-Defined in: [src/core.ts:92](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L92)
+Defined in: [src/core.ts:92](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L92)
 
 #### Inherited from
 
@@ -8232,7 +8232,7 @@ Defined in: [src/core.ts:92](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **responses**: `Record`\<`number`, `ResponseConfig`\>
 
-Defined in: [src/core.ts:93](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L93)
+Defined in: [src/core.ts:93](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L93)
 
 #### Inherited from
 
@@ -8244,7 +8244,7 @@ Defined in: [src/core.ts:93](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **defaultResponseClass**: [`ResponseClass`](../../types/type-aliases/ResponseClass.md)
 
-Defined in: [src/core.ts:95](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L95)
+Defined in: [src/core.ts:95](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L95)
 
 #### Inherited from
 
@@ -8256,7 +8256,7 @@ Defined in: [src/core.ts:95](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **parameters**: `PsThis`
 
-Defined in: [src/core.ts:96](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L96)
+Defined in: [src/core.ts:96](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L96)
 
 #### Inherited from
 
@@ -8268,7 +8268,7 @@ Defined in: [src/core.ts:96](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **middleware**: [`Middleware`](Middleware.md)[]
 
-Defined in: [src/core.ts:97](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L97)
+Defined in: [src/core.ts:97](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L97)
 
 #### Inherited from
 
@@ -8280,7 +8280,7 @@ Defined in: [src/core.ts:97](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **routeMatcher**: [`RouteMatcher`](../../routing/classes/RouteMatcher.md)
 
-Defined in: [src/core.ts:98](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L98)
+Defined in: [src/core.ts:98](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L98)
 
 #### Inherited from
 
@@ -8292,7 +8292,7 @@ Defined in: [src/core.ts:98](https://github.com/ianhco/cerces/blob/9671bd13fcde7
 
 > **rootPath**: `string`
 
-Defined in: [src/core.ts:237](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L237)
+Defined in: [src/core.ts:237](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L237)
 
 #### Overrides
 
@@ -8304,7 +8304,7 @@ Defined in: [src/core.ts:237](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **title**: `string`
 
-Defined in: [src/core.ts:238](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L238)
+Defined in: [src/core.ts:238](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L238)
 
 ***
 
@@ -8312,7 +8312,7 @@ Defined in: [src/core.ts:238](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **description**: `string`
 
-Defined in: [src/core.ts:239](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L239)
+Defined in: [src/core.ts:239](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L239)
 
 ***
 
@@ -8320,7 +8320,7 @@ Defined in: [src/core.ts:239](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **version**: `string`
 
-Defined in: [src/core.ts:240](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L240)
+Defined in: [src/core.ts:240](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L240)
 
 ***
 
@@ -8328,7 +8328,7 @@ Defined in: [src/core.ts:240](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **tagsInfo**: `TagObject`[]
 
-Defined in: [src/core.ts:241](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L241)
+Defined in: [src/core.ts:241](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L241)
 
 ***
 
@@ -8336,7 +8336,7 @@ Defined in: [src/core.ts:241](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **servers**: `ServerObject`[]
 
-Defined in: [src/core.ts:242](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L242)
+Defined in: [src/core.ts:242](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L242)
 
 ***
 
@@ -8344,7 +8344,7 @@ Defined in: [src/core.ts:242](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **contact**: `ContactObject`
 
-Defined in: [src/core.ts:243](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L243)
+Defined in: [src/core.ts:243](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L243)
 
 ***
 
@@ -8352,7 +8352,7 @@ Defined in: [src/core.ts:243](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **license**: `LicenseObject`
 
-Defined in: [src/core.ts:244](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L244)
+Defined in: [src/core.ts:244](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L244)
 
 ***
 
@@ -8360,7 +8360,7 @@ Defined in: [src/core.ts:244](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > `optional` **termsOfService**: `string`
 
-Defined in: [src/core.ts:245](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L245)
+Defined in: [src/core.ts:245](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L245)
 
 ***
 
@@ -8368,7 +8368,7 @@ Defined in: [src/core.ts:245](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **securitySchemes**: `Record`\<`string`, `SecuritySchemeObject`\>
 
-Defined in: [src/core.ts:246](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L246)
+Defined in: [src/core.ts:246](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L246)
 
 ***
 
@@ -8376,7 +8376,7 @@ Defined in: [src/core.ts:246](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **security**: `SecurityRequirementObject`[]
 
-Defined in: [src/core.ts:247](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L247)
+Defined in: [src/core.ts:247](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L247)
 
 #### Overrides
 
@@ -8388,7 +8388,7 @@ Defined in: [src/core.ts:247](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **openapiUrl**: `null` \| `` `/${string}` ``
 
-Defined in: [src/core.ts:248](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L248)
+Defined in: [src/core.ts:248](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L248)
 
 ***
 
@@ -8396,7 +8396,7 @@ Defined in: [src/core.ts:248](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **swaggerUrl**: `null` \| `` `/${string}` ``
 
-Defined in: [src/core.ts:249](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L249)
+Defined in: [src/core.ts:249](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L249)
 
 ***
 
@@ -8404,7 +8404,7 @@ Defined in: [src/core.ts:249](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **redocUrl**: `null` \| `` `/${string}` ``
 
-Defined in: [src/core.ts:250](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L250)
+Defined in: [src/core.ts:250](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L250)
 
 ***
 
@@ -8412,7 +8412,7 @@ Defined in: [src/core.ts:250](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **errorHandler**: [`ErrorHandler`](../../types/type-aliases/ErrorHandler.md)
 
-Defined in: [src/core.ts:251](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L251)
+Defined in: [src/core.ts:251](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L251)
 
 ## Methods
 
@@ -8420,7 +8420,7 @@ Defined in: [src/core.ts:251](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **get**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:140](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L140)
+Defined in: [src/core.ts:140](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L140)
 
 #### Type Parameters
 
@@ -8456,7 +8456,7 @@ Defined in: [src/core.ts:140](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **post**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:146](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L146)
+Defined in: [src/core.ts:146](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L146)
 
 #### Type Parameters
 
@@ -8492,7 +8492,7 @@ Defined in: [src/core.ts:146](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **put**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:152](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L152)
+Defined in: [src/core.ts:152](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L152)
 
 #### Type Parameters
 
@@ -8528,7 +8528,7 @@ Defined in: [src/core.ts:152](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **delete**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:158](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L158)
+Defined in: [src/core.ts:158](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L158)
 
 #### Type Parameters
 
@@ -8564,7 +8564,7 @@ Defined in: [src/core.ts:158](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **patch**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:164](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L164)
+Defined in: [src/core.ts:164](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L164)
 
 #### Type Parameters
 
@@ -8600,7 +8600,7 @@ Defined in: [src/core.ts:164](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **head**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:170](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L170)
+Defined in: [src/core.ts:170](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L170)
 
 #### Type Parameters
 
@@ -8636,7 +8636,7 @@ Defined in: [src/core.ts:170](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **trace**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:176](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L176)
+Defined in: [src/core.ts:176](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L176)
 
 #### Type Parameters
 
@@ -8672,7 +8672,7 @@ Defined in: [src/core.ts:176](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **options**\<`Ps`, `R`\>(`path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:182](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L182)
+Defined in: [src/core.ts:182](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L182)
 
 #### Type Parameters
 
@@ -8708,7 +8708,7 @@ Defined in: [src/core.ts:182](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **route**\<`Ps`, `R`\>(`method`, `path`, `unboundRoute`): [`Route`](../../routing/classes/Route.md)\<`PsThis` & `object`, `Ps`, `R`\>
 
-Defined in: [src/core.ts:189](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L189)
+Defined in: [src/core.ts:189](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L189)
 
 #### Type Parameters
 
@@ -8748,7 +8748,7 @@ Defined in: [src/core.ts:189](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **include**\<`Ps`\>(`prefix`, `router`): `void`
 
-Defined in: [src/core.ts:216](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L216)
+Defined in: [src/core.ts:216](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L216)
 
 #### Type Parameters
 
@@ -8780,7 +8780,7 @@ Defined in: [src/core.ts:216](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **openapi**(): `OpenAPIObject`
 
-Defined in: [src/core.ts:337](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L337)
+Defined in: [src/core.ts:337](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L337)
 
 #### Returns
 
@@ -8792,7 +8792,7 @@ Defined in: [src/core.ts:337](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **handle**(`baseArgs`): `Promise`\<`Response`\>
 
-Defined in: [src/core.ts:365](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L365)
+Defined in: [src/core.ts:365](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L365)
 
 #### Parameters
 
@@ -8812,7 +8812,7 @@ Defined in: [src/core.ts:365](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **fetch**(`req`, ...`args`): `Promise`\<`Response`\>
 
-Defined in: [src/core.ts:427](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/core.ts#L427)
+Defined in: [src/core.ts:427](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/core.ts#L427)
 
 #### Parameters
 
@@ -8840,7 +8840,7 @@ Defined in: [src/core.ts:427](https://github.com/ianhco/cerces/blob/9671bd13fcde
 
 > **toWebRequest**(`event`): `Request`
 
-Defined in: [src/adapters/aws-lambda.ts:4](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/adapters/aws-lambda.ts#L4)
+Defined in: [src/adapters/aws-lambda.ts:4](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/adapters/aws-lambda.ts#L4)
 
 ## Parameters
 
@@ -8864,7 +8864,7 @@ Defined in: [src/adapters/aws-lambda.ts:4](https://github.com/ianhco/cerces/blob
 
 > **toLambdaResponse**(`response`): `Promise`\<`APIGatewayProxyResult`\>
 
-Defined in: [src/adapters/aws-lambda.ts:80](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/adapters/aws-lambda.ts#L80)
+Defined in: [src/adapters/aws-lambda.ts:80](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/adapters/aws-lambda.ts#L80)
 
 ## Parameters
 
@@ -8888,7 +8888,7 @@ Defined in: [src/adapters/aws-lambda.ts:80](https://github.com/ianhco/cerces/blo
 
 > **createHandler**(`app`): (`event`, `context`) => `Promise`\<`APIGatewayProxyResult`\>
 
-Defined in: [src/adapters/aws-lambda.ts:138](https://github.com/ianhco/cerces/blob/9671bd13fcde703b4831c3aebe27c29c542d8af9/src/adapters/aws-lambda.ts#L138)
+Defined in: [src/adapters/aws-lambda.ts:138](https://github.com/ianhco/cerces/blob/e5368192da5029686e96f6ac952b1fc944023c6c/src/adapters/aws-lambda.ts#L138)
 
 Creates a handler function for AWS Lambda that integrates with the provided App instance.
 
